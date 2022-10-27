@@ -2,11 +2,11 @@
 
 ### Avtorja:
 - Janez Sedeljšak 63200261
-- Marko Vrečer 63200XXX
+- Marko Vrečer 63200329
 
 Osnovni koncept igre je preprosta poučna letalska igra, kjer bi morali kot igralec odlagati pakete, kamor bi igra zahtevala. Za okolje bi vzeli pomanjšano verzijo Zemlje, ki je nekako v takem merilu, da jo lahko obletimo približno v minuti.
 
-Sam cilj igre bi bil odlagati pakete v posamezne "države", ki nam jih igra naključno izbere. Torej recimo moramo paket odložiti v Sloveniji, torej se moramo z letalom zapeljati nad naš državo in tam spustiti naš paket. 
+Sam cilj igre bi bil odlagati pakete v posamezne "države", ki nam jih igra naključno izbere. Na primer paket moramo odložiti v Sloveniji, torej se moramo z letalom zapeljati nad našo državo in tam spustiti naš paket. 
 
 Konceptualna ideja je načeloma vzeta iz "video" serije iz platforme ["YouTube"](https://www.youtube.com/watch?v=sLqXFF8mlEU&t=1593s).
 

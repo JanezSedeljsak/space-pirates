@@ -1,0 +1,26 @@
+{
+  "name": "plane-game",
+  "version": "1.0.0",
+  "description": "- Janez Sedeljšak 63200261\r - Marko Vrečer 63200329",
+  "main": "bin/server.js",
+  "bin": {
+    "plane-game": "obj2json.js"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "start": "node bin/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JanezSedeljsak/plane-game.git"
+  },
+  "author": "Janez Sedeljsak, Marko Vrecer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JanezSedeljsak/plane-game/issues"
+  },
+  "homepage": "https://github.com/JanezSedeljsak/plane-game#readme"
+}

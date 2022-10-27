@@ -21,4 +21,7 @@ V igri načeloma ne bo klasičnega koncepta gravitacije, saj je osrednji lik let
 ### Izrisovanje zemlje
 V osnovi bi lahko celotno zemljo izrisali, kot en `gltf` model, ampak tukaj se zna pojaviti težava, če bo ta model prevelik in bo potrebno dinamično izrisovanje. Kot rešitev bi lahko "sfero" razdelili na manjše komponente in potem izrisovati le "aktivno" področje (komponento).
 
+### Mehanika gibanja
+V samo gibanje letala bi seveda vključili, tudi horizontalno in vertikalno gibanje, tako se lahko recimo izognemo oblakom ali pa se pomaknemo nižje, da lahko odložimo paket. 
 
+Ob gibanju levo/desno, pa bi kamero in letalo rotirali. Recimo v primeru, ko se gibamo desno kamero rotiramo za nekaj stopinj v smeri urinega kazalca in jo potem stabiliziramo v prvotno stanje.

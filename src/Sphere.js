@@ -14,7 +14,7 @@ export class Sphere extends Model {
     //     return [x, y, z]
     // }
 
-    static createGlobe() {
+    static createGlobe(r) {
         const options = {
             vertices: [],
             texcoords: [],
@@ -22,9 +22,9 @@ export class Sphere extends Model {
             indices: []
         }
 
-        let radius = 50, // this should be the some as y offset in scene.json
-            widthSegments = 128,
-            heightSegments = 128,
+        let radius = r ?? 40, // this should be the some as offset in scene.json
+            widthSegments = 255,
+            heightSegments = 255,
             phiStart = 0,
             phiLength = Math.PI * 2,
             thetaStart = 0,

@@ -16,16 +16,28 @@ export class Camera extends Node {
         this.keydownHandler = this.keydownHandler.bind(this);
         this.keyupHandler = this.keyupHandler.bind(this);
         this.keys = {};
+
+        this.isFirstPerson = true;
     }
 
     updateProjection() {
         mat4.perspective(this.projection, this.fov, this.aspect, this.near, this.far);
     }
 
+    toggleFirstPerson() {
+        if (this.isFirstPerson) {
+            this.isFirstPerson = false;
+            this.translation[2] = -5;
+        } else {
+            this.isFirstPerson = true;
+            this.translation[2] = 0;
+        }
+    }
+
     update(dt) {
         const c = this;
 
-        const forward = vec3.set(vec3.create(),
+        /*const forward = vec3.set(vec3.create(),
             -Math.sin(c.rotation[1]), 0, -Math.cos(c.rotation[1]));
         const right = vec3.set(vec3.create(),
             Math.cos(c.rotation[1]), 0, -Math.sin(c.rotation[1]));
@@ -61,7 +73,7 @@ export class Camera extends Node {
         const len = vec3.len(c.velocity);
         if (len > c.maxSpeed) {
             vec3.scale(c.velocity, c.velocity, c.maxSpeed / len);
-        }
+        }*/
     }
 
     enable() {
@@ -91,7 +103,7 @@ export class Camera extends Node {
         const pi = Math.PI;
         const twopi = pi * 2;
         const halfpi = pi / 2;
-
+        
         if (c.rotation[0] > halfpi) {
             c.rotation[0] = halfpi;
         }

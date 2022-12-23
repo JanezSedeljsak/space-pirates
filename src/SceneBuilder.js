@@ -5,7 +5,7 @@ import { Model } from './Model.js';
 import { Camera } from './Camera.js';
 
 import { Scene } from './Scene.js';
-
+import { Sphere } from './Sphere.js';
 export class SceneBuilder {
 
     constructor(spec) {
@@ -19,6 +19,11 @@ export class SceneBuilder {
                 const mesh = new Mesh(this.spec.meshes[spec.mesh]);
                 const texture = this.spec.textures[spec.texture];
                 return new Model(mesh, texture, spec);
+            }
+            case 'sphere': {
+                const mesh = new Mesh(Sphere.createGlobe());
+                const texture = this.spec.textures[spec.texture];
+                return new Sphere(mesh, texture, spec);
             }
             default: return new Node(spec);
         }

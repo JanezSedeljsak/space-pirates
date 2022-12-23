@@ -2,7 +2,7 @@
   "nodes": [
     {
       "type": "camera",
-      "translation": [0, 1, 0],
+      "translation": [0, 2, 0],
       "aabb": {
         "min": [-0.2, -0.2, -0.2],
         "max": [0.2, 0.2, 0.2]
@@ -13,54 +13,32 @@
       "far": 100
     },
     {
-      "type": "model",
+      "type": "sphere",
       "mesh": 0,
       "texture": 0,
       "aabb": {
         "min": [-1, -1, -1],
         "max": [1, 1, 1]
       },
-      "translation": [3, 1, -5]
-    },
-    {
-      "type": "model",
-      "mesh": 0,
-      "texture": 1,
-      "aabb": {
-        "min": [-1, -1, -1],
-        "max": [1, 1, 1]
-      },
-      "translation": [0, 1, 5]
+      "translation": [0, -50, -5]
     },
     {
       "type": "model",
       "mesh": 1,
       "texture": 1,
       "aabb": {
-        "min": [-0.5, -0.5, -0.5],
-        "max": [0.5, 0.5, 0.5]
-      },
-      "translation": [0, 1, -5]
-    },
-    {
-      "type": "model",
-      "mesh": 0,
-      "texture": 0,
-      "aabb": {
         "min": [-1, -1, -1],
         "max": [1, 1, 1]
       },
-      "translation": [3, 0.1, -1],
-      "rotation": [0, 1, 0],
-      "scale": [1, 0.1, 1]
+      "translation": [0, 2, -5]
     }
   ],
   "textures": [
-    "../common/images/crate-diffuse.png",
-    "../common/images/grass.png"
+    "../common/images/earth-min.jpg",
+    "../common/images/crate-diffuse.png"
   ],
   "meshes": [
-    "../common/models/cube.json",
-    "../common/models/pyramid.json"
+    "../common/models/earth.json",
+    "../common/models/cube.json"
   ]
 }

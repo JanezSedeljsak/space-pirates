@@ -7,8 +7,11 @@ import { SceneLoader } from './SceneLoader.js';
 import { SceneBuilder } from './SceneBuilder.js';
 import { Sphere } from './Sphere.js';
 import { Plane } from './Plane.js';
+import { GLTFLoader } from './gltf/GLTFLoader.js';
 
 class App extends Application {
+
+    static gltfLoader = new GLTFLoader();
 
     async start() {
         const gl = this.gl;
@@ -19,6 +22,7 @@ class App extends Application {
         this.aspect = 1;
         this.isGameFocused = false;
 
+        await App.gltfLoader.load('/common/models/untitled.gltf');
         await this.load('/src/scene.json');
 
         this.canvas.addEventListener('click', e => this.canvas.requestPointerLock());
@@ -43,7 +47,13 @@ class App extends Application {
 
     async load(uri) {
         const scene = await new SceneLoader().loadScene(uri);
+
+        // inject gltf cube into the scene (needs to have specific render methods - TODO)
+        const cube = await App.gltfLoader.loadNode('Cube');
+        scene.nodes.push(cube);
+
         const builder = new SceneBuilder(scene);
+
         this.scene = builder.build();
         this.physics = new Physics(this.scene);
 

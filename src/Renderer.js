@@ -31,6 +31,9 @@ export class Renderer {
 
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+        gl.clearColor(0.3, 0.6, 0.9, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
         const { program, uniforms } = this.programs.simple;
         gl.useProgram(program);
 

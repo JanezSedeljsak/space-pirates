@@ -1,0 +1,42 @@
+button, .btn {
+    display: block;
+
+    text-decoration: none;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    color: whitesmoke;
+    background-color: #8b8feb;
+
+    padding: 0.45rem;
+    border-radius: 10px;
+    border: 2px solid #7378ca;
+
+    cursor: pointer;
+}
+button:active, .btn:active {
+    background-color: #7378ca;
+}
+
+.start-menu-container {
+    background-color: #96c9da;
+}
+.start-menu-container > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.start-menu-container h1 {
+    font-size: 6rem;
+}
+.start-menu-container .buttons {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 8px;
+    width: min(40rem, 100%);
+    margin-top: 3rem;
+}
+.start-menu-container button, .btn {
+    flex: 1;
+}

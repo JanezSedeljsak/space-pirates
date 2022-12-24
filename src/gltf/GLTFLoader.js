@@ -4,8 +4,8 @@ import { Sampler } from './Sampler.js';
 import { Texture } from './Texture.js';
 import { Material } from './Material.js';
 import { Primitive } from './Primitive.js';
-import { Mesh } from '../Mesh.js';
-import { Scene } from '../Scene.js';
+import { Mesh } from '../core/Mesh.js';
+import { Scene } from '../scene/Scene.js';
 
 import { Node } from '../../common/engine/Node.js';
 

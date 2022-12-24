@@ -1,12 +1,12 @@
 import { Application } from '../../common/engine/Application.js';
 
-import { Renderer } from './Renderer.js';
-import { Physics } from './Physics.js';
-import { Camera } from './Camera.js';
-import { SceneLoader } from './SceneLoader.js';
-import { SceneBuilder } from './SceneBuilder.js';
-import { Sphere } from './Sphere.js';
-import { Plane } from './Plane.js';
+import { Renderer } from './core/Renderer.js';
+import { Physics } from './core/Physics.js';
+import { Camera } from './core/Camera.js';
+import { SceneLoader } from './scene/SceneLoader.js';
+import { SceneBuilder } from './scene/SceneBuilder.js';
+import { Sphere } from './models/Sphere.js';
+import { Plane } from './models/Plane.js';
 import { GLTFLoader } from './gltf/GLTFLoader.js';
 
 class App extends Application {
@@ -22,7 +22,7 @@ class App extends Application {
         this.aspect = 1;
         this.isGameFocused = false;
 
-        await App.gltfLoader.load('/common/models/untitled.gltf');
+        await App.gltfLoader.load('/common/models/plane.gltf');
         await this.load('/src/scene.json');
 
         this.canvas.addEventListener('click', e => this.canvas.requestPointerLock());
@@ -49,8 +49,9 @@ class App extends Application {
         const scene = await new SceneLoader().loadScene(uri);
 
         // inject gltf cube into the scene (needs to have specific render methods - TODO)
-        const cube = await App.gltfLoader.loadNode('Cube');
-        scene.nodes.push(cube);
+        const plane = await App.gltfLoader.loadNode('Plane');
+        //scene.nodes.push(plane);
+        console.log({plane});
 
         const builder = new SceneBuilder(scene);
 

@@ -1,12 +1,12 @@
-import { Mesh } from './Mesh.js';
+import { Mesh } from '../core/Mesh.js';
 
-import { Node } from './Node.js';
-import { Model } from './Model.js';
-import { Camera } from './Camera.js';
+import { Node } from '../core/Node.js';
+import { Model } from '../models/Model.js';
+import { Camera } from '../core/Camera.js';
 
 import { Scene } from './Scene.js';
-import { Sphere } from './Sphere.js';
-import { Plane } from './Plane.js';
+import { Sphere } from '../models/Sphere.js';
+import { Plane } from '../models/Plane.js';
 export class SceneBuilder {
 
     constructor(spec) {
@@ -20,15 +20,13 @@ export class SceneBuilder {
             case 'model': {
                 const mesh = new Mesh(this.spec.meshes[spec.mesh]);
                 const texture = this.spec.textures[spec.texture];
-
-                if (spec.type === 'plane') {
-                    return new Plane(mesh, texture, spec);
-                } else {
-                    return new Model(mesh, texture, spec);
-                }
+                const args = [mesh, texture, spec];
+                return spec.type === 'plane'
+                    ? new Plane(...args)
+                    : new Model(...args);
             }
             case 'sphere': {
-                const mesh = new Mesh(Sphere.createGlobe());
+                const mesh = new Mesh(Sphere.createGlobe(spec?.radius));
                 const texture = this.spec.textures[spec.texture];
                 return new Sphere(mesh, texture, spec);
             }

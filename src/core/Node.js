@@ -57,6 +57,15 @@ export class Node {
         }
     }
 
+    render(gl, matrix, program, uniforms, programWorld, uniformsWorld, camera) {
+        gl.bindVertexArray(this.gl.vao);
+        gl.uniformMatrix4fv(uniforms.uViewModel, false, matrix);
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, this.gl.texture);
+        gl.uniform1i(uniforms.uTexture, 0);
+        gl.drawElements(gl.TRIANGLES, this.gl.indices, gl.UNSIGNED_SHORT, 0);
+    }
+
 }
 
 Node.defaults = {

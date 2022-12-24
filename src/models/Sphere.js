@@ -14,6 +14,15 @@ export class Sphere extends Model {
     //     return [x, y, z]
     // }
 
+    constructor(mesh, texture, spec) {
+        super(mesh, texture, spec);
+    }
+
+    async loadHeightMap() {
+        this.heightMap = await this.loadTexture('../../common/images/Tropical2_Height.png');
+        this.normalMap = await this.loadTexture('../../common/images/Tropical2_Normal.png');
+    }
+
     static createGlobe(r) {
         const options = {
             vertices: [],
@@ -23,8 +32,8 @@ export class Sphere extends Model {
         }
 
         let radius = r ?? 10,
-            wSeg = 255,
-            hSeg = 255,
+            wSeg = 256,
+            hSeg = 256,
             fiStart = 0,
             fiDelta = Math.PI * 2,
             thetaStart = 0,
@@ -60,11 +69,10 @@ export class Sphere extends Model {
                 vertex.z = radius * Math.sin(fiRes) * Math.sin(thetaRes);
 
                 // wobbly earth with perlin noise
-                //const newRadius = radius + noise.perlin3(vertex.x, vertex.y, vertex.z);
+                //const newRadius = radius + noise.perlin3(vertex.x, vertex.y, vertex.z);;
                 //vertex.z = newRadius * Math.sin( fiStart + u * fiDelta ) * Math.sin( thetaStart + v * thetaDelta );
 
                 options.vertices.push(vertex.x, vertex.y, vertex.z);
-                //normal.copy(vertex).normalize();
                 options.normals.push(normal.x, normal.y, normal.z);
                 options.texcoords.push(u + uOffset, 1 - v);
                 row.push(index++);
@@ -88,5 +96,35 @@ export class Sphere extends Model {
         }
 
         return options;
+    }
+
+    async loadTexture(url) {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const image = await createImageBitmap(blob);
+        return image;
+    }
+
+    render(gl, matrix, program, uniforms, programWorld, uniformsWorld, camera) {
+        gl.useProgram(programWorld);
+
+        gl.uniformMatrix4fv(uniformsWorld.uProjection, false, camera.projection);
+        gl.bindVertexArray(this.gl.vao);
+        gl.uniformMatrix4fv(uniformsWorld.uViewModel, false, matrix);
+
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, this.gl.texture);
+        gl.uniform1i(uniformsWorld.uTexture, 0);
+        
+        gl.activeTexture(gl.TEXTURE1);
+        gl.bindTexture(gl.TEXTURE_2D, this.gl.heightMap);
+        gl.uniform1i(uniformsWorld.uHeightMap, 1);
+
+        gl.activeTexture(gl.TEXTURE2);
+        gl.bindTexture(gl.TEXTURE_2D, this.gl.normalMap);
+        gl.uniform1i(uniformsWorld.uNormalMap, 2);
+
+        gl.drawElements(gl.TRIANGLES, this.gl.indices, gl.UNSIGNED_SHORT, 0);
+        gl.useProgram(program);
     }
 }

@@ -1,6 +1,7 @@
 import { mat4 } from '../../lib/gl-matrix-module.js';
 import { WebGL } from '../../common/engine/WebGL.js';
 import { shaders } from '../shaders.js';
+import { Sphere } from '../models/Sphere.js';
 
 export class Renderer {
 
@@ -15,13 +16,18 @@ export class Renderer {
     }
 
     prepare(scene) {
-        scene.nodes.forEach(node => {
+        scene.traverse(async node => {
             node.gl = {};
             if (node.mesh) {
                 Object.assign(node.gl, this.createModel(node.mesh));
             }
             if (node.image) {
                 node.gl.texture = this.createTexture(node.image);
+            }
+            if (node instanceof Sphere) {
+                await node.loadHeightMap();
+                node.gl.heightMap = this.createTexture(node.heightMap);
+                node.gl.normalMap = this.createTexture(node.normalMap);
             }
         });
     }
@@ -35,6 +41,8 @@ export class Renderer {
         gl.clear(gl.COLOR_BUFFER_BIT);
 
         const { program, uniforms } = this.programs.simple;
+        const { program: programWorld, uniforms: uniformsWorld } = this.programs.worldshader;
+
         gl.useProgram(program);
 
         const matrix = mat4.create();
@@ -49,13 +57,8 @@ export class Renderer {
             node => {
                 matrixStack.push(mat4.clone(matrix));
                 mat4.mul(matrix, matrix, node.matrix);
-                if (node.gl.vao) {
-                    gl.bindVertexArray(node.gl.vao);
-                    gl.uniformMatrix4fv(uniforms.uViewModel, false, matrix);
-                    gl.activeTexture(gl.TEXTURE0);
-                    gl.bindTexture(gl.TEXTURE_2D, node.gl.texture);
-                    gl.uniform1i(uniforms.uTexture, 0);
-                    gl.drawElements(gl.TRIANGLES, node.gl.indices, gl.UNSIGNED_SHORT, 0);
+                if (node?.gl?.vao) {
+                    node.render(gl, matrix, program, uniforms, programWorld, uniformsWorld, camera);
                 }
             },
             node => {

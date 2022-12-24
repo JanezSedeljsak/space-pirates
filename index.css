@@ -69,4 +69,5 @@ a.back:hover {
 h1, h2 {
     margin: 0;
     color: whitesmoke;
+    user-select: none;
 }

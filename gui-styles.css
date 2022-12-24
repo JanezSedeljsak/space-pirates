@@ -6,16 +6,17 @@ button, .btn {
     font-size: 1rem;
     font-weight: bold;
     color: whitesmoke;
-    background-color: #8b8feb;
+    background-color: #989bdb;
 
     padding: 0.45rem;
     border-radius: 10px;
-    border: 2px solid #7378ca;
+    border: 2px solid #8c8fca;
 
     cursor: pointer;
+    user-select: none;
 }
 button:active, .btn:active {
-    background-color: #7378ca;
+    background-color: #8c8fca;
 }
 
 .start-menu-container {
@@ -36,7 +37,21 @@ button:active, .btn:active {
     gap: 8px;
     width: min(40rem, 100%);
     margin-top: 3rem;
+    margin-bottom: 2.5rem;
 }
 .start-menu-container button, .btn {
     flex: 1;
+}
+.start-menu-container img {
+    max-height: 20vh;
+}
+.start-menu-container .planet-selector {
+    position: absolute;
+    bottom: 10vh;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.start-menu-container .planet-selector h2 {
+    cursor: pointer;
 }

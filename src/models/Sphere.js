@@ -14,8 +14,10 @@ export class Sphere extends Model {
     //     return [x, y, z]
     // }
 
-    constructor(mesh, texture, spec) {
+    constructor(mesh, texture, spec, radius) {
         super(mesh, texture, spec);
+        this.radius = radius;
+        this.translation = [0, -radius, 5];
     }
 
     async loadHeightMap() {
@@ -95,7 +97,7 @@ export class Sphere extends Model {
             }
         }
 
-        return options;
+        return [options, radius];
     }
 
     async loadTexture(url) {

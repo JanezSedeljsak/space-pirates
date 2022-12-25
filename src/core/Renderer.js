@@ -2,6 +2,7 @@ import { mat4 } from '../../lib/gl-matrix-module.js';
 import { WebGL } from '../../common/engine/WebGL.js';
 import { shaders } from '../shaders.js';
 import { Sphere } from '../models/Sphere.js';
+import { GLTFNode } from '../models/GLTFNode.js';
 
 export class Renderer {
 
@@ -172,27 +173,36 @@ export class Renderer {
 
     prepare(scene) {
         scene.traverse(async node => {
-            if (node.isGLTF) {
+            if (node instanceof GLTFNode) {
+                console.log('prepare gltf node');
                 if (node.mesh) {
                     this.prepareMesh(node.mesh);
                 }
                 for (const child of node.children) {
                     this.prepareNode(child);
                 }
-            }
-            node.gl = {};
-            if (node.mesh) {
-                Object.assign(node.gl, this.createModel(node.mesh));
-            }
-            if (node.image) {
-                node.gl.texture = this.createTexture(node.image);
-            }
-            if (node instanceof Sphere) {
-                await node.loadHeightMap();
-                node.gl.heightMap = this.createTexture(node.heightMap);
-                node.gl.normalMap = this.createTexture(node.normalMap);
+            } else {
+                node.gl = {};
+                if (node.mesh) {
+                    Object.assign(node.gl, this.createModel(node.mesh));
+                }
+                if (node.image) {
+                    node.gl.texture = this.createTexture(node.image);
+                }
+                if (node instanceof Sphere) {
+                    await node.loadHeightMap();
+                    node.gl.heightMap = this.createTexture(node.heightMap);
+                    node.gl.normalMap = this.createTexture(node.normalMap);
+                } 
             }
         });
+    }
+
+    getViewProjectionMatrix(camera) {
+        const vpMatrix = camera.matrix;
+        mat4.invert(vpMatrix, vpMatrix);
+        mat4.mul(vpMatrix, camera.projection, vpMatrix);
+        return vpMatrix;
     }
 
     render(scene, camera) {
@@ -214,22 +224,24 @@ export class Renderer {
         const viewMatrix = camera.getGlobalTransform();
         mat4.invert(viewMatrix, viewMatrix);
         mat4.copy(matrix, viewMatrix);
-        gl.uniformMatrix4fv(uniforms.uProjection, false, camera.projection);
 
+        const mvpMatrix = this.getViewProjectionMatrix(camera);
+        
         scene.traverse(
             node => {
                 matrixStack.push(mat4.clone(matrix));
                 mat4.mul(matrix, matrix, node.matrix);
-                if (node?.gl?.vao) {
+                if (node?.gl?.vao || node instanceof GLTFNode) {
                     node.render({
-                        gl, matrix, program, uniforms, programWorld, uniformsWorld, camera,
+                        gl, matrix, mvpMatrix, camera,
+                        program, uniforms, programWorld, uniformsWorld,
                         glObjects: this.glObjects,
                         defaultSampler: this.defaultSampler,
                         defaultTexture: this.defaultTexture,
                     });
                 }
             },
-            node => {
+            _ => {
                 mat4.copy(matrix, matrixStack.pop());
             }
         );

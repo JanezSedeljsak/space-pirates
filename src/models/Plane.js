@@ -1,6 +1,6 @@
-import { Node } from "../core/Node.js";
+import { GLTFNode } from "./GLTFNode.js";
 
-export class Plane extends Node {
+export class Plane extends GLTFNode {
 
     constructor(options) {
         super(options);
@@ -45,7 +45,6 @@ export class Plane extends Node {
             this.rotation = [0, 0, 0];
         }
 
-        console.log(this.sphere.rotation);
         this.sphere.updateMatrix();
         this.updateMatrix();
     }

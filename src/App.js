@@ -6,12 +6,14 @@ import { Camera } from './core/Camera.js';
 import { SceneLoader } from './scene/SceneLoader.js';
 import { SceneBuilder } from './scene/SceneBuilder.js';
 import { Sphere } from './models/Sphere.js';
-import { Plane } from './models/Plane.js';
 import { GLTFLoader } from './gltf/GLTFLoader.js';
 
-class App extends Application {
+// user settings
+const initialState = {
+    radius: 40
+};
 
-    static gltfLoader = new GLTFLoader();
+class App extends Application {
 
     async start() {
         const gl = this.gl;
@@ -21,8 +23,9 @@ class App extends Application {
         this.startTime = this.time;
         this.aspect = 1;
         this.isGameFocused = false;
+        this.planeLoader = new GLTFLoader();
 
-        await App.gltfLoader.load('/common/models/plane_embeded.gltf');
+        await this.planeLoader.load('/common/models/plane.gltf');
         await this.load('/src/scene.json');
 
         this.canvas.addEventListener('click', e => this.canvas.requestPointerLock());
@@ -47,10 +50,11 @@ class App extends Application {
 
     async load(uri) {
         const scene = await new SceneLoader().loadScene(uri);
-        const plane = await App.gltfLoader.loadNode('Plane');
+
+        this.plane = await this.planeLoader.loadNode('Plane');
         const builder = new SceneBuilder(scene);
 
-        this.scene = builder.build();
+        this.scene = builder.build(initialState);
         this.physics = new Physics(this.scene);
 
         // Find game objects
@@ -65,8 +69,7 @@ class App extends Application {
             }
         });
 
-        this.plane = plane;
-        this.scene.addNode(plane);
+        this.scene.addNode(this.plane);
         this.plane.sphere = this.sphere;
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();

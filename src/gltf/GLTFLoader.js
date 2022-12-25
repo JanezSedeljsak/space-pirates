@@ -6,7 +6,7 @@ import { Material } from './Material.js';
 import { Primitive } from './Primitive.js';
 import { Mesh } from '../core/Mesh.js';
 import { Plane } from '../models/Plane.js';
-import { Node } from '../core/Node.js';
+import { GLTFNode } from '../models/GLTFNode.js';
 
 export class GLTFLoader {
 
@@ -17,17 +17,17 @@ export class GLTFLoader {
         this.cache = new Map();
     }
 
-    fetchJson(url) {
+    async fetchJson(url) {
         return fetch(url)
             .then(response => response.json());
     }
 
-    fetchBuffer(url) {
+    async fetchBuffer(url) {
         return fetch(url)
             .then(response => response.arrayBuffer());
     }
 
-    fetchImage(url) {
+    async fetchImage(url) {
         return fetch(url)
             .then(response => response.blob())
             .then(blob => createImageBitmap(blob));
@@ -280,8 +280,8 @@ export class GLTFLoader {
         }
 
         const node = options?.name === 'Plane' 
-            ? new Plane({ gltf: true, ...options })
-            : new Node({ gltf: true, ...options });
+            ? new Plane(options)
+            : new GLTFNode(options);
             
         this.cache.set(gltfSpec, node);
         return node;

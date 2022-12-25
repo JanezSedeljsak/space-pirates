@@ -1,7 +1,7 @@
 import { vec3, mat4 } from '../../lib/gl-matrix-module.js';
 
 import { Utils } from './Utils.js';
-import { Node } from './Node.js';
+import { Node } from '../models/Node.js';
 
 export class Camera extends Node {
 

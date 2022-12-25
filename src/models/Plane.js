@@ -28,18 +28,18 @@ export class Plane extends GLTFNode {
     }
 
     update(dt) {
-        const speed = 0.5;
+        const speed = 0.2;
         if (this.keys['KeyW']) {
-            this.sphere.rotation[0] -= dt * speed;
+            this.sphere.rotation[0] += dt * speed;
         }
 
         if (this.keys['KeyA']) {
             //this.rotation = [0, 0.1, 0.5];
-            this.sphere.rotation[2] += dt * speed;
+            this.sphere.rotation[2] -= dt * speed;
             //this.sphere.rotation[2] -= dt * .03;
         } else if (this.keys['KeyD']) {
             //this.rotation = [0, -0.1, -0.5];
-            this.sphere.rotation[2] -= dt * speed;
+            this.sphere.rotation[2] += dt * speed;
             //this.sphere.rotation[2] += dt * .03;
         } else {
             this.rotation = [0, 0, 0];

@@ -2,7 +2,7 @@
   "nodes": [
     {
       "type": "camera",
-      "translation": [0, 3, -10],
+      "translation": [0, 2, 5],
       "aabb": {
         "min": [-0.2, -0.2, -0.2],
         "max": [0.2, 0.2, 0.2]
@@ -11,7 +11,7 @@
       "fov": 1.5,
       "near": 0.01,
       "far": 100,
-      "rotation": [0, 3, 0]
+      "rotation": [0, 0, 0]
     },
     {
       "type": "sphere",

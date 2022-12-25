@@ -1,10 +1,16 @@
-import { vec3, mat4, quat } from '../../lib/gl-matrix-module.js';
+import { mat4 } from '../../lib/gl-matrix-module.js';
 import { Node } from './Node.js';
 
 export class GLTFNode extends Node {
 
     constructor(options = {}) {
+        const props = { ...options };
         super(options);
+        this._props = props;
+    }
+
+    clone() {
+        return new GLTFNode(this._props);
     }
 
     updateMatrix() {

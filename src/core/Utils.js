@@ -35,7 +35,7 @@ export class Vector3 {
     }
 
     mulScalar(scalar) {
-        return new Vector3(this.x * scalar, this.y *scalar, this.z * scalar);
+        return new Vector3(this.x * scalar, this.y * scalar, this.z * scalar);
     }
 
     copy() {

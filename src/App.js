@@ -7,10 +7,12 @@ import { SceneLoader } from './scene/SceneLoader.js';
 import { SceneBuilder } from './scene/SceneBuilder.js';
 import { Sphere } from './models/Sphere.js';
 import { GLTFLoader } from './gltf/GLTFLoader.js';
+import { Utils } from './core/Utils.js';
+import { GLTFNode } from './models/GLTFNode.js';
 
 // user settings
 const initialState = {
-    radius: 40
+    radius: 60
 };
 
 class App extends Application {
@@ -23,9 +25,16 @@ class App extends Application {
         this.startTime = this.time;
         this.aspect = 1;
         this.isGameFocused = false;
-        this.planeLoader = new GLTFLoader();
 
-        await this.planeLoader.load('/common/models/plane.gltf');
+        this.planeLoader = new GLTFLoader();
+        this.balloonLoader = new GLTFLoader();
+
+        // load all gltf models
+        await Promise.all([
+            this.planeLoader.load('/common/models/plane4.gltf'),
+            this.balloonLoader.load('/common/models/balloon.gltf'),
+        ]);
+
         await this.load('/src/scene.json');
 
         this.canvas.addEventListener('click', e => this.canvas.requestPointerLock());
@@ -51,7 +60,14 @@ class App extends Application {
     async load(uri) {
         const scene = await new SceneLoader().loadScene(uri);
 
-        this.plane = await this.planeLoader.loadNode('Plane');
+        const [plane, balloon] = await Promise.all([
+            this.planeLoader.loadNode('Plane'),
+            this.balloonLoader.loadNode('Balloon')
+        ]);
+
+        this.plane = plane;
+        this.balloon = balloon;
+
         const builder = new SceneBuilder(scene);
 
         this.scene = builder.build(initialState);
@@ -70,10 +86,18 @@ class App extends Application {
         });
 
         this.scene.addNode(this.plane);
+
+        // Balloon clone working (will be used later on 2 display mutliple balloons)
+        // const firstBalloon = this.balloon.clone();
+        // firstBalloon.translation = [0.5, 0.4, 0.3];
+        // this.sphere.addChild(firstBalloon);
+        // this.sphere.addChild(this.balloon.clone());
+
         this.plane.sphere = this.sphere;
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
         this.renderer.prepare(this.scene);
+        console.log(this.scene);
     }
 
     update() {

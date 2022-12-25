@@ -174,13 +174,7 @@ export class Renderer {
     prepare(scene) {
         scene.traverse(async node => {
             if (node instanceof GLTFNode) {
-                console.log('prepare gltf node');
-                if (node.mesh) {
-                    this.prepareMesh(node.mesh);
-                }
-                for (const child of node.children) {
-                    this.prepareNode(child);
-                }
+                this.prepareNode(node);
             } else {
                 node.gl = {};
                 if (node.mesh) {

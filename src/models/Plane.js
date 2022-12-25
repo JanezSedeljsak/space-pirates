@@ -1,10 +1,9 @@
-// import { vec3 } from "../lib/gl-matrix-module.js";
-import { Model } from "./Model.js";
+import { Node } from "../core/Node.js";
 
-export class Plane extends Model {
+export class Plane extends Node {
 
-    constructor(mesh, image, options) {
-        super(mesh, image, options);
+    constructor(options) {
+        super(options);
 
         this.keydownHandler = this.keydownHandler.bind(this);
         this.keyupHandler = this.keyupHandler.bind(this);
@@ -29,22 +28,24 @@ export class Plane extends Model {
     }
 
     update(dt) {
+        const speed = 0.5;
         if (this.keys['KeyW']) {
-            this.sphere.rotation[0] += dt * .05;
+            this.sphere.rotation[0] -= dt * speed;
         }
 
         if (this.keys['KeyA']) {
-            this.rotation = [0, 0.1, 0.5];
-            this.sphere.rotation[1] -= dt * .05;
-            this.sphere.rotation[2] -= dt * .03;
+            //this.rotation = [0, 0.1, 0.5];
+            this.sphere.rotation[2] += dt * speed;
+            //this.sphere.rotation[2] -= dt * .03;
         } else if (this.keys['KeyD']) {
-            this.rotation = [0, -0.1, -0.5];
-            this.sphere.rotation[1] += dt * .05;
-            this.sphere.rotation[2] += dt * .03;
+            //this.rotation = [0, -0.1, -0.5];
+            this.sphere.rotation[2] -= dt * speed;
+            //this.sphere.rotation[2] += dt * .03;
         } else {
             this.rotation = [0, 0, 0];
         }
 
+        console.log(this.sphere.rotation);
         this.sphere.updateMatrix();
         this.updateMatrix();
     }

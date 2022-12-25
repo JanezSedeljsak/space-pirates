@@ -5,9 +5,8 @@ import { Texture } from './Texture.js';
 import { Material } from './Material.js';
 import { Primitive } from './Primitive.js';
 import { Mesh } from '../core/Mesh.js';
-import { Scene } from '../scene/Scene.js';
-
-import { Node } from '../../common/engine/Node.js';
+import { Plane } from '../models/Plane.js';
+import { Node } from '../core/Node.js';
 
 export class GLTFLoader {
 
@@ -116,19 +115,19 @@ export class GLTFLoader {
         }
 
         const accessorTypeToNumComponentsMap = {
-            SCALAR : 1,
-            VEC2   : 2,
-            VEC3   : 3,
-            VEC4   : 4,
-            MAT2   : 4,
-            MAT3   : 9,
-            MAT4   : 16,
+            SCALAR: 1,
+            VEC2: 2,
+            VEC3: 3,
+            VEC4: 4,
+            MAT2: 4,
+            MAT3: 9,
+            MAT4: 16,
         };
 
         const accessor = new Accessor({
             ...gltfSpec,
-            bufferView    : await this.loadBufferView(gltfSpec.bufferView),
-            numComponents : accessorTypeToNumComponentsMap[gltfSpec.type],
+            bufferView: await this.loadBufferView(gltfSpec.bufferView),
+            numComponents: accessorTypeToNumComponentsMap[gltfSpec.type],
         });
         this.cache.set(gltfSpec, accessor);
         return accessor;
@@ -144,10 +143,10 @@ export class GLTFLoader {
         }
 
         const sampler = new Sampler({
-            min   : gltfSpec.minFilter,
-            mag   : gltfSpec.magFilter,
-            wrapS : gltfSpec.wrapS,
-            wrapT : gltfSpec.wrapT,
+            min: gltfSpec.minFilter,
+            mag: gltfSpec.magFilter,
+            wrapS: gltfSpec.wrapS,
+            wrapT: gltfSpec.wrapT,
         });
         this.cache.set(gltfSpec, sampler);
         return sampler;
@@ -259,41 +258,6 @@ export class GLTFLoader {
         return mesh;
     }
 
-    // CAMERA is not in GLTF
-    //async loadCamera(nameOrIndex) {
-    //    const gltfSpec = this.findByNameOrIndex(this.gltf.cameras, nameOrIndex);
-    //    if (!gltfSpec) {
-    //        return null;
-    //    }
-    //    if (this.cache.has(gltfSpec)) {
-    //        return this.cache.get(gltfSpec);
-    //    }
-    //
-    //    if (gltfSpec.type === 'perspective') {
-    //        const persp = gltfSpec.perspective;
-    //        const camera = new PerspectiveCamera({
-    //            aspect : persp.aspectRatio,
-    //            fov    : persp.yfov,
-    //            near   : persp.znear,
-    //            far    : persp.zfar,
-    //        });
-    //        this.cache.set(gltfSpec, camera);
-    //        return camera;
-    //    } else if (gltfSpec.type === 'orthographic') {
-    //        const ortho = gltfSpec.orthographic;
-    //        const camera = new OrthographicCamera({
-    //            left   : -ortho.xmag,
-    //            right  : ortho.xmag,
-    //            bottom : -ortho.ymag,
-    //            top    : ortho.ymag,
-    //            near   : ortho.znear,
-    //            far    : ortho.zfar,
-    //        });
-    //        this.cache.set(gltfSpec, camera);
-    //        return camera;
-    //    }
-    //}
-
     async loadNode(nameOrIndex) {
         const gltfSpec = this.findByNameOrIndex(this.gltf.nodes, nameOrIndex);
         if (!gltfSpec) {
@@ -310,38 +274,17 @@ export class GLTFLoader {
                 options.children.push(node);
             }
         }
-        //if (gltfSpec.camera !== undefined) {
-        //    options.camera = await this.loadCamera(gltfSpec.camera);
-        //}
+
         if (gltfSpec.mesh !== undefined) {
             options.mesh = await this.loadMesh(gltfSpec.mesh);
         }
 
-        const node = new Node(options);
+        const node = options?.name === 'Plane' 
+            ? new Plane({ gltf: true, ...options })
+            : new Node({ gltf: true, ...options });
+            
         this.cache.set(gltfSpec, node);
         return node;
-    }
-
-    async loadScene(nameOrIndex) {
-        const gltfSpec = this.findByNameOrIndex(this.gltf.scenes, nameOrIndex);
-        if (!gltfSpec) {
-            return null;
-        }
-        if (this.cache.has(gltfSpec)) {
-            return this.cache.get(gltfSpec);
-        }
-
-        const options = { nodes: [] };
-        if (gltfSpec.nodes) {
-            for (const nodeIndex of gltfSpec.nodes) {
-                const node = await this.loadNode(nodeIndex);
-                options.nodes.push(node);
-            }
-        }
-
-        const scene = new Scene(options);
-        this.cache.set(gltfSpec, scene);
-        return scene;
     }
 
 }

@@ -4,7 +4,7 @@
   "description": "- Janez Sedeljšak 63200261\r - Marko Vrečer 63200329",
   "main": "bin/server.js",
   "bin": {
-    "plane-game": "obj2json.js"
+    "plane-game": "server.js"
   },
   "directories": {
     "lib": "lib"

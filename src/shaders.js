@@ -40,7 +40,7 @@ uniform mat4 uProjection;
 out vec2 vTexCoord;
 
 void main() {
-    float displacementScale = -0.1;
+    float displacementScale = -0.06;
     float displacement = texture(uHeightMap, aTexCoord).r * displacementScale;
     vec4 displacedPosition = aPosition + normalize(texture(uNormalMap, aTexCoord)) * (texture(uHeightMap, aTexCoord).x * displacementScale);
     vTexCoord = aTexCoord;

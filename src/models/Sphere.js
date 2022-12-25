@@ -105,7 +105,7 @@ export class Sphere extends Model {
         return image;
     }
 
-    render(gl, matrix, program, uniforms, programWorld, uniformsWorld, camera) {
+    render({ gl, matrix, program, programWorld, uniformsWorld, camera }) {
         gl.useProgram(programWorld);
 
         gl.uniformMatrix4fv(uniformsWorld.uProjection, false, camera.projection);

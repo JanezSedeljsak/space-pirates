@@ -22,7 +22,7 @@ class App extends Application {
         this.aspect = 1;
         this.isGameFocused = false;
 
-        await App.gltfLoader.load('/common/models/plane.gltf');
+        await App.gltfLoader.load('/common/models/plane_embeded.gltf');
         await this.load('/src/scene.json');
 
         this.canvas.addEventListener('click', e => this.canvas.requestPointerLock());
@@ -47,12 +47,7 @@ class App extends Application {
 
     async load(uri) {
         const scene = await new SceneLoader().loadScene(uri);
-
-        // inject gltf cube into the scene (needs to have specific render methods - TODO)
         const plane = await App.gltfLoader.loadNode('Plane');
-        //scene.nodes.push(plane);
-        console.log({plane});
-
         const builder = new SceneBuilder(scene);
 
         this.scene = builder.build();
@@ -61,18 +56,17 @@ class App extends Application {
         // Find game objects
         this.camera = null;
         this.sphere = null;
-        this.plane = null;
 
         this.scene.traverse(node => {
             if (node instanceof Camera) {
                 this.camera = node;
             } else if (node instanceof Sphere) {
                 this.sphere = node;
-            } else if (node instanceof Plane) {
-                this.plane = node;
             }
         });
 
+        this.plane = plane;
+        this.scene.addNode(plane);
         this.plane.sphere = this.sphere;
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();

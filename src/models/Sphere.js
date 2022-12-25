@@ -17,7 +17,9 @@ export class Sphere extends Model {
     constructor(mesh, texture, spec, radius) {
         super(mesh, texture, spec);
         this.radius = radius;
-        this.translation = [0, -radius, 5];
+        
+        const verticalOffset = -(radius + Math.sqrt(radius) / 5);
+        this.translation = [0, verticalOffset, 5];
     }
 
     async loadHeightMap() {

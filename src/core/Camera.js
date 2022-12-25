@@ -27,10 +27,10 @@ export class Camera extends Node {
     toggleFirstPerson() {
         if (this.isFirstPerson) {
             this.isFirstPerson = false;
-            this.translation[2] = 10;
+            this.translation[2] = 2;
         } else {
             this.isFirstPerson = true;
-            this.translation[2] = 0;
+            this.translation[2] = -10;
         }
     }
 

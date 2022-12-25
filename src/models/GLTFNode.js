@@ -1,4 +1,3 @@
-import { mat4 } from '../../lib/gl-matrix-module.js';
 import { Node } from './Node.js';
 
 export class GLTFNode extends Node {
@@ -11,15 +10,6 @@ export class GLTFNode extends Node {
 
     clone() {
         return new GLTFNode(this._props);
-    }
-
-    updateMatrix() {
-        mat4.fromRotationTranslationScale(
-            this.matrix,
-            this.rotation,
-            this.translation,
-            this.scale
-        );
     }
 
     render({ gl, program, uniforms, programWorld, uniformsWorld, camera, glObjects, defaultSampler, defaultTexture, mvpMatrix }) {

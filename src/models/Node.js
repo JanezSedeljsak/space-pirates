@@ -20,7 +20,7 @@ export class Node {
 
     updateMatrix() {
         const m = this.matrix;
-        const degrees = this.rotation.map(x => x * 180 / Math.PI);
+        const degrees = this.rotation.slice(0, 3).map(x => x * 180 / Math.PI);
         const q = quat.fromEuler(quat.create(), ...degrees);
         const v = vec3.clone(this.translation);
         const s = vec3.clone(this.scale);

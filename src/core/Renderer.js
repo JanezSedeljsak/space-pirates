@@ -223,8 +223,11 @@ export class Renderer {
         
         scene.traverse(
             node => {
-                matrixStack.push(mat4.clone(matrix));
-                mat4.mul(matrix, matrix, node.matrix);
+                if (!(node instanceof GLTFNode)) {
+                    matrixStack.push(mat4.clone(matrix));
+                    mat4.mul(matrix, matrix, node.matrix);
+                }
+                
                 if (node?.gl?.vao || node instanceof GLTFNode) {
                     node.render({
                         gl, matrix, mvpMatrix, camera,
@@ -235,8 +238,10 @@ export class Renderer {
                     });
                 }
             },
-            _ => {
-                mat4.copy(matrix, matrixStack.pop());
+            node => {
+                if (!(node instanceof GLTFNode)) {
+                    mat4.copy(matrix, matrixStack.pop());
+                }
             }
         );
     }

@@ -34,11 +34,13 @@ export class Plane extends GLTFNode {
         }
 
         if (this.keys['KeyA']) {
-            //this.rotation = [0, 0.1, 0.5];
+            //this.translation = [1, 1, 1];
+            this.rotation[1] = 0.5;
+            this.rotation[0] = 0.5;
             this.sphere.rotation[2] -= dt * speed;
             //this.sphere.rotation[2] -= dt * .03;
         } else if (this.keys['KeyD']) {
-            //this.rotation = [0, -0.1, -0.5];
+            this.rotation[2] = 0.5;
             this.sphere.rotation[2] += dt * speed;
             //this.sphere.rotation[2] += dt * .03;
         } else {

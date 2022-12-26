@@ -4,7 +4,6 @@ import { shaders } from '../shaders.js';
 import { Sphere } from '../models/Sphere.js';
 import { GLTFNode } from '../gltf/GLTFNode.js';
 import { GLTFRenderer } from '../gltf/GLTFRenderer.js';
-import { Utils } from './Utils.js';
 
 export class Renderer extends GLTFRenderer {
 
@@ -23,7 +22,7 @@ export class Renderer extends GLTFRenderer {
                 this.prepareNode(node);
             }
 
-            if (!(node instanceof GLTFNode)) {
+            else if (!(node instanceof GLTFNode)) {
                 node.gl = {};
                 if (node.mesh) {
                     Object.assign(node.gl, this.createModel(node.mesh));

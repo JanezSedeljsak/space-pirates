@@ -10,7 +10,7 @@ import { GLTFLoader } from './gltf/GLTFLoader.js';
 
 // user settings
 const initialState = {
-    radius: 100
+    radius: 150
 };
 
 class App extends Application {
@@ -110,7 +110,6 @@ class App extends Application {
             this.camera.updateProjection();
         }
     }
-
 }
 
 const canvas = document.querySelector('canvas');

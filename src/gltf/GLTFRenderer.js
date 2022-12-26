@@ -1,8 +1,5 @@
 import { mat4 } from '../../lib/gl-matrix-module.js';
 import { WebGL } from '../engine/WebGL.js';
-import { shaders } from '../shaders.js';
-import { Sphere } from '../models/Sphere.js';
-import { GLTFNode } from './GLTFNode.js';
 
 export class GLTFRenderer {
 
@@ -168,7 +165,7 @@ export class GLTFRenderer {
     renderNode(node, mvpMatrix) {
         const gl = this.gl;
 
-        const { program, uniforms } = this.programs.simple;
+        const { uniforms } = this.programs.simple;
 
         mvpMatrix = mat4.clone(mvpMatrix);
         mat4.mul(mvpMatrix, mvpMatrix, node.matrix);
@@ -188,7 +185,7 @@ export class GLTFRenderer {
     renderPrimitive(primitive) {
         const gl = this.gl;
 
-        const { program, uniforms } = this.programs.simple;
+        const { uniforms } = this.programs.simple;
 
         const vao = this.glObjects.get(primitive);
         gl.bindVertexArray(vao);

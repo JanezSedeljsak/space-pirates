@@ -4,6 +4,7 @@ import { App } from "../App.js";
 const startMenu = document.getElementById("start-menu-container");
 const scoreboard = document.getElementById("scoreboard");
 const gameSettings = document.getElementById("game-settings");
+const gameGUI = document.getElementById("game-gui");
 
 // buttons/divs with events
 const btnGameSettings = document.getElementById("btnGameSettings");
@@ -33,6 +34,7 @@ function showGameSettings() {
 async function startScoredGame() {
     startMenu.style.display = "none";
     gameSettings.style.display = "none";
+    gameGUI.style.display = "block";
     
     const canvas = document.getElementById('game-canvas');
     const app = new App(canvas);

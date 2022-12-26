@@ -35,7 +35,7 @@ button:active, .btn:active {
     display: flex;
     justify-content: space-evenly;
     gap: 8px;
-    width: min(40rem, 100%);
+    width: min(50rem, 100%);
     margin-top: 3rem;
     margin-bottom: 2.5rem;
 }
@@ -45,13 +45,36 @@ button:active, .btn:active {
 .start-menu-container img {
     max-height: 20vh;
 }
-.start-menu-container .planet-selector {
-    position: absolute;
-    bottom: 10vh;
-    display: flex;
-    align-items: center;
-    gap: 20px;
+
+#scoreboard {
+    background-color: #0000008a;
+    display: none;
 }
-.start-menu-container .planet-selector h2 {
-    cursor: pointer;
+#scoreboard h1 {
+    font-size: 3rem;
+}
+#scoreboard > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+#scoreboard .scores {
+    width: min(100%, 30rem);
+    background-color: #b4b6dd;
+    text-align: center;
+}
+#scoreboard .row:nth-child(2n + 1) {
+    background-color: #84cce4;
+}
+#scoreboard .row:first-child {
+    background-color: #777ab1;
+    color: whitesmoke;
+    font-weight: bold;
+}
+#scoreboard .row {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 40px 1fr 1fr;
 }

@@ -10,7 +10,8 @@
     <link rel="stylesheet" type="text/css" href="./gui-styles.css">
 
     <script type="text/javascript" src="./lib/gl-matrix-min.js"></script>
-    <script type="module" src="./src/App.js"></script>
+    <!-- <script type="module" src="./src/App.js"></script> -->
+    <script src="./src/gui/menus.js" defer></script>
     
     <script src="./lib/perlin.js"></script>
 </head>
@@ -33,12 +34,39 @@
                 <a class="btn" href="https://github.com/JanezSedeljsak/plane-game">
                     Project repository
                 </a>
-                <button>Settings</button>
+                <button onclick="showScoreboard()">Show scoreboard</button>
             </div>
-            <div class="planet-selector">
-                <h2>&lt;</h2>
-                <img src="./menu/earth.png" />
-                <h2>&gt;</h2>
+        </div>
+    </div>
+    <div id="scoreboard" class="fullscreen overlay">
+        <div onclick="hideScoreboard()">
+            <h1>The best pilots</h1>
+            <div class="scores">
+                <div class="row">
+                    <div>#</div>
+                    <div>Username</div>
+                    <div>Time</div>
+                </div>
+                <div class="row">
+                    <div>1</div>
+                    <div>Marko</div>
+                    <div>01:23</div>
+                </div>
+                <div class="row">
+                    <div>1</div>
+                    <div>Marko</div>
+                    <div>01:23</div>
+                </div>
+                <div class="row">
+                    <div>1</div>
+                    <div>Marko</div>
+                    <div>01:23</div>
+                </div>
+                <div class="row">
+                    <div>1</div>
+                    <div>Marko</div>
+                    <div>01:23</div>
+                </div>
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-import { Application } from '../../common/engine/Application.js';
+import { Application } from './engine/Application.js';
 
 import { Renderer } from './core/Renderer.js';
 import { Physics } from './core/Physics.js';
@@ -25,12 +25,10 @@ class App extends Application {
         this.isGameFocused = false;
 
         this.planeLoader = new GLTFLoader();
-        this.balloonLoader = new GLTFLoader();
 
         // load all gltf models
         await Promise.all([
-            this.planeLoader.load('/common/models/plane4.gltf'),
-            this.balloonLoader.load('/common/models/balloon.gltf'),
+            this.planeLoader.load('/assets/models/plane4.gltf'),
         ]);
 
         await this.load('/src/scene.json');
@@ -60,11 +58,9 @@ class App extends Application {
 
         const [plane, balloon] = await Promise.all([
             this.planeLoader.loadNode('Plane'),
-            this.balloonLoader.loadNode('Balloon')
         ]);
 
         this.plane = plane;
-        this.balloon = balloon;
 
         const builder = new SceneBuilder(scene);
 
@@ -84,13 +80,6 @@ class App extends Application {
         });
 
         this.scene.addNode(this.plane);
-
-        // Balloon clone working (will be used later on 2 display mutliple balloons)
-        // const firstBalloon = this.balloon.clone();
-        // firstBalloon.translation = [0.5, 0.4, 0.3];
-        // this.sphere.addChild(firstBalloon);
-        // this.sphere.addChild(this.balloon.clone());
-
         this.plane.sphere = this.sphere;
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();

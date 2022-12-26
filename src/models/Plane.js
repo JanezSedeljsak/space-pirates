@@ -1,4 +1,4 @@
-import { GLTFNode } from "./GLTFNode.js";
+import { GLTFNode } from "../gltf/GLTFNode.js";
 
 export class Plane extends GLTFNode {
 
@@ -35,16 +35,13 @@ export class Plane extends GLTFNode {
 
         if (this.keys['KeyA']) {
             //this.translation = [1, 1, 1];
-            this.rotation[1] = 0.5;
-            this.rotation[0] = 0.5;
+            this.rotation[2] = 0.2;
             this.sphere.rotation[2] -= dt * speed;
-            //this.sphere.rotation[2] -= dt * .03;
         } else if (this.keys['KeyD']) {
-            this.rotation[2] = 0.5;
+            this.rotation[2] = -0.2;
             this.sphere.rotation[2] += dt * speed;
-            //this.sphere.rotation[2] += dt * .03;
         } else {
-            this.rotation = [0, 0, 0];
+            this.rotation[2] = .0;
         }
 
         this.sphere.updateMatrix();

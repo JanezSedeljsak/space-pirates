@@ -25,10 +25,10 @@
     }
   ],
   "textures": [
-    "../common/images/Tropical2_Albedo.png",
-    "../common/images/crate-diffuse.png"
+    "../assets/images/Tropical2_Albedo.png",
+    "../assets/images/crate-diffuse.png"
   ],
   "meshes": [
-    "../common/models/cube.json"
+    "../assets/models/cube.json"
   ]
 }

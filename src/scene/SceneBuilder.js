@@ -1,7 +1,7 @@
 import { Mesh } from '../core/Mesh.js';
 
-import { Node } from '../models/Node.js';
-import { Model } from '../models/Model.js';
+import { Node } from '../core/Node.js';
+import { Model } from '../core/Model.js';
 import { Camera } from '../core/Camera.js';
 
 import { Scene } from './Scene.js';

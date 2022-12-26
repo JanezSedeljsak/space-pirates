@@ -1,181 +1,29 @@
 import { mat4 } from '../../lib/gl-matrix-module.js';
-import { WebGL } from '../../common/engine/WebGL.js';
+import { WebGL } from '../engine/WebGL.js';
 import { shaders } from '../shaders.js';
 import { Sphere } from '../models/Sphere.js';
-import { GLTFNode } from '../models/GLTFNode.js';
+import { GLTFNode } from '../gltf/GLTFNode.js';
+import { GLTFRenderer } from '../gltf/GLTFRenderer.js';
+import { Utils } from './Utils.js';
 
-export class Renderer {
+export class Renderer extends GLTFRenderer {
 
     constructor(gl) {
-        this.gl = gl;
-        this.glObjects = new Map();
-
+        super(gl);
         gl.clearColor(1, 1, 1, 1);
         gl.enable(gl.DEPTH_TEST);
         gl.enable(gl.CULL_FACE);
 
         this.programs = WebGL.buildPrograms(gl, shaders);
-
-        this.defaultTexture = WebGL.createTexture(gl, {
-            width: 1,
-            height: 1,
-            data: new Uint8Array([255, 255, 255, 255]),
-        });
-
-        this.defaultSampler = WebGL.createSampler(gl, {
-            min: gl.NEAREST,
-            mag: gl.NEAREST,
-            wrapS: gl.CLAMP_TO_EDGE,
-            wrapT: gl.CLAMP_TO_EDGE,
-        });
     }
 
-    prepareBufferView(bufferView) {
-        if (this.glObjects.has(bufferView)) {
-            return this.glObjects.get(bufferView);
-        }
-
-        const buffer = new DataView(
-            bufferView.buffer,
-            bufferView.byteOffset,
-            bufferView.byteLength);
-        const glBuffer = WebGL.createBuffer(this.gl, {
-            target: bufferView.target,
-            data: buffer
-        });
-        this.glObjects.set(bufferView, glBuffer);
-        return glBuffer;
-    }
-
-    prepareSampler(sampler) {
-        if (this.glObjects.has(sampler)) {
-            return this.glObjects.get(sampler);
-        }
-
-        const glSampler = WebGL.createSampler(this.gl, sampler);
-        this.glObjects.set(sampler, glSampler);
-        return glSampler;
-    }
-
-    prepareImage(image) {
-        if (this.glObjects.has(image)) {
-            return this.glObjects.get(image);
-        }
-
-        const glTexture = WebGL.createTexture(this.gl, { image });
-        this.glObjects.set(image, glTexture);
-        return glTexture;
-    }
-
-    prepareTexture(texture) {
-        const gl = this.gl;
-
-        this.prepareSampler(texture.sampler);
-        const glTexture = this.prepareImage(texture.image);
-
-        const mipmapModes = [
-            gl.NEAREST_MIPMAP_NEAREST,
-            gl.NEAREST_MIPMAP_LINEAR,
-            gl.LINEAR_MIPMAP_NEAREST,
-            gl.LINEAR_MIPMAP_LINEAR,
-        ];
-
-        if (!texture.hasMipmaps && mipmapModes.includes(texture.sampler.min)) {
-            gl.bindTexture(gl.TEXTURE_2D, glTexture);
-            gl.generateMipmap(gl.TEXTURE_2D);
-            texture.hasMipmaps = true;
-        }
-    }
-
-    prepareMaterial(material) {
-        if (material.baseColorTexture) {
-            this.prepareTexture(material.baseColorTexture);
-        }
-        if (material.metallicRoughnessTexture) {
-            this.prepareTexture(material.metallicRoughnessTexture);
-        }
-        if (material.normalTexture) {
-            this.prepareTexture(material.normalTexture);
-        }
-        if (material.occlusionTexture) {
-            this.prepareTexture(material.occlusionTexture);
-        }
-        if (material.emissiveTexture) {
-            this.prepareTexture(material.emissiveTexture);
-        }
-    }
-
-    preparePrimitive(primitive) {
-        if (this.glObjects.has(primitive)) {
-            return this.glObjects.get(primitive);
-        }
-
-        this.prepareMaterial(primitive.material);
-
-        const gl = this.gl;
-        const vao = gl.createVertexArray();
-        gl.bindVertexArray(vao);
-        if (primitive.indices) {
-            const bufferView = primitive.indices.bufferView;
-            bufferView.target = gl.ELEMENT_ARRAY_BUFFER;
-            const buffer = this.prepareBufferView(bufferView);
-            gl.bindBuffer(bufferView.target, buffer);
-        }
-
-        // this is an application-scoped convention, matching the shader
-        const attributeNameToIndexMap = {
-            POSITION: 0,
-            NORMAL: 1,
-            TANGENT: 2,
-            TEXCOORD_0: 3,
-            TEXCOORD_1: 4,
-            COLOR_0: 5,
-        };
-
-        for (const name in primitive.attributes) {
-            const accessor = primitive.attributes[name];
-            const bufferView = accessor.bufferView;
-            const attributeIndex = attributeNameToIndexMap[name];
-
-            if (attributeIndex !== undefined) {
-                bufferView.target = gl.ARRAY_BUFFER;
-                const buffer = this.prepareBufferView(bufferView);
-                gl.bindBuffer(bufferView.target, buffer);
-                gl.enableVertexAttribArray(attributeIndex);
-                gl.vertexAttribPointer(
-                    attributeIndex,
-                    accessor.numComponents,
-                    accessor.componentType,
-                    accessor.normalized,
-                    bufferView.byteStride,
-                    accessor.byteOffset);
-            }
-        }
-
-        this.glObjects.set(primitive, vao);
-        return vao;
-    }
-
-    prepareMesh(mesh) {
-        for (const primitive of mesh.primitives) {
-            this.preparePrimitive(primitive);
-        }
-    }
-
-    prepareNode(node) {
-        if (node.mesh) {
-            this.prepareMesh(node.mesh);
-        }
-        for (const child of node.children) {
-            this.prepareNode(child);
-        }
-    }
-
-    prepare(scene) {
+    async prepare(scene) {
         scene.traverse(async node => {
-            if (node instanceof GLTFNode) {
+            if (node instanceof GLTFNode && (!node.parent || !(node.parent instanceof GLTFNode))) {
                 this.prepareNode(node);
-            } else {
+            }
+
+            if (!(node instanceof GLTFNode)) {
                 node.gl = {};
                 if (node.mesh) {
                     Object.assign(node.gl, this.createModel(node.mesh));
@@ -192,58 +40,20 @@ export class Renderer {
         });
     }
 
+    createTexture(texture) {
+        const gl = this.gl;
+        return WebGL.createTexture(gl, {
+            image: texture,
+            min: gl.NEAREST,
+            mag: gl.NEAREST
+        });
+    }
+
     getViewProjectionMatrix(camera) {
         const vpMatrix = camera.matrix;
         mat4.invert(vpMatrix, vpMatrix);
         mat4.mul(vpMatrix, camera.projection, vpMatrix);
         return vpMatrix;
-    }
-
-    render(scene, camera) {
-        const gl = this.gl;
-
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-        gl.clearColor(0.1, 0.2, 0.35, 1.0);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-
-        const { program, uniforms } = this.programs.simple;
-        const { program: programWorld, uniforms: uniformsWorld } = this.programs.worldshader;
-
-        gl.useProgram(program);
-
-        const matrix = mat4.create();
-        const matrixStack = [];
-
-        const viewMatrix = camera.getGlobalTransform();
-        mat4.invert(viewMatrix, viewMatrix);
-        mat4.copy(matrix, viewMatrix);
-
-        const mvpMatrix = this.getViewProjectionMatrix(camera);
-        
-        scene.traverse(
-            node => {
-                if (!(node instanceof GLTFNode)) {
-                    matrixStack.push(mat4.clone(matrix));
-                    mat4.mul(matrix, matrix, node.matrix);
-                }
-                
-                if (node?.gl?.vao || node instanceof GLTFNode) {
-                    node.render({
-                        gl, matrix, mvpMatrix, camera,
-                        program, uniforms, programWorld, uniformsWorld,
-                        glObjects: this.glObjects,
-                        defaultSampler: this.defaultSampler,
-                        defaultTexture: this.defaultTexture,
-                    });
-                }
-            },
-            node => {
-                if (!(node instanceof GLTFNode)) {
-                    mat4.copy(matrix, matrixStack.pop());
-                }
-            }
-        );
     }
 
     createModel(model) {
@@ -274,13 +84,59 @@ export class Renderer {
         return { vao, indices };
     }
 
-    createTexture(texture) {
+    render(scene, camera) {
         const gl = this.gl;
-        return WebGL.createTexture(gl, {
-            image: texture,
-            min: gl.NEAREST,
-            mag: gl.NEAREST
+
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        gl.clearColor(0.1, 0.2, 0.35, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        const { program, uniforms } = this.programs.simple;
+        const { program: programWorld, uniforms: uniformsWorld } = this.programs.worldshader;
+
+        this.renderDEFAULT({ gl, scene, program, uniforms, programWorld, uniformsWorld, camera });
+        this.renderGLTF({ gl, scene, camera, program });
+    }
+
+    renderGLTF({ gl, scene, camera, program }) {
+        gl.useProgram(program);
+        const mvpMatrix = this.getViewProjectionMatrix(camera);
+
+        scene.traverse(node => {
+            // render root gltf nodes
+            if (node instanceof GLTFNode && (!node.parent || !(node.parent instanceof GLTFNode))) {
+                this.renderNode(node, mvpMatrix);
+            }
         });
     }
 
+    renderDEFAULT({ gl, scene, program, uniforms, programWorld, uniformsWorld, camera }) {
+        gl.useProgram(program);
+
+        const matrix = mat4.create();
+        const matrixStack = [];
+
+        const viewMatrix = camera.getGlobalTransform();
+        mat4.invert(viewMatrix, viewMatrix);
+        mat4.copy(matrix, viewMatrix);
+        
+        scene.traverse(
+            node => {
+                if (!(node instanceof GLTFNode)) {
+                    matrixStack.push(mat4.clone(matrix));
+                    mat4.mul(matrix, matrix, node.matrix);
+
+                    if (node?.gl?.vao) {
+                        node.render({ gl, matrix, camera, program, uniforms, programWorld, uniformsWorld });
+                    }
+                }
+            },
+            node => {
+                if (!(node instanceof GLTFNode)) {
+                    mat4.copy(matrix, matrixStack.pop());
+                }
+            }
+        );
+    }
 }

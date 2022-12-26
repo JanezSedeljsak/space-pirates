@@ -40,10 +40,10 @@
             "mesh" : 1,
             "name" : "Plane",
             "rotation" : [
-                1.0,
-                0,
                 0.0,
-                0.0
+                0.0,
+                0.0,
+                1.0
             ],
             "translation" : [
                 0,

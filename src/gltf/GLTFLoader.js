@@ -6,7 +6,7 @@ import { Material } from './Material.js';
 import { Primitive } from './Primitive.js';
 import { Mesh } from '../core/Mesh.js';
 import { Plane } from '../models/Plane.js';
-import { GLTFNode } from '../models/GLTFNode.js';
+import { GLTFNode } from './GLTFNode.js';
 
 export class GLTFLoader {
 

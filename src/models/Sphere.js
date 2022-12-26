@@ -1,4 +1,4 @@
-import { Model } from "./Model.js";
+import { Model } from "../core/Model.js";
 import { Vector3 } from "../core/Utils.js";
 
 export class Sphere extends Model {
@@ -24,8 +24,8 @@ export class Sphere extends Model {
 
     async loadHeightMap() {
         const [heightMap, normalMap] = await Promise.all([
-            this.loadTexture('../../common/images/Tropical2_Height.png'),
-            this.loadTexture('../../common/images/Tropical2_Normal.png')
+            this.loadTexture('../../assets/images/Tropical2_Height.png'),
+            this.loadTexture('../../assets/images/Tropical2_Normal.png')
         ]);
         
         this.heightMap = heightMap;
@@ -100,7 +100,6 @@ export class Sphere extends Model {
 
                 if (y !== 0 || thetaStart > 0) options.indices.push(a, b, d);
                 if (y !== hSeg - 1 || thetaEnd < Math.PI) options.indices.push(b, c, d);
-
             }
         }
 

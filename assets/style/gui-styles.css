@@ -1,32 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanalei+Fill&display=swap');
+
 button, .btn {
     display: block;
 
     text-decoration: none;
     text-align: center;
-    font-size: 1rem;
+    font-size: 1.3rem;
     font-weight: bold;
-    color: whitesmoke;
-    background-color: #989bdb;
+    color: #eee;
+    background-color: transparent;
 
     padding: 0.45rem;
     border-radius: 10px;
-    border: 2px solid #8c8fca;
+    border: 0px;
 
     cursor: pointer;
     user-select: none;
+
+    transition: .1s all ease-in-out;
+    font-family: 'Audiowide', cursive;
 }
-button:active, .btn:active {
-    background-color: #8c8fca;
+
+button:active, .btn:active,
+button:hover, .btn:hover {
+    transform: scale(1.1, 1.1);
+    color: #ddd;
 }
 
 #start-menu-container {
-    background-color: #96c9da;
+    background-image: url(https://media.istockphoto.com/id/1335852418/vector/modern-world-map-made-of-lines-and-dots-on-dark-blue-background.jpg?b=1&s=612x612&w=0&k=20&c=03dWwRGMfJJ6EfhVqdvluz5adqMftRj_IMIW6HmqXAw=);
+    background-size: cover;
 }
 #start-menu-container > div {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 100px 0 0 30px;
 }
 #start-menu-container h1 {
     font-size: 6rem;
@@ -34,8 +44,8 @@ button:active, .btn:active {
 #start-menu-container .buttons {
     display: flex;
     justify-content: space-evenly;
-    gap: 8px;
-    width: min(50rem, 100%);
+    flex-direction: column;
+    gap: 2rem;
     margin-top: 3rem;
     margin-bottom: 2.5rem;
 }
@@ -44,6 +54,13 @@ button:active, .btn:active {
 }
 #start-menu-container img {
     max-height: 20vh;
+}
+
+#credits {
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
+    font-weight: bold;
 }
 
 #scoreboard {
@@ -91,7 +108,7 @@ button:active, .btn:active {
 }
 #game-settings .planet {
     position: relative;
-    background: url('../images/planets/Tropical_Albedo.png') repeat-x;
+    background: url('../assets/images/planets/Tropical_Albedo.png') repeat-x;
     background-size: auto 100%;
     height: 15rem;
     width: 15rem;

@@ -4,7 +4,8 @@ body, html {
 }
 
 * {
-    font-family: sans-serif;
+    font-family: 'Audiowide', cursive;
+    color: whitesmoke
 }
 
 .fullscreen {
@@ -26,21 +27,6 @@ body, html {
 
 .no-touch {
     touch-action: none;
-}
-
-a.back {
-    display: block;
-    margin: 20px;
-    padding: 5px 10px;
-    background: #fff;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    text-decoration: none;
-    color: #000;
-}
-
-a.back:hover {
-    background: #ddd;
 }
 
 .loader-container {

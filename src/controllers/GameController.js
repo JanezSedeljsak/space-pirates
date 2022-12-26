@@ -15,6 +15,11 @@ const initialState = {
 
 export class GameController extends Application {
 
+    constructor(...args) {
+        super(...args);
+        this.toggleFirstPerson = this.toggleFirstPerson.bind(this);
+    }
+
     async start() {
         const gl = this.gl;
 
@@ -32,25 +37,24 @@ export class GameController extends Application {
         ]);
 
         await this.load('/src/scene.json');
+    }
 
-        this.canvas.addEventListener('click', e => this.canvas.requestPointerLock());
-        document.addEventListener('pointerlockchange', e => {
-            if (document.pointerLockElement === this.canvas) {
-                this.camera.enable();
-                this.plane.enable();
-                this.isGameFocused = true;
-            } else {
-                this.plane.disable();
-                this.camera.disable();
-                this.isGameFocused = false;
-            }
-        });
+    toggleFirstPerson() {
+        if (this.isGameFocused) {
+            this.camera.toggleFirstPerson();
+        }
+    }
 
-        document.addEventListener('keydown', event => {
-            if (event.code == 'KeyV' && this.isGameFocused) {
-                this.camera.toggleFirstPerson();
-            }
-        })
+    pointerLockChange(event) {
+        if (document.pointerLockElement === this.canvas) {
+            this.camera.enable();
+            this.plane.enable();
+            this.isGameFocused = true;
+        } else {
+            this.plane.disable();
+            this.camera.disable();
+            this.isGameFocused = false;
+        }
     }
 
     async load(uri) {

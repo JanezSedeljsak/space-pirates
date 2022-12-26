@@ -39,3 +39,6 @@ async function startScoredGame() {
     await app.init();
     document.querySelector('.loader-container').remove();
 }
+
+// To ignore start menu uncomment the following line:
+// startScoredGame();

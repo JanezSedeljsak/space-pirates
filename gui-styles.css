@@ -81,6 +81,7 @@ button:active, .btn:active {
 
 #game-settings {
     background-color: #96c9da;
+    display: none;
 }
 #game-settings h1 {
     font-size: 2.75rem;
@@ -102,4 +103,78 @@ button:active, .btn:active {
 }
 #game-settings button {
     flex: 1;
+}
+#game-gui #main {
+    z-index: 10;
+    position: fixed;
+    top: 0;
+}
+#game-gui #speed {
+    z-index: 10;
+    position: fixed;
+    bottom: -2.6rem;
+    left: -2.6rem;
+}
+#game-gui .circle {
+    height: 10rem;
+    width: 10rem;
+    background-color: #d8dee0;
+    border-radius: 100%;
+    border: 3rem solid #8c8fca;
+}
+.circle .numbers {
+    z-index: 1;
+    position: relative;
+    top: -1rem;
+    width: 100%;
+    height: 100%;
+    font-weight: bold;
+}
+.circle .numbers > div {
+    position: absolute;
+}
+.circle .numbers > div:nth-child(1) {
+    top: 2px;
+    right: calc(50% - 0.5ch);
+}
+.circle .numbers > div:nth-child(2) {
+    top: 15%;
+    right: 15%;
+}
+.circle .numbers > div:nth-child(3) {
+    top: calc(50% - 1ch);
+    right: 2px;
+}
+.circle .numbers > div:nth-child(4) {
+    bottom: 15%;
+    right: 15%;
+}
+.circle .numbers > div:nth-child(5) {
+    bottom: 2px;
+    right: calc(50% - 0.5ch);
+}
+.circle .numbers > div:nth-child(6) {
+    bottom: 15%;
+    left: 15%;
+}
+.circle .numbers > div:nth-child(7) {
+    left: 2px;
+    top: calc(50% - 1ch);
+}
+.circle .numbers > div:nth-child(8) {
+    top: 15%;
+    left: 15%;
+}
+.circle .gauge {
+    z-index: 5;
+    position: relative;
+    top: calc(50% - 0.5rem);
+    display: flex;
+    width: 100%;
+    transform: rotate(-45deg);
+}
+.circle .gauge > div {
+    width: 5rem;
+    height: 1rem;
+    background-color: #777ab1d7;
 }

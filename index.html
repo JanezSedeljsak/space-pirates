@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Plane game</title>
 
-    <link rel="stylesheet" type="text/css" href="./index.css">
-    <link rel="stylesheet" type="text/css" href="./gui-styles.css">
+    <link rel="stylesheet" type="text/css" href="./assets/style/index.css">
+    <link rel="stylesheet" type="text/css" href="./assets/style/gui-styles.css">
 
     <script type="text/javascript" src="./lib/gl-matrix-min.js"></script>
-    <script type="module" src="./src/gui/menus.js" defer></script>
-    
-    <script src="./lib/perlin.js"></script>
+    <script type="module" src="./src/main.js" defer></script>
+
+    <!-- Perlin noise is currently not in use -->
+    <!--<script src="./lib/perlin.js"></script>-->
 </head>
+
 <body>
     <div class="fullscreen no-touch">
         <canvas id="game-canvas"></canvas>
@@ -79,15 +82,15 @@
             <div class="planet-selection">
                 <div class="selection">
                     <label>
-                        <input type="radio" name="planet" value="Albedo" checked /> 
+                        <input type="radio" name="planet" value="Albedo" checked />
                         Albedo
                     </label>
                     <label>
-                        <input type="radio" name="planet" value="earth1" /> 
+                        <input type="radio" name="planet" value="earth1" />
                         Earth1
                     </label>
                     <label>
-                        <input type="radio" name="planet" value="earth2" /> 
+                        <input type="radio" name="planet" value="earth2" />
                         Earth2
                     </label>
                 </div>
@@ -126,4 +129,5 @@
         </div>
     </div>
 </body>
+
 </html>

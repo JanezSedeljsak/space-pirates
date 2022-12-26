@@ -1,19 +1,19 @@
-import { Application } from './engine/Application.js';
+import { Application } from '../engine/Application.js';
 
-import { Renderer } from './core/Renderer.js';
-import { Physics } from './core/Physics.js';
-import { Camera } from './core/Camera.js';
-import { SceneLoader } from './scene/SceneLoader.js';
-import { SceneBuilder } from './scene/SceneBuilder.js';
-import { Sphere } from './models/Sphere.js';
-import { GLTFLoader } from './gltf/GLTFLoader.js';
+import { Renderer } from '../core/Renderer.js';
+import { Physics } from '../core/Physics.js';
+import { Camera } from '../core/Camera.js';
+import { SceneLoader } from '../scene/SceneLoader.js';
+import { SceneBuilder } from '../scene/SceneBuilder.js';
+import { Sphere } from '../models/Sphere.js';
+import { GLTFLoader } from '../gltf/GLTFLoader.js';
 
 // user settings
 const initialState = {
     radius: 150
 };
 
-export class App extends Application {
+export class GameController extends Application {
 
     async start() {
         const gl = this.gl;

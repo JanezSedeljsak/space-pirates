@@ -91,7 +91,7 @@ button:active, .btn:active {
 }
 #game-settings .planet {
     position: relative;
-    background: url('./assets/images/Planet_Albedo.png') repeat-x;
+    background: url('../images/planets/Tropical_Albedo.png') repeat-x;
     background-size: auto 100%;
     height: 15rem;
     width: 15rem;

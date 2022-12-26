@@ -19,19 +19,19 @@ button:active, .btn:active {
     background-color: #8c8fca;
 }
 
-.start-menu-container {
+#start-menu-container {
     background-color: #96c9da;
 }
-.start-menu-container > div {
+#start-menu-container > div {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-.start-menu-container h1 {
+#start-menu-container h1 {
     font-size: 6rem;
 }
-.start-menu-container .buttons {
+#start-menu-container .buttons {
     display: flex;
     justify-content: space-evenly;
     gap: 8px;
@@ -39,10 +39,10 @@ button:active, .btn:active {
     margin-top: 3rem;
     margin-bottom: 2.5rem;
 }
-.start-menu-container button, .btn {
+#start-menu-container button, .btn {
     flex: 1;
 }
-.start-menu-container img {
+#start-menu-container img {
     max-height: 20vh;
 }
 
@@ -77,4 +77,29 @@ button:active, .btn:active {
     padding: 10px;
     display: grid;
     grid-template-columns: 40px 1fr 1fr;
+}
+
+#game-settings {
+    background-color: #96c9da;
+}
+#game-settings h1 {
+    font-size: 2.75rem;
+}
+#game-settings > div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+#game-settings .buttons {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 8px;
+    width: min(25rem, 100%);
+    margin-top: 3rem;
+    margin-bottom: 2.5rem;
+}
+#game-settings button {
+    flex: 1;
 }

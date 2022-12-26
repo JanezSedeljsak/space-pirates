@@ -33,7 +33,7 @@ export class SceneBuilder {
                 const [sphereMesh, radius] = Sphere.createGlobe(settings?.radius ?? spec?.radius);
                 const mesh = new Mesh(sphereMesh);
                 const texture = this.spec.textures[spec.texture];
-                const sphere = new Sphere(mesh, texture, spec, radius);
+                const sphere = new Sphere(mesh, texture, spec, radius, settings.planetName);
                 return sphere;
             }
             default: return new Node(spec);

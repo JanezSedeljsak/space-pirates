@@ -14,9 +14,10 @@ export class Sphere extends Model {
     //     return [x, y, z]
     // }
 
-    constructor(mesh, texture, spec, radius) {
+    constructor(mesh, texture, spec, radius, planetName) {
         super(mesh, texture, spec);
         this.radius = radius;
+        this.planetName = planetName;
         
         const verticalOffset = -(radius + Math.sqrt(radius) / 1.2);
         this.translation = [0, verticalOffset, 5];
@@ -24,8 +25,8 @@ export class Sphere extends Model {
 
     async loadHeightMap() {
         const [heightMap, normalMap] = await Promise.all([
-            this.loadTexture('../../assets/images/planets/Alien_Height.png'),
-            this.loadTexture('../../assets/images/planets/Alien_Normal.png')
+            this.loadTexture(`../../assets/images/planets/${this.planetName}_Height.png`),
+            this.loadTexture(`../../assets/images/planets/${this.planetName}_Normal.png`)
         ]);
         
         this.heightMap = heightMap;

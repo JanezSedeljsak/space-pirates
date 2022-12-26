@@ -10,7 +10,8 @@ import { GLTFLoader } from '../gltf/GLTFLoader.js';
 
 // user settings
 const initialState = {
-    radius: 150
+    radius: 150,
+    planetName: 'Tropical' 
 };
 
 export class GameController extends Application {
@@ -58,7 +59,7 @@ export class GameController extends Application {
     }
 
     async load(uri) {
-        const scene = await new SceneLoader().loadScene(uri);
+        const scene = await new SceneLoader().loadScene(uri, initialState);
 
         const [plane, balloon] = await Promise.all([
             this.planeLoader.loadNode('Plane'),

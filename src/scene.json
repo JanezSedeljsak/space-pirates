@@ -25,7 +25,7 @@
     }
   ],
   "textures": [
-    "../assets/images/planets/Alien_Albedo.png",
+    "PLANET_PLACEHODLDER",
     "../assets/images/crate-diffuse.png"
   ],
   "meshes": [

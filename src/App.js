@@ -7,12 +7,10 @@ import { SceneLoader } from './scene/SceneLoader.js';
 import { SceneBuilder } from './scene/SceneBuilder.js';
 import { Sphere } from './models/Sphere.js';
 import { GLTFLoader } from './gltf/GLTFLoader.js';
-import { Utils } from './core/Utils.js';
-import { GLTFNode } from './models/GLTFNode.js';
 
 // user settings
 const initialState = {
-    radius: 60
+    radius: 100
 };
 
 class App extends Application {

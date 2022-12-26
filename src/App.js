@@ -112,8 +112,3 @@ export class App extends Application {
     }
 
 }
-
-// const canvas = document.getElementById('game-canvas');
-// const app = new App(canvas);
-// await app.init();
-// document.querySelector('.loader-container').remove();

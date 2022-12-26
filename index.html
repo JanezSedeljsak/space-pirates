@@ -7,18 +7,123 @@
     <title>Plane game</title>
 
     <link rel="stylesheet" type="text/css" href="./index.css">
+    <link rel="stylesheet" type="text/css" href="./gui-styles.css">
 
     <script type="text/javascript" src="./lib/gl-matrix-min.js"></script>
-    <script type="module" src="./src/App.js"></script>
+    <script type="module" src="./src/gui/menus.js" defer></script>
     
     <script src="./lib/perlin.js"></script>
 </head>
 <body>
     <div class="fullscreen no-touch">
-        <canvas></canvas>
+        <canvas id="game-canvas"></canvas>
     </div>
     <div class="fullscreen overlay loader-container">
         <div class="loader"></div>
+    </div>
+
+    <!-- Main menu -->
+    <div id="start-menu-container" class="fullscreen overlay">
+        <div>
+            <h1>PLANE GAME</h1>
+            <h2>by Janez Sedeljšak and Marko Vrečer</h2>
+
+            <div class="buttons">
+                <button id="btnGameSettings">Start game</button>
+                <a class="btn" href="https://github.com/JanezSedeljsak/plane-game">
+                    Project repository
+                </a>
+                <button id="btnScoreboard">Show scoreboard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scoreboard -->
+    <div id="scoreboard" class="fullscreen overlay">
+        <div id="divHideScoreboard">
+            <h1>The best pilots</h1>
+            <div class="scores">
+                <div class="row">
+                    <div>#</div>
+                    <div>Username</div>
+                    <div>Time</div>
+                </div>
+                <div class="row">
+                    <div>1</div>
+                    <div>Marko</div>
+                    <div>01:23</div>
+                </div>
+                <div class="row">
+                    <div>1</div>
+                    <div>Marko</div>
+                    <div>01:23</div>
+                </div>
+                <div class="row">
+                    <div>1</div>
+                    <div>Marko</div>
+                    <div>01:23</div>
+                </div>
+                <div class="row">
+                    <div>1</div>
+                    <div>Marko</div>
+                    <div>01:23</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game settings -->
+    <div id="game-settings" class="fullscreen overlay">
+        <div>
+            <h1>Choose your planet</h1>
+            <div class="planet-selection">
+                <div class="selection">
+                    <label>
+                        <input type="radio" name="planet" value="Albedo" checked /> 
+                        Albedo
+                    </label>
+                    <label>
+                        <input type="radio" name="planet" value="earth1" /> 
+                        Earth1
+                    </label>
+                    <label>
+                        <input type="radio" name="planet" value="earth2" /> 
+                        Earth2
+                    </label>
+                </div>
+                <div class="planet"></div>
+            </div>
+            <div class="buttons">
+                <button id="btnStartScoredGame">Start scored game</button>
+                <button>Start sandbox game</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game GUI -->
+    <div id="game-gui">
+        <div id="main">
+            <h2>🔉 <input type="range" /></h2>
+            <h2>⌛ 00:00</h2>
+            <h2>⭐ x/10</h2>
+        </div>
+        <div id="speed">
+            <div class="circle">
+                <div id="speed-gauge" class="gauge">
+                    <div></div>
+                </div>
+                <div class="numbers">
+                    <div>30</div>
+                    <div>40</div>
+                    <div>50</div>
+                    <div>60</div>
+                    <div>70</div>
+                    <div>0</div>
+                    <div>10</div>
+                    <div>20</div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

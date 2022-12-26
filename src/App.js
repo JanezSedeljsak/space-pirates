@@ -13,7 +13,7 @@ const initialState = {
     radius: 150
 };
 
-class App extends Application {
+export class App extends Application {
 
     async start() {
         const gl = this.gl;
@@ -111,8 +111,3 @@ class App extends Application {
         }
     }
 }
-
-const canvas = document.querySelector('canvas');
-const app = new App(canvas);
-await app.init();
-document.querySelector('.loader-container').remove();

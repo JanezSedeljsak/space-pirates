@@ -2,7 +2,7 @@
 import { SCOREBOARD_KEY } from "../config.js";
 
 export class ScoreBoardController {
-    
+
     constructor() {
         if (localStorage.getItem(SCOREBOARD_KEY) === null) {
             localStorage.setItem(SCOREBOARD_KEY, JSON.stringify([]));
@@ -22,15 +22,18 @@ export class ScoreBoardController {
         this.addScore({ user: 'Marko', time: 191 });
         this.addScore({ user: 'Marko', time: 120 });
         this.addScore({ user: 'John Doe', time: 300 });
+        this.addScore({ user: 'John Doe', time: 230 });
+        this.addScore({ user: 'John Doe', time: 140 });
+        this.addScore({ user: 'Random', time: 110 });
+        this.addScore({ user: 'Random', time: 209 });
+        this.addScore({ user: 'Random', time: 152 });
     }
-
-    static STORAGE_KEY = 'scoreboard';
 
     getScoreboard() {
         const jsonItems = localStorage.getItem(SCOREBOARD_KEY);
         const items = JSON.parse(jsonItems);
         const sorted = items.sort((a, b) => a.time - b.time);
-        return sorted;
+        return sorted.slice(0, 10);
     }
 
     drawScoreboard() {

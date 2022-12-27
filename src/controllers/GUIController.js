@@ -14,6 +14,7 @@ export class GUIController {
         this.btnGameSettings = document.getElementById("btnGameSettings");
         this.btnScoreboard = document.getElementById("btnScoreboard");
         this.divHideScoreboard = document.getElementById("divHideScoreboard");
+        this.divHideGameSettings = document.getElementById("divHideGameSettings");
         this.btnStartScoredGame = document.getElementById("btnStartScoredGame");
         this.btnStartSandboxGame = document.getElementById("btnStartSandboxGame");
 
@@ -25,22 +26,25 @@ export class GUIController {
         this._bind = this._bind.bind(this);
         this._bind();
 
+        // create game controller instance 
+        this.gameController = new GameController(this.canvas);
+
         // register events
         this.btnGameSettings.addEventListener("click", this.showGameSettings);
         this.btnScoreboard.addEventListener("click", this.showScoreboard);
         this.divHideScoreboard.addEventListener("click", this.hideScoreboard);
+        this.divHideGameSettings.addEventListener("click", this.hideGameSettings);
         this.btnStartScoredGame.addEventListener("click", this.startScoredGame);
         this.btnStartSandboxGame.addEventListener("click", this.startScoredGame);
-        document.addEventListener('keydown', this.handleKeyDown);
 
-        // create game controller instance 
-        this.gameController = new GameController(this.canvas);
+        document.addEventListener('keydown', this.handleKeyDown);
+        document.querySelectorAll('.planet').forEach(planet => {
+            planet.style.background = `url('../../assets/images/planets/${planet.id}_Albedo.png') repeat-x`;
+            planet.addEventListener('click', () => this.gameController.setState({ planetName: planet.id }));
+        });
 
         // add scoreboard controller
         this.scoreboardController = new ScoreBoardController();
-
-        // state stores picked planet and other user settings
-        this.state = this.init_state;
 
         // bind game events
         document.addEventListener('pointerlockchange', e => this.gameController.pointerLockChange(e));
@@ -52,17 +56,7 @@ export class GUIController {
         this.hideScoreboard = this.hideScoreboard.bind(this);
         this.startScoredGame = this.startScoredGame.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
-    }
-
-    get init_state() {
-        return {};
-    }
-
-    setState(newState) {
-        this.state = {
-            ...this.state,
-            ...newState
-        };
+        this.hideGameSettings = this.hideGameSettings.bind(this);
     }
 
     async handleKeyDown(event) {
@@ -76,6 +70,10 @@ export class GUIController {
             case 'KeyM':
                 alert("open menu");
                 break;
+            case 'Escape':
+                this.startMenu.style.display = "block";
+                this.gameGUI.style.display = "none";
+                break;
             default:
                 return;
         }
@@ -84,9 +82,13 @@ export class GUIController {
     hideScoreboard() {
         this.scoreboard.style.display = "none";
     }
+
+    hideGameSettings() {
+        this.gameSettings.style.display = "none";
+    }
     
     showScoreboard() {
-        // TODO: read users from localstorage (use this.scoreboardController)
+        this.scoreboardController.drawScoreboard();
         this.scoreboard.style.display = "block";
     }
     
@@ -96,11 +98,10 @@ export class GUIController {
     
     async startScoredGame() {
         this.startMenu.style.display = "none";
-        this.gameSettings.style.display = "none";
         this.gameGUI.style.display = "block";
 
         
         await this.gameController.init();
-        document.querySelector('.loader-container').remove();
+        document.querySelector('.loader-container').style.display = "none";
     }
 }

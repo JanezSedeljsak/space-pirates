@@ -8,17 +8,12 @@ import { SceneBuilder } from '../scene/SceneBuilder.js';
 import { Sphere } from '../models/Sphere.js';
 import { GLTFLoader } from '../gltf/GLTFLoader.js';
 
-// user settings
-const initialState = {
-    radius: 150,
-    planetName: 'Tropical' 
-};
-
 export class GameController extends Application {
 
     constructor(...args) {
         super(...args);
         this.toggleFirstPerson = this.toggleFirstPerson.bind(this);
+        this._state = this.init_state;
     }
 
     async start() {
@@ -40,13 +35,30 @@ export class GameController extends Application {
         await this.load('/src/scene.json');
     }
 
+    get init_state() {
+        return {
+            planetName: 'Moon'
+        };
+    }
+    
+    get state() {
+        return this._state;
+    }
+
+    setState(newState) {
+        // avoid changing the state reference object
+        for (const key in newState) {
+            this._state[key] = newState[key];
+        }
+    }
+
     toggleFirstPerson() {
         if (this.isGameFocused) {
             this.camera.toggleFirstPerson();
         }
     }
 
-    pointerLockChange(event) {
+    pointerLockChange() {
         if (document.pointerLockElement === this.canvas) {
             this.camera.enable();
             this.plane.enable();
@@ -59,17 +71,11 @@ export class GameController extends Application {
     }
 
     async load(uri) {
-        const scene = await new SceneLoader().loadScene(uri, initialState);
-
-        const [plane, balloon] = await Promise.all([
-            this.planeLoader.loadNode('Plane'),
-        ]);
-
-        this.plane = plane;
-
+        const scene = await new SceneLoader().loadScene(uri, this.state);
+        this.plane = await this.planeLoader.loadNode('Plane');
         const builder = new SceneBuilder(scene);
 
-        this.scene = builder.build(initialState);
+        this.scene = builder.build(this.state);
         this.physics = new Physics(this.scene);
 
         // Find game objects
@@ -93,7 +99,7 @@ export class GameController extends Application {
     }
 
     update() {
-        const t = this.time = performance.now();
+        this.time = performance.now();
         const dt = (this.time - this.startTime) * 0.001;
         this.startTime = this.time;
 

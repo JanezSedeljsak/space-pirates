@@ -85,6 +85,9 @@ button:hover, .btn:hover {
     background-color: #0000008a;
     display: none;
 }
+#scoresTable {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
 #scoreboard h1 {
     font-size: 3rem;
 }
@@ -141,6 +144,7 @@ button:hover, .btn:hover {
 }
 #game-settings .planet-selection div span {
     font-size: 1.5rem;
+    font-weight: bold;
 }
 #game-settings .planet {
     position: relative;

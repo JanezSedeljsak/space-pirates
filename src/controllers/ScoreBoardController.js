@@ -1,8 +1,11 @@
-export class ScoreBoardController {
 
+import { SCOREBOARD_KEY } from "../config.js";
+
+export class ScoreBoardController {
+    
     constructor() {
-        if (localStorage.getItem(ScoreBoardController.STORAGE_KEY) === null) {
-            localStorage.setItem(ScoreBoardController.STORAGE_KEY, JSON.stringify([]));
+        if (localStorage.getItem(SCOREBOARD_KEY) === null) {
+            localStorage.setItem(SCOREBOARD_KEY, JSON.stringify([]));
             this.__createDummyData();
         }
         
@@ -24,7 +27,7 @@ export class ScoreBoardController {
     static STORAGE_KEY = 'scoreboard';
 
     getScoreboard() {
-        const jsonItems = localStorage.getItem(ScoreBoardController.STORAGE_KEY);
+        const jsonItems = localStorage.getItem(SCOREBOARD_KEY);
         const items = JSON.parse(jsonItems);
         const sorted = items.sort((a, b) => a.time - b.time);
         return sorted;
@@ -55,7 +58,7 @@ export class ScoreBoardController {
     addScore({ user, time }) {
         const items = this.getScoreboard();
         items.push({ user, time });
-        localStorage.setItem(ScoreBoardController.STORAGE_KEY, JSON.stringify(items));
+        localStorage.setItem(SCOREBOARD_KEY, JSON.stringify(items));
     }
 
     formatTime(s){

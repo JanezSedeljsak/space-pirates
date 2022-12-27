@@ -1,4 +1,4 @@
-const PLANET_PLACEHODLDER = 'PLANET_PLACEHODLDER';
+import { PLANET_PLACEHODLDER } from "../config.js";
 
 export class SceneLoader {
 

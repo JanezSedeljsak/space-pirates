@@ -7,10 +7,9 @@ import { SceneLoader } from '../scene/SceneLoader.js';
 import { SceneBuilder } from '../scene/SceneBuilder.js';
 import { Sphere } from '../models/Sphere.js';
 import { GLTFLoader } from '../gltf/GLTFLoader.js';
+import { STATE_KEY } from '../config.js';
 
 export class GameController extends Application {
-    static STATE_KEY = 'state';
-
     constructor(...args) {
         super(...args);
         this.toggleFirstPerson = this.toggleFirstPerson.bind(this);
@@ -37,8 +36,8 @@ export class GameController extends Application {
     }
 
     get init_state() {
-        if (localStorage.getItem(GameController.STATE_KEY) !== null) {
-            const stateJSON = localStorage.getItem(GameController.STATE_KEY);
+        if (localStorage.getItem(STATE_KEY) !== null) {
+            const stateJSON = localStorage.getItem(STATE_KEY);
             const persistedState = JSON.parse(stateJSON);
             return persistedState;
         }
@@ -58,7 +57,7 @@ export class GameController extends Application {
             this._state[key] = newState[key];
         }
 
-        localStorage.setItem(GameController.STATE_KEY, JSON.stringify(this.state));
+        localStorage.setItem(STATE_KEY, JSON.stringify(this.state));
     }
 
     toggleFirstPerson() {

@@ -2,12 +2,7 @@ import { vec3, mat4 } from '../../lib/gl-matrix-module.js';
 
 import { Utils } from './Utils.js';
 import { Node } from './Node.js';
-
-const CAMERA_VIEW_ENUM = {
-    FIRST_PERSON: 0,
-    THIRD_PERSON: 1,
-    TOP_DOWN: 2
-};
+import { CAMERA_VIEW_ENUM } from '../config.js';
 
 export class Camera extends Node {
 

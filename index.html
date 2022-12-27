@@ -28,18 +28,19 @@
     <!-- Main menu -->
     <div id="start-menu-container" class="fullscreen overlay">
         <div>
-            <h1>PLANE GAME</h1>
+            <h1 id="game-title">PLANE GAME</h1>
+            <span class="planet-label">Selected planet:&nbsp;<span id="selected-planet"></span></span>
 
             <div class="buttons">
                 <button id="btnStartScoredGame">Start game</button>
                 <button id="btnStartSandboxGame">Sandbox</button>
                 <button id="btnScoreboard">Scoreboard</button>
-                <button id="btnGameSettings">Planets</button>
+                <button id="btnGameSettings">Planet options</button>
             </div>
 
             <div id="credits">
                 <div>
-                    <div>© Janez Sedeljsak, Marko Vrecer</div>
+                    <div>© 2022 Janez Sedeljsak, Marko Vrecer</div>
                     <a target="_blank" href="https://github.com/JanezSedeljsak/plane-game">
                         Repository
                     </a>
@@ -62,9 +63,18 @@
         <div id="divHideGameSettings">
             <h1>Choose your planet</h1>
             <div class="planet-selection">
-                <div id="Moon" class="planet"></div>
-                <div id="Alien" class="planet"></div>
-                <div id="Tropical" class="planet"></div>
+                <div>
+                    <div id="Moon" class="planet"></div>
+                    <span>Moon</span>
+                </div>
+                <div>
+                    <div id="Alien" class="planet"></div>
+                    <span>Alien</span>
+                </div>
+                <div>
+                    <div id="Tropical" class="planet"></div>
+                    <span>Tropical</span>
+                </div>
             </div>
         </div>
     </div>

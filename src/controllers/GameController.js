@@ -9,6 +9,7 @@ import { Sphere } from '../models/Sphere.js';
 import { GLTFLoader } from '../gltf/GLTFLoader.js';
 
 export class GameController extends Application {
+    static STATE_KEY = 'state';
 
     constructor(...args) {
         super(...args);
@@ -36,6 +37,12 @@ export class GameController extends Application {
     }
 
     get init_state() {
+        if (localStorage.getItem(GameController.STATE_KEY) !== null) {
+            const stateJSON = localStorage.getItem(GameController.STATE_KEY);
+            const persistedState = JSON.parse(stateJSON);
+            return persistedState;
+        }
+
         return {
             planetName: 'Moon'
         };
@@ -50,6 +57,8 @@ export class GameController extends Application {
         for (const key in newState) {
             this._state[key] = newState[key];
         }
+
+        localStorage.setItem(GameController.STATE_KEY, JSON.stringify(this.state));
     }
 
     toggleFirstPerson() {

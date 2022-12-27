@@ -3,19 +3,22 @@ export class ScoreBoardController {
     constructor() {
         if (localStorage.getItem(ScoreBoardController.STORAGE_KEY) === null) {
             localStorage.setItem(ScoreBoardController.STORAGE_KEY, JSON.stringify([]));
+            this.__createDummyData();
         }
         
         this.scoresTable = document.getElementById('scoresTable');
         this.drawScoreboard = this.drawScoreboard.bind(this);
         this.addScore = this.addScore.bind(this);
+    }
 
-        // add dummy data to scoreboard
-        // this.addScore({ user: 'Janez', time: 201 });
-        // this.addScore({ user: 'Janez', time: 131 });
-        // this.addScore({ user: 'Janez', time: 191 });
-        // this.addScore({ user: 'Marko', time: 191 });
-        // this.addScore({ user: 'Marko', time: 120 });
-        // this.addScore({ user: 'John Doe', time: 300 });
+    // this should be removed in prod
+    __createDummyData() {
+        this.addScore({ user: 'Janez', time: 201 });
+        this.addScore({ user: 'Janez', time: 131 });
+        this.addScore({ user: 'Janez', time: 191 });
+        this.addScore({ user: 'Marko', time: 191 });
+        this.addScore({ user: 'Marko', time: 120 });
+        this.addScore({ user: 'John Doe', time: 300 });
     }
 
     static STORAGE_KEY = 'scoreboard';

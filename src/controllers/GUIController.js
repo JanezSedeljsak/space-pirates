@@ -9,6 +9,8 @@ export class GUIController {
         this.scoreboard = document.getElementById("scoreboard");
         this.gameSettings = document.getElementById("game-settings");
         this.gameGUI = document.getElementById("game-gui");
+        this.loader = document.querySelector('.loader-container');
+        this.selectedPlanet = document.getElementById('selected-planet');
 
         // buttons/divs with events
         this.btnGameSettings = document.getElementById("btnGameSettings");
@@ -29,6 +31,10 @@ export class GUIController {
         // create game controller instance 
         this.gameController = new GameController(this.canvas);
 
+        // read current selected planet from game controller state
+        const { planetName } = this.gameController.state;
+        this.selectedPlanet.innerHTML = planetName;
+
         // register events
         this.btnGameSettings.addEventListener("click", this.showGameSettings);
         this.btnScoreboard.addEventListener("click", this.showScoreboard);
@@ -40,7 +46,10 @@ export class GUIController {
         document.addEventListener('keydown', this.handleKeyDown);
         document.querySelectorAll('.planet').forEach(planet => {
             planet.style.background = `url('../../assets/images/planets/${planet.id}_Albedo.png') repeat-x`;
-            planet.addEventListener('click', () => this.gameController.setState({ planetName: planet.id }));
+            planet.addEventListener('click', () => {
+                this.selectedPlanet.innerHTML = planet.id;
+                this.gameController.setState({ planetName: planet.id })
+            });
         });
 
         // add scoreboard controller
@@ -73,6 +82,7 @@ export class GUIController {
             case 'Escape':
                 this.startMenu.style.display = "block";
                 this.gameGUI.style.display = "none";
+                //this.loader.style.display = "block";
                 break;
             default:
                 return;
@@ -102,6 +112,6 @@ export class GUIController {
 
         
         await this.gameController.init();
-        document.querySelector('.loader-container').style.display = "none";
+        this.loader.style.display = "none";
     }
 }

@@ -91,10 +91,11 @@ export class Renderer extends GLTFRenderer {
         gl.clearColor(0.1, 0.2, 0.35, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
 
-        const { program, uniforms } = this.programs.simple;
+        const { program } = this.programs.simple;
         const { program: programWorld, uniforms: uniformsWorld } = this.programs.worldshader;
+        const { program: defaultVertex, uniforms: defaultFragment } = this.programs.defaultShader;
 
-        this.renderDEFAULT({ gl, scene, program, uniforms, programWorld, uniformsWorld, camera });
+        this.renderDEFAULT({ gl, scene, program: defaultVertex, uniforms: defaultFragment, programWorld, uniformsWorld, camera });
         this.renderGLTF({ gl, scene, camera, program });
     }
 
@@ -119,6 +120,7 @@ export class Renderer extends GLTFRenderer {
         const viewMatrix = camera.getGlobalTransform();
         mat4.invert(viewMatrix, viewMatrix);
         mat4.copy(matrix, viewMatrix);
+        gl.uniformMatrix4fv(uniforms.uProjection, false, camera.projection);
         
         scene.traverse(
             node => {

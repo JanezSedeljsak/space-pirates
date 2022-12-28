@@ -1,5 +1,7 @@
 import { Model } from "../core/Model.js";
 import { Vector3 } from "../core/Utils.js";
+import { vec3, mat4 } from "../../lib/gl-matrix-module.js";
+import { Node } from "../core/Node.js";
 
 export class Sphere extends Model {
 
@@ -21,6 +23,17 @@ export class Sphere extends Model {
         
         const verticalOffset = -(radius + Math.sqrt(radius) / 1.2);
         this.translation = [0, verticalOffset, 5];
+
+        this.light = new Node();
+        this.light.position = [0, 5, 6];
+        this.light.color = [255, 255, 255];
+        this.light.intensity = 10;
+        this.light.attenuation = [0.001, 0, 0.3];
+
+        this.material = {};
+        this.material.diffuse = 1;
+        this.material.specular = 1;
+        this.material.shininess = 50;
     }
 
     async loadHeightMap() {
@@ -115,6 +128,8 @@ export class Sphere extends Model {
     }
 
     render({ gl, matrix, program, programWorld, uniformsWorld, camera }) {
+        const light = this.light;
+
         gl.useProgram(programWorld);
 
         gl.uniformMatrix4fv(uniformsWorld.uProjection, false, camera.projection);
@@ -132,6 +147,20 @@ export class Sphere extends Model {
         gl.activeTexture(gl.TEXTURE2);
         gl.bindTexture(gl.TEXTURE_2D, this.gl.normalMap);
         gl.uniform1i(uniformsWorld.uNormalMap, 2);
+
+        const cameraPos = mat4.getTranslation(vec3.create(), this.plane.getGlobalTransform());
+        gl.uniform3fv(uniformsWorld.uCameraPosition, cameraPos);
+
+        const lightParam = vec3.scale(vec3.create(), light.color, light.intensity / 255);
+        gl.uniform3fv(uniformsWorld.uLight.color, lightParam);
+
+        const lightPosition = mat4.getTranslation(vec3.create(), this.plane.getGlobalTransform());
+        gl.uniform3fv(uniformsWorld.uLight.position, lightPosition);
+        gl.uniform3fv(uniformsWorld.uLight.attenuation, light.attenuation);
+
+        gl.uniform1f(uniformsWorld.uMaterial.diffuse, this.material.diffuse);
+        gl.uniform1f(uniformsWorld.uMaterial.specular, this.material.specular);
+        gl.uniform1f(uniformsWorld.uMaterial.shininess, this.material.shininess);
 
         gl.drawElements(gl.TRIANGLES, this.gl.indices, gl.UNSIGNED_SHORT, 0);
         gl.useProgram(program);

@@ -15,11 +15,11 @@ export class SceneBuilder {
         switch (spec.type) {
             case 'camera': return new Camera(spec);
             case 'plane':
+            case 'skybox':
             case 'model': {
                 const mesh = new Mesh(this.spec.meshes[spec.mesh]);
                 const texture = this.spec.textures[spec.texture];
-                const args = [mesh, texture, spec];
-                return new MODEL_ENUM[spec.type](...args);
+                return new MODEL_ENUM[spec.type](mesh, texture, spec);
             }
             case 'sphere': {
                 const [sphereMesh, radius] = Sphere.createGlobe(settings?.radius ?? spec?.radius);

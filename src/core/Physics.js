@@ -14,11 +14,11 @@ export class Physics {
                 node.updateMatrix();
 
                 // After moving, check for collision with every other node.
-                this.scene.traverse(other => {
-                    if (node !== other) {
-                        this.resolveCollision(node, other);
-                    }
-                });
+                //this.scene.traverse(other => {
+                //    if (node !== other) {
+                //        this.resolveCollision(node, other);
+                //    }
+                //});
             }
         });
     }

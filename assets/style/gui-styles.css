@@ -26,7 +26,7 @@ button:hover, .btn:hover {
 }
 
 #start-menu-container {
-    background-image: url(https://wallup.net/wp-content/uploads/2014/08/plane-flying-outter-space.jpg);
+    background-image: url(../images/landing.jpg);
     background-size: cover;
 }
 #start-menu-container > div {

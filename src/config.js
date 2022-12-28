@@ -1,9 +1,11 @@
 import { Model } from './core/Model.js';
 import { Plane } from './models/Plane.js';
+import { SkyBox } from './models/SkyBox.js';
 
 export const MODEL_ENUM = {
     model: Model,
     plane: Plane,
+    skybox: SkyBox
 };
 
 export const CAMERA_VIEW_ENUM = {

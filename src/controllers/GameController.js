@@ -98,8 +98,13 @@ export class GameController extends Application {
             }
         });
 
+        this.camera.addChild(this.scene.nodes[2]);
+        this.scene.removeNode(this.scene.nodes[2])
+
         this.scene.addNode(this.plane);
         this.plane.sphere = this.sphere;
+        this.sphere.plane = this.plane;
+
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
         this.renderer.prepare(this.scene);

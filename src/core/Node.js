@@ -61,7 +61,8 @@ export class Node {
         }
     }
 
-    render({ gl, matrix, uniforms }) {
+    render({ gl, matrix, uniforms, program }) {
+        gl.useProgram(program);
         gl.bindVertexArray(this.gl.vao);
         gl.uniformMatrix4fv(uniforms.uViewModel, false, matrix);
         gl.activeTexture(gl.TEXTURE0);

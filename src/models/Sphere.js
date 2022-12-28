@@ -127,42 +127,42 @@ export class Sphere extends Model {
         return image;
     }
 
-    render({ gl, matrix, program, programWorld, uniformsWorld, camera }) {
+    render(gl, matrix, camera, programs) {
         const light = this.light;
 
-        gl.useProgram(programWorld);
+        const { program, uniforms } = programs.SphereShader;
+        gl.useProgram(program);
 
-        gl.uniformMatrix4fv(uniformsWorld.uProjection, false, camera.projection);
+        gl.uniformMatrix4fv(uniforms.uProjection, false, camera.projection);
         gl.bindVertexArray(this.gl.vao);
-        gl.uniformMatrix4fv(uniformsWorld.uViewModel, false, matrix);
+        gl.uniformMatrix4fv(uniforms.uViewModel, false, matrix);
 
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, this.gl.texture);
-        gl.uniform1i(uniformsWorld.uTexture, 0);
+        gl.uniform1i(uniforms.uTexture, 0);
         
         gl.activeTexture(gl.TEXTURE1);
         gl.bindTexture(gl.TEXTURE_2D, this.gl.heightMap);
-        gl.uniform1i(uniformsWorld.uHeightMap, 1);
+        gl.uniform1i(uniforms.uHeightMap, 1);
 
         gl.activeTexture(gl.TEXTURE2);
         gl.bindTexture(gl.TEXTURE_2D, this.gl.normalMap);
-        gl.uniform1i(uniformsWorld.uNormalMap, 2);
+        gl.uniform1i(uniforms.uNormalMap, 2);
 
         const cameraPos = mat4.getTranslation(vec3.create(), this.plane.getGlobalTransform());
-        gl.uniform3fv(uniformsWorld.uCameraPosition, cameraPos);
+        gl.uniform3fv(uniforms.uCameraPosition, cameraPos);
 
         const lightParam = vec3.scale(vec3.create(), light.color, light.intensity / 255);
-        gl.uniform3fv(uniformsWorld.uLight.color, lightParam);
+        gl.uniform3fv(uniforms.uLight.color, lightParam);
 
         const lightPosition = mat4.getTranslation(vec3.create(), this.plane.getGlobalTransform());
-        gl.uniform3fv(uniformsWorld.uLight.position, lightPosition);
-        gl.uniform3fv(uniformsWorld.uLight.attenuation, light.attenuation);
+        gl.uniform3fv(uniforms.uLight.position, lightPosition);
+        gl.uniform3fv(uniforms.uLight.attenuation, light.attenuation);
 
-        gl.uniform1f(uniformsWorld.uMaterial.diffuse, this.material.diffuse);
-        gl.uniform1f(uniformsWorld.uMaterial.specular, this.material.specular);
-        gl.uniform1f(uniformsWorld.uMaterial.shininess, this.material.shininess);
+        gl.uniform1f(uniforms.uMaterial.diffuse, this.material.diffuse);
+        gl.uniform1f(uniforms.uMaterial.specular, this.material.specular);
+        gl.uniform1f(uniforms.uMaterial.shininess, this.material.shininess);
 
         gl.drawElements(gl.TRIANGLES, this.gl.indices, gl.UNSIGNED_SHORT, 0);
-        gl.useProgram(program);
     }
 }

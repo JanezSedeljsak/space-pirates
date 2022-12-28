@@ -1,9 +1,10 @@
 import { mat4 } from '../../lib/gl-matrix-module.js';
 import { WebGL } from '../engine/WebGL.js';
-import { shaders } from '../shaders.js';
 import { Sphere } from '../models/Sphere.js';
 import { GLTFNode } from '../gltf/GLTFNode.js';
 import { GLTFRenderer } from '../gltf/GLTFRenderer.js';
+import { shaders } from '../shaders/index.js';
+import { Node } from './Node.js';
 
 export class Renderer extends GLTFRenderer {
 
@@ -18,7 +19,7 @@ export class Renderer extends GLTFRenderer {
 
     async prepare(scene) {
         scene.traverse(async node => {
-            if (node instanceof GLTFNode && (!node.parent || !(node.parent instanceof GLTFNode))) {
+            if (node?.isRootGLTF?.()) {
                 this.prepareNode(node);
             }
 
@@ -91,37 +92,30 @@ export class Renderer extends GLTFRenderer {
         gl.clearColor(0.1, 0.2, 0.35, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
 
-        const { program } = this.programs.simple;
-        const { program: programWorld, uniforms: uniformsWorld } = this.programs.worldshader;
-        const { program: defaultVertex, uniforms: defaultFragment } = this.programs.defaultShader;
-
-        this.renderDEFAULT({ gl, scene, program: defaultVertex, uniforms: defaultFragment, programWorld, uniformsWorld, camera });
-        this.renderGLTF({ gl, scene, camera, program });
+        this.renderDEFAULT(scene, camera);
+        this.renderGLTF(scene, camera);
     }
 
-    renderGLTF({ gl, scene, camera, program }) {
-        gl.useProgram(program);
+    renderGLTF(scene, camera) {
+        const { program } = this.programs.GLTFShader;
+        this.gl.useProgram(program);
         const mvpMatrix = this.getViewProjectionMatrix(camera);
 
         scene.traverse(node => {
-            // render root gltf nodes
-            if (node instanceof GLTFNode && (!node.parent || !(node.parent instanceof GLTFNode))) {
-                this.renderNode(node, mvpMatrix);
+            if (node?.isRootGLTF?.()) {
+                this.renderGLTFNode(node, mvpMatrix);
             }
         });
     }
 
-    renderDEFAULT({ gl, scene, program, uniforms, programWorld, uniformsWorld, camera }) {
-        gl.useProgram(program);
-
+    renderDEFAULT(scene, camera) {
         const matrix = mat4.create();
         const matrixStack = [];
 
         const viewMatrix = camera.getGlobalTransform();
         mat4.invert(viewMatrix, viewMatrix);
         mat4.copy(matrix, viewMatrix);
-        gl.uniformMatrix4fv(uniforms.uProjection, false, camera.projection);
-        
+
         scene.traverse(
             node => {
                 if (!(node instanceof GLTFNode)) {
@@ -129,7 +123,7 @@ export class Renderer extends GLTFRenderer {
                     mat4.mul(matrix, matrix, node.matrix);
 
                     if (node?.gl?.vao) {
-                        node.render({ gl, matrix, camera, program, uniforms, programWorld, uniformsWorld });
+                        node.render(this.gl, matrix, camera, this.programs);
                     }
                 }
             },

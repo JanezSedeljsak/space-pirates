@@ -11,4 +11,8 @@ export class GLTFNode extends Node {
     clone() {
         return new GLTFNode(this._props);
     }
+
+    isRootGLTF() {
+        return !(this?.parent && this.parent instanceof GLTFNode);
+    }
 }

@@ -61,8 +61,11 @@ export class Node {
         }
     }
 
-    render({ gl, matrix, uniforms, program }) {
+    render(gl, matrix, camera, programs) {
+        const { program, uniforms } = programs.DefaultShader;
         gl.useProgram(program);
+
+        gl.uniformMatrix4fv(uniforms.uProjection, false, camera.projection);
         gl.bindVertexArray(this.gl.vao);
         gl.uniformMatrix4fv(uniforms.uViewModel, false, matrix);
         gl.activeTexture(gl.TEXTURE0);

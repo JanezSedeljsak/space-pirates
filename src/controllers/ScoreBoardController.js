@@ -37,7 +37,7 @@ export class ScoreBoardController {
     }
 
     drawScoreboard() {
-        // draw only header row
+        // init table with header row
         this.scoresTable.innerHTML = (`
             <div class="row">
                 <div>#</div>

@@ -162,13 +162,13 @@ export class GLTFRenderer {
         }
     }
 
-    renderNode(node, mvpMatrix) {
+    renderGLTFNode(node, mvpMatrix) {
         const gl = this.gl;
-
-        const { uniforms } = this.programs.simple;
+        const { program, uniforms } = this.programs.GLTFShader;
 
         mvpMatrix = mat4.clone(mvpMatrix);
         mat4.mul(mvpMatrix, mvpMatrix, node.matrix);
+        gl.useProgram(program);
 
         if (node.mesh) {
             gl.uniformMatrix4fv(uniforms.uModelViewProjection, false, mvpMatrix);
@@ -178,14 +178,14 @@ export class GLTFRenderer {
         }
 
         for (const child of node.children) {
-            this.renderNode(child, mvpMatrix);
+            this.renderGLTFNode(child, mvpMatrix);
         }
     }
 
     renderPrimitive(primitive) {
         const gl = this.gl;
 
-        const { uniforms } = this.programs.simple;
+        const { uniforms } = this.programs.GLTFShader;
 
         const vao = this.glObjects.get(primitive);
         gl.bindVertexArray(vao);

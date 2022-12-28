@@ -2,8 +2,10 @@ import { Model } from "../core/Model.js";
 
 export class SkyBox extends Model {
 
-    render({ gl, matrix, uniforms, program }) {
+    render(gl, matrix, camera, programs) {
+        const { program, uniforms } = programs.SkyBoxShader;
         gl.useProgram(program);
+
         gl.cullFace(gl.FRONT);
         gl.bindVertexArray(this.gl.vao);
         gl.uniformMatrix4fv(uniforms.uViewModel, false, matrix);

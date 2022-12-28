@@ -6,6 +6,7 @@ export class SkyBox extends Model {
         const { program, uniforms } = programs.SkyBoxShader;
         gl.useProgram(program);
 
+        gl.uniformMatrix4fv(uniforms.uProjection, false, camera.projection);
         gl.cullFace(gl.FRONT);
         gl.bindVertexArray(this.gl.vao);
         gl.uniformMatrix4fv(uniforms.uViewModel, false, matrix);

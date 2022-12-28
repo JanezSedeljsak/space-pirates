@@ -18,6 +18,10 @@ export class Node {
         this.parent = null;
     }
 
+    isRootGLTF() {
+        return false;
+    }
+
     updateMatrix() {
         const m = this.matrix;
         const degrees = this.rotation.slice(0, 3).map(x => x * 180 / Math.PI);

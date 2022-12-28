@@ -19,7 +19,7 @@ export class Renderer extends GLTFRenderer {
 
     async prepare(scene) {
         scene.traverse(async node => {
-            if (node?.isRootGLTF?.()) {
+            if (node.isRootGLTF()) {
                 this.prepareNode(node);
             }
 
@@ -102,7 +102,7 @@ export class Renderer extends GLTFRenderer {
         const mvpMatrix = this.getViewProjectionMatrix(camera);
 
         scene.traverse(node => {
-            if (node?.isRootGLTF?.()) {
+            if (node.isRootGLTF()) {
                 this.renderGLTFNode(node, mvpMatrix);
             }
         });

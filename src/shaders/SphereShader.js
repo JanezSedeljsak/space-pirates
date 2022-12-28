@@ -1,4 +1,4 @@
-const vertex = `#version 300 es
+const vertex = /* glsl */`#version 300 es
 
 layout (location = 0) in vec4 aPosition;
 layout (location = 1) in vec2 aTexCoord;
@@ -56,7 +56,8 @@ void main() {
 }
 `;
 
-const fragment = `#version 300 es
+const fragment = /* glsl */`#version 300 es
+
 precision mediump float;
 
 uniform mediump sampler2D uTexture;

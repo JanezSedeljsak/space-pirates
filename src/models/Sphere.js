@@ -2,6 +2,8 @@ import { Model } from "../core/Model.js";
 import { Vector3 } from "../core/Utils.js";
 import { vec3, mat4 } from "../../lib/gl-matrix-module.js";
 import { Node } from "../core/Node.js";
+import { GUI } from '../../../lib/dat.gui.module.js';
+import { IS_DEBUG } from "../config.js";
 
 export class Sphere extends Model {
 
@@ -25,15 +27,20 @@ export class Sphere extends Model {
         this.translation = [0, verticalOffset, 5];
 
         this.light = new Node();
-        this.light.position = [0, 5, 6];
+        this.light.translation = [0, 0, 0];
         this.light.color = [255, 255, 255];
         this.light.intensity = 10;
         this.light.attenuation = [0.001, 0, 0.3];
 
+        this.light.updateMatrix();
         this.material = {};
         this.material.diffuse = 1;
         this.material.specular = 1;
         this.material.shininess = 50;
+
+        if (IS_DEBUG) {
+            this._debugGUI();
+        }
     }
 
     async loadHeightMap() {
@@ -44,6 +51,33 @@ export class Sphere extends Model {
         
         this.heightMap = heightMap;
         this.normalMap = normalMap;
+    }
+
+    _debugGUI() {
+        const gui = new GUI();
+        
+        const light = gui.addFolder('Light');
+        light.open();
+        light.add(this.light, 'intensity', 0, 5);
+        light.addColor(this.light, 'color');
+
+        const lightPosition = light.addFolder('Position');
+        lightPosition.open();
+        lightPosition.add(this.light.translation, 0, -50, 50).name('x');
+        lightPosition.add(this.light.translation, 1, -50, 50).name('y');
+        lightPosition.add(this.light.translation, 2, -50, 50).name('z');
+
+        const lightAttenuation = light.addFolder('Attenuation');
+        lightAttenuation.open();
+        lightAttenuation.add(this.light.attenuation, 0, 0, 5).name('constant');
+        lightAttenuation.add(this.light.attenuation, 1, 0, 2).name('linear');
+        lightAttenuation.add(this.light.attenuation, 2, 0, 1).name('quadratic');
+
+        const material = gui.addFolder('Material');
+        material.open();
+        material.add(this.material, 'diffuse', 0, 1);
+        material.add(this.material, 'specular', 0, 1);
+        material.add(this.material, 'shininess', 1, 200);
     }
 
     static createGlobe(r) {
@@ -149,13 +183,17 @@ export class Sphere extends Model {
         gl.bindTexture(gl.TEXTURE_2D, this.gl.normalMap);
         gl.uniform1i(uniforms.uNormalMap, 2);
 
-        const cameraPos = mat4.getTranslation(vec3.create(), this.plane.getGlobalTransform());
+        const cameraPos = mat4.getTranslation(vec3.create(), camera.getGlobalTransform());
         gl.uniform3fv(uniforms.uCameraPosition, cameraPos);
 
         const lightParam = vec3.scale(vec3.create(), light.color, light.intensity / 255);
         gl.uniform3fv(uniforms.uLight.color, lightParam);
 
-        const lightPosition = mat4.getTranslation(vec3.create(), this.plane.getGlobalTransform());
+        if (IS_DEBUG) {
+            this.light.updateMatrix();
+        }
+
+        const lightPosition = mat4.getTranslation(vec3.create(), this.light.getGlobalTransform());
         gl.uniform3fv(uniforms.uLight.position, lightPosition);
         gl.uniform3fv(uniforms.uLight.attenuation, light.attenuation);
 

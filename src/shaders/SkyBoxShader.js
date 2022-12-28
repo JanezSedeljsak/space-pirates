@@ -37,7 +37,7 @@ vec2 directionToTexcoord(vec3 v) {
 
 void main() {
     float radnomValue = rand(directionToTexcoord(normalize(vPosition.xyz)));
-    oColor = texture(uTexture, vec2(radnomValue, 1.0));
+    oColor = texture(uTexture, vec2(radnomValue, 2.5f));
     // oColor = texture(uTexture, vTexCoord);
 }
 `;

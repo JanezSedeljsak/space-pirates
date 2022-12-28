@@ -17,3 +17,5 @@ export const CAMERA_VIEW_ENUM = {
 export const STATE_KEY = "state";
 export const SCOREBOARD_KEY = "scoreboard";
 export const PLANET_PLACEHODLDER = 'PLANET_PLACEHODLDER';
+
+export const IS_DEBUG = false;

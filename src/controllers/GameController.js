@@ -7,7 +7,7 @@ import { SceneLoader } from '../scene/SceneLoader.js';
 import { SceneBuilder } from '../scene/SceneBuilder.js';
 import { Sphere } from '../models/Sphere.js';
 import { GLTFLoader } from '../gltf/GLTFLoader.js';
-import { STATE_KEY } from '../config.js';
+import { STATE_KEY, IS_DEBUG } from '../config.js';
 import { SkyBox } from '../models/SkyBox.js';
 
 export class GameController extends Application {
@@ -112,7 +112,10 @@ export class GameController extends Application {
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
         this.renderer.prepare(this.scene);
-        console.log(this.scene);
+
+        if (IS_DEBUG) {
+            console.log(this.scene);
+        }
     }
 
     update() {

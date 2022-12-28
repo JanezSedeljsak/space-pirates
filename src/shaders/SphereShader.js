@@ -2,6 +2,7 @@ const vertex = /* glsl */`#version 300 es
 
 layout (location = 0) in vec4 aPosition;
 layout (location = 1) in vec2 aTexCoord;
+layout (location = 2) in vec3 aNormal;
 
 uniform sampler2D uHeightMap; 
 uniform sampler2D uNormalMap; 
@@ -43,7 +44,7 @@ void main() {
     float d = distance(surfacePosition, uLight.position);
     float attenuation = 1.0 / dot(uLight.attenuation, vec3(1, d, d * d));
 
-    vec3 N = normalize(mat3(uViewModel) * normalize(texture(uNormalMap, aTexCoord)).xyz);
+    vec3 N = normalize(mat3(uViewModel) * normalize(aNormal).xyz);
     vec3 L = normalize(uLight.position - surfacePosition);
     vec3 V = normalize(uCameraPosition - surfacePosition);
     vec3 R = normalize(reflect(-L, N));

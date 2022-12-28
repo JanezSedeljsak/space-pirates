@@ -8,6 +8,7 @@ import { SceneBuilder } from '../scene/SceneBuilder.js';
 import { Sphere } from '../models/Sphere.js';
 import { GLTFLoader } from '../gltf/GLTFLoader.js';
 import { STATE_KEY } from '../config.js';
+import { SkyBox } from '../models/SkyBox.js';
 
 export class GameController extends Application {
     constructor(...args) {
@@ -89,17 +90,20 @@ export class GameController extends Application {
         // Find game objects
         this.camera = null;
         this.sphere = null;
+        this.skybox = null;
 
         this.scene.traverse(node => {
             if (node instanceof Camera) {
                 this.camera = node;
             } else if (node instanceof Sphere) {
                 this.sphere = node;
+            } else if (node instanceof SkyBox) {
+                this.skybox = node;
             }
         });
 
-        this.camera.addChild(this.scene.nodes[2]);
-        this.scene.removeNode(this.scene.nodes[2])
+        this.camera.addChild(this.skybox);
+        this.scene.removeNode(this.skybox)
 
         this.scene.addNode(this.plane);
         this.plane.sphere = this.sphere;

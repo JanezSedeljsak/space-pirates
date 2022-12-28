@@ -38,8 +38,8 @@ export class Sphere extends Model {
 
     async loadHeightMap() {
         const [heightMap, normalMap] = await Promise.all([
-            this.loadTexture(`../../assets/images/planets/${this.planetName}_Height.png`),
-            this.loadTexture(`../../assets/images/planets/${this.planetName}_Normal.png`)
+            this.loadTexture(`../../assets/images/planets/${this.planetName}_Height.avif`),
+            this.loadTexture(`../../assets/images/planets/${this.planetName}_Normal.avif`)
         ]);
         
         this.heightMap = heightMap;

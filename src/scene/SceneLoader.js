@@ -29,7 +29,7 @@ export class SceneLoader {
     handleImageURI(uri, settings) {
         return uri !== PLANET_PLACEHODLDER
             ? uri
-            : `../assets/images/planets/${settings?.planetName ?? ''}_Albedo.png`;
+            : `../assets/images/planets/${settings?.planetName ?? ''}_Albedo.avif`;
     }
 
 }

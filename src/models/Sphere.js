@@ -22,7 +22,7 @@ export class Sphere extends Model {
         super(mesh, texture, spec);
         this.radius = radius;
         this.planetName = planetName;
-        
+
         const verticalOffset = -(radius + Math.sqrt(radius) / 1.2);
         this.translation = [0, verticalOffset, 5];
 
@@ -43,19 +43,23 @@ export class Sphere extends Model {
         }
     }
 
+    isSphere() {
+        return true;
+    }
+
     async loadHeightMap() {
         const [heightMap, normalMap] = await Promise.all([
             this.loadTexture(`../../assets/images/planets/${this.planetName}_Height.avif`),
             this.loadTexture(`../../assets/images/planets/${this.planetName}_Normal.avif`)
         ]);
-        
+
         this.heightMap = heightMap;
         this.normalMap = normalMap;
     }
 
     _debugGUI() {
         const gui = new GUI();
-        
+
         const light = gui.addFolder('Light');
         light.open();
         light.add(this.light, 'intensity', 0, 5);
@@ -80,7 +84,7 @@ export class Sphere extends Model {
         material.add(this.material, 'shininess', 1, 200);
     }
 
-    static createGlobe(r) {
+    static createGlobe({ radius, segments }) {
         const options = {
             vertices: [],
             texcoords: [],
@@ -88,9 +92,9 @@ export class Sphere extends Model {
             indices: []
         }
 
-        let radius = r ?? 10,
-            wSeg = 256,
-            hSeg = 256,
+        let sphereRadius = radius ?? 10,
+            wSeg = segments ?? 32,
+            hSeg = segments ?? 32,
             fiStart = 0,
             fiDelta = Math.PI * 2,
             thetaStart = 0,
@@ -121,9 +125,9 @@ export class Sphere extends Model {
                 const thetaRes = thetaStart + v * thetaDelta
 
 
-                vertex.x = radius * Math.cos(fiRes) * Math.sin(thetaRes) * -1;
-                vertex.y = radius * Math.cos(thetaRes);
-                vertex.z = radius * Math.sin(fiRes) * Math.sin(thetaRes);
+                vertex.x = sphereRadius * Math.cos(fiRes) * Math.sin(thetaRes) * -1;
+                vertex.y = sphereRadius * Math.cos(thetaRes);
+                vertex.z = sphereRadius * Math.sin(fiRes) * Math.sin(thetaRes);
 
                 // wobbly earth with perlin noise
                 //const newRadius = radius + noise.perlin3(vertex.x, vertex.y, vertex.z);;
@@ -151,7 +155,7 @@ export class Sphere extends Model {
             }
         }
 
-        return [options, radius];
+        return [options, sphereRadius];
     }
 
     async loadTexture(url) {
@@ -174,7 +178,7 @@ export class Sphere extends Model {
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, this.gl.texture);
         gl.uniform1i(uniforms.uTexture, 0);
-        
+
         gl.activeTexture(gl.TEXTURE1);
         gl.bindTexture(gl.TEXTURE_2D, this.gl.heightMap);
         gl.uniform1i(uniforms.uHeightMap, 1);

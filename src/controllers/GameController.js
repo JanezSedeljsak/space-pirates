@@ -5,7 +5,6 @@ import { Physics } from '../core/Physics.js';
 import { Camera } from '../core/Camera.js';
 import { SceneLoader } from '../scene/SceneLoader.js';
 import { SceneBuilder } from '../scene/SceneBuilder.js';
-import { Sphere } from '../models/Sphere.js';
 import { GLTFLoader } from '../gltf/GLTFLoader.js';
 import { STATE_KEY, IS_DEBUG } from '../config.js';
 import { SkyBox } from '../models/SkyBox.js';
@@ -91,19 +90,36 @@ export class GameController extends Application {
         this.camera = null;
         this.sphere = null;
         this.skybox = null;
+        this.asteroid = null;
 
         this.scene.traverse(node => {
             if (node instanceof Camera) {
                 this.camera = node;
-            } else if (node instanceof Sphere) {
+            } else if (node.isSphere()) {
                 this.sphere = node;
             } else if (node instanceof SkyBox) {
                 this.skybox = node;
+            } else if (node.isAsteroid()) {
+                this.asteroid = node;
             }
         });
 
+        const asteroidPositions = [
+            [5, 110, -28],
+            [5, 110, -20],
+            [-2, 110, -35],
+            [13, 120, -25],
+        ];
+
+        this.scene.removeNode(this.asteroid);
+        for (const ap of asteroidPositions) {
+            const asteroid = this.asteroid.clone();
+            asteroid.setTranslation(ap);
+            this.sphere.addChild(asteroid);
+        }
+
         this.camera.addChild(this.skybox);
-        this.scene.removeNode(this.skybox)
+        this.scene.removeNode(this.skybox);
 
         this.scene.addNode(this.plane);
         this.plane.sphere = this.sphere;

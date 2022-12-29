@@ -31,7 +31,7 @@ export class Renderer extends GLTFRenderer {
                 if (node.image) {
                     node.gl.texture = this.createTexture(node.image);
                 }
-                if (node instanceof Sphere) {
+                if (node.isSphere() || node.isAsteroid()) {
                     await node.loadHeightMap();
                     node.gl.heightMap = this.createTexture(node.heightMap);
                     node.gl.normalMap = this.createTexture(node.normalMap);

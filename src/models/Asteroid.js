@@ -7,9 +7,6 @@ export class Asteroid extends Sphere {
         super(mesh, texture, spec, null);
         this._props = props;
         this.radius = radius;
-
-        //this.translation = [5, 110, -5];
-        //this.updateMatrix();
     }
 
     setTranslation(tVector) {
@@ -26,10 +23,13 @@ export class Asteroid extends Sphere {
     }
 
     clone() {
-        return new Asteroid(...this._props);
+        const asteroid = new Asteroid(...this._props);
+        asteroid.heightMap = this.heightMap;
+        asteroid.normalMap = this.normalMap;
+        return asteroid;
     }
 
-    async loadHeightMap() {
+    async initializeHeightMap() {
         const [heightMap, normalMap] = await Promise.all([
             this.loadTexture(`../../assets/images/asteroids/Asteroid_Height.avif`),
             this.loadTexture(`../../assets/images/asteroids/Asteroid_Normal.avif`)

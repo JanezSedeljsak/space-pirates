@@ -111,7 +111,9 @@ export class GameController extends Application {
             [13, 105, -28],
         ];
 
+        this.asteroid.initializeHeightMap();
         this.scene.removeNode(this.asteroid);
+
         for (const ap of asteroidPositions) {
             const asteroid = this.asteroid.clone();
             asteroid.setTranslation(ap);

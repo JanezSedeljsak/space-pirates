@@ -5,6 +5,7 @@ import { GLTFNode } from '../gltf/GLTFNode.js';
 import { GLTFRenderer } from '../gltf/GLTFRenderer.js';
 import { shaders } from '../shaders/index.js';
 import { Node } from './Node.js';
+import { IS_DEBUG } from '../config.js';
 
 export class Renderer extends GLTFRenderer {
 
@@ -17,25 +18,55 @@ export class Renderer extends GLTFRenderer {
         this.programs = WebGL.buildPrograms(gl, shaders);
     }
 
+    async prepareDEFAULT(node, cache) {
+        if (IS_DEBUG) {
+            console.log('Called prepare NODE');
+        }
+
+        node.gl = {};
+        if (node.mesh) {
+            Object.assign(node.gl, this.createModel(node.mesh));
+        }
+        if (node.image) {
+            node.gl.texture = this.createTexture(node.image);
+        }
+        if (node.isSphere() || node.isAsteroid()) {
+            if (node.isSphere()) {
+                await node.loadHeightMap();
+            }
+
+            node.gl.heightMap = this.createTexture(node.heightMap);
+            node.gl.normalMap = this.createTexture(node.normalMap);
+        }
+
+        if (cache) {
+            cache.Asteroid = node.gl;
+        }
+    }
+
+    handleAsteroid(node, cache) {
+        if (cache?.Asteroid) {
+            node.gl = cache.Asteroid;
+            return;
+        }
+
+        this.prepareDEFAULT(node, cache);
+    }
+
     async prepare(scene) {
+        const cache = {};
+
         scene.traverse(async node => {
             if (node.isRootGLTF()) {
                 this.prepareNode(node);
             }
 
+            else if (node.isAsteroid()) {
+                this.handleAsteroid(node, cache);
+            }
+
             else if (!(node instanceof GLTFNode)) {
-                node.gl = {};
-                if (node.mesh) {
-                    Object.assign(node.gl, this.createModel(node.mesh));
-                }
-                if (node.image) {
-                    node.gl.texture = this.createTexture(node.image);
-                }
-                if (node.isSphere() || node.isAsteroid()) {
-                    await node.loadHeightMap();
-                    node.gl.heightMap = this.createTexture(node.heightMap);
-                    node.gl.normalMap = this.createTexture(node.normalMap);
-                }
+                this.prepareDEFAULT(node);
             }
         });
     }

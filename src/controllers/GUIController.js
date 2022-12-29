@@ -1,5 +1,6 @@
 import { GameController } from "./GameController.js";
 import { ScoreBoardController } from "./ScoreBoardController.js";
+import { SoundController } from "./SoundController.js";
 
 export class GUIController {
 
@@ -57,6 +58,8 @@ export class GUIController {
 
         // bind game events
         document.addEventListener('pointerlockchange', e => this.gameController.pointerLockChange(e));
+
+        this.soundController = new SoundController(this.gameController);
     }
 
     _bind() {

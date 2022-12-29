@@ -43,7 +43,8 @@ export class GameController extends Application {
         }
 
         return {
-            planetName: 'Moon'
+            planetName: 'Moon',
+            soundVolume: 0.5,
         };
     }
     

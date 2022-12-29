@@ -1,9 +1,12 @@
 import { vec3 } from '../../lib/gl-matrix-module.js';
+import { Asteroid } from '../models/Asteroid.js';
 
 export class Physics {
 
-    constructor(scene) {
+    constructor(scene, plane, sphere) {
+        this.plane = plane;
         this.scene = scene;
+        this.sphere = sphere;
     }
 
     update(dt) {
@@ -12,13 +15,13 @@ export class Physics {
             if (node.velocity) {
                 vec3.scaleAndAdd(node.translation, node.translation, node.velocity, dt);
                 node.updateMatrix();
+            }
+        });
 
-                // After moving, check for collision with every other node.
-                //this.scene.traverse(other => {
-                //    if (node !== other) {
-                //        this.resolveCollision(node, other);
-                //    }
-                //});
+        // check plane collisions
+        this.scene.traverse(node => {
+            if (!node.isIgnoreCollision() && node.isAsteroid() && this.plane !== node) {
+                this.resolveCollision(this.plane, node);
             }
         });
     }
@@ -66,41 +69,43 @@ export class Physics {
         const isColliding = this.aabbIntersection(aBox, bBox);
         if (!isColliding) {
             return;
+        } else if (b.isAsteroid()) {
+            this.sphere.removeChild(b);
+            return;
         }
 
         // Move node A minimally to avoid collision.
-        const diffa = vec3.sub(vec3.create(), bBox.max, aBox.min);
-        const diffb = vec3.sub(vec3.create(), aBox.max, bBox.min);
-
-        let minDiff = Infinity;
-        let minDirection = [0, 0, 0];
-        if (diffa[0] >= 0 && diffa[0] < minDiff) {
-            minDiff = diffa[0];
-            minDirection = [minDiff, 0, 0];
-        }
-        if (diffa[1] >= 0 && diffa[1] < minDiff) {
-            minDiff = diffa[1];
-            minDirection = [0, minDiff, 0];
-        }
-        if (diffa[2] >= 0 && diffa[2] < minDiff) {
-            minDiff = diffa[2];
-            minDirection = [0, 0, minDiff];
-        }
-        if (diffb[0] >= 0 && diffb[0] < minDiff) {
-            minDiff = diffb[0];
-            minDirection = [-minDiff, 0, 0];
-        }
-        if (diffb[1] >= 0 && diffb[1] < minDiff) {
-            minDiff = diffb[1];
-            minDirection = [0, -minDiff, 0];
-        }
-        if (diffb[2] >= 0 && diffb[2] < minDiff) {
-            minDiff = diffb[2];
-            minDirection = [0, 0, -minDiff];
-        }
-
-        vec3.add(a.translation, a.translation, minDirection);
-        a.updateMatrix();
+        //const diffa = vec3.sub(vec3.create(), bBox.max, aBox.min);
+        //const diffb = vec3.sub(vec3.create(), aBox.max, bBox.min);
+        //
+        //let minDiff = Infinity;
+        //let minDirection = [0, 0, 0];
+        //if (diffa[0] >= 0 && diffa[0] < minDiff) {
+        //    minDiff = diffa[0];
+        //    minDirection = [minDiff, 0, 0];
+        //}
+        //if (diffa[1] >= 0 && diffa[1] < minDiff) {
+        //    minDiff = diffa[1];
+        //    minDirection = [0, minDiff, 0];
+        //}
+        //if (diffa[2] >= 0 && diffa[2] < minDiff) {
+        //    minDiff = diffa[2];
+        //    minDirection = [0, 0, minDiff];
+        //}
+        //if (diffb[0] >= 0 && diffb[0] < minDiff) {
+        //    minDiff = diffb[0];
+        //    minDirection = [-minDiff, 0, 0];
+        //}
+        //if (diffb[1] >= 0 && diffb[1] < minDiff) {
+        //    minDiff = diffb[1];
+        //    minDirection = [0, -minDiff, 0];
+        //}
+        //if (diffb[2] >= 0 && diffb[2] < minDiff) {
+        //    minDiff = diffb[2];
+        //    minDirection = [0, 0, -minDiff];
+        //}
+        //
+        //vec3.add(a.translation, a.translation, minDirection);
+        //a.updateMatrix();
     }
-
 }

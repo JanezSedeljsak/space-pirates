@@ -2,6 +2,10 @@ import { Model } from "../core/Model.js";
 
 export class SkyBox extends Model {
 
+    isIgnoreCollision() {
+        return true;
+    }
+
     render(gl, matrix, camera, programs) {
         const { program, uniforms } = programs.SkyBoxShader;
         gl.useProgram(program);

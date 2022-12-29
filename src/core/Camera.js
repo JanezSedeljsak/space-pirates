@@ -25,6 +25,10 @@ export class Camera extends Node {
         this.cameraView = 1; 
     }
 
+    isIgnoreCollision() {
+        return true;
+    }
+
     updateProjection() {
         mat4.perspective(this.projection, this.fov, this.aspect, this.near, this.far);
     }

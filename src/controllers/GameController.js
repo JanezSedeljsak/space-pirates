@@ -81,10 +81,9 @@ export class GameController extends Application {
     async load(uri) {
         const scene = await new SceneLoader().loadScene(uri, this.state);
         this.plane = await this.planeLoader.loadNode('Plane');
-        const builder = new SceneBuilder(scene);
 
+        const builder = new SceneBuilder(scene);
         this.scene = builder.build(this.state);
-        this.physics = new Physics(this.scene);
 
         // Find game objects
         this.camera = null;
@@ -104,11 +103,12 @@ export class GameController extends Application {
             }
         });
 
+        this.physics = new Physics(this.scene, this.plane, this.sphere);
         const asteroidPositions = [
-            [5, 110, -28],
-            [5, 110, -20],
-            [-2, 110, -35],
-            [13, 120, -25],
+            [5, 105, -28],
+            [0, 105, -28],
+            [-7, 105, -28],
+            [13, 105, -28],
         ];
 
         this.scene.removeNode(this.asteroid);

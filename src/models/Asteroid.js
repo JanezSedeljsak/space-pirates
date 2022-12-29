@@ -31,8 +31,8 @@ export class Asteroid extends Sphere {
 
     async loadHeightMap() {
         const [heightMap, normalMap] = await Promise.all([
-            this.loadTexture(`../../assets/images/asteroids/Asteroid_Height.png`),
-            this.loadTexture(`../../assets/images/asteroids/Asteroid_Normal.png`)
+            this.loadTexture(`../../assets/images/asteroids/Asteroid_Height.avif`),
+            this.loadTexture(`../../assets/images/asteroids/Asteroid_Normal.avif`)
         ]);
         
         this.heightMap = heightMap;

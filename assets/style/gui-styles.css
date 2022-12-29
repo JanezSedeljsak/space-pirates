@@ -26,7 +26,7 @@ button:hover, .btn:hover {
 }
 
 #start-menu-container {
-    background-image: url(../images/landing.jpg);
+    background-image: url(../images/landing.avif);
     background-size: cover;
 }
 #start-menu-container > div {
@@ -152,7 +152,7 @@ button:hover, .btn:hover {
     height: 15rem;
     width: 15rem;
     border-radius: 50%;
-    animation: rotate-map 40s infinite linear;
+    animation: rotate-map 30s infinite linear;
 }
 #game-settings .planet:before {
     content: "";

@@ -47,8 +47,8 @@
   ],
   "textures": [
     "PLANET_PLACEHODLDER",
-    "../assets/images/space.jpg",
-    "../assets/images/asteroids/Asteroid_Albedo.png"
+    "../assets/images/space.avif",
+    "../assets/images/asteroids/Asteroid_Albedo.avif"
   ],
   "meshes": [
     "../assets/models/cube.json"

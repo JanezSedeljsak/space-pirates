@@ -45,7 +45,7 @@ export class GUIController {
 
         document.addEventListener('keydown', this.handleKeyDown);
         document.querySelectorAll('.planet').forEach(planet => {
-            planet.style.background = `url('../../assets/images/planets/${planet.id}_Albedo.avif') repeat-x`;
+            planet.style.background = `url('../../assets/images/planets_min/${planet.id}.avif') repeat-x`;
             planet.addEventListener('click', () => {
                 this.selectedPlanet.innerHTML = planet.id;
                 this.gameController.setState({ planetName: planet.id })

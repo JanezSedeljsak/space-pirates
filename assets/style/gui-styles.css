@@ -288,6 +288,28 @@ button:hover, .btn:hover {
 }
 kbd {
     padding: 2px;
-    border: 2px solid #1f38498c;
-    box-shadow: 2px 2px #1f38498c;
+    border: 2px solid whitesmoke;
+    box-shadow: 2px 2px whitesmoke;
+}
+
+#start-gui {
+    background-color: #0000008a;
+    display: none;
+}
+#start-gui > div {
+    display: grid;
+    grid-template-rows: 45vh 5vh 50vh;
+    transition: 100ms;
+}
+#start-gui h1 {
+    font-size: 3rem;
+    text-align: center;
+}
+#start-gui .game-description {
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
 }

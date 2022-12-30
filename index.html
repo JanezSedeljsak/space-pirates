@@ -86,10 +86,24 @@
         </div>
     </div>
 
+    <!-- Start GUI -->
+    <div id="start-gui" class="fullscreen overlay">
+        <div>
+            <div></div>
+            <h1 id="countdown">Collect all 10 commets!</h1>
+            <div class="game-description">
+                <div>Start the game by <b>clicking</b> anywhere on the screen</div>
+                <div>Use <kbd>W</kbd> <kbd>A</kbd> <kbd>D</kbd> keys to move around</div>
+                <div>Pause the game pressing <kbd>P</kbd></div>
+                <div>Use <kbd>V</kbd> to change your view</div>
+                <div>Press <kbd>ESC</kbd> twice to exit</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Game GUI -->
     <div id="game-gui">
         <div id="main">
-            <div>To exit press <kbd>ESC</kbd> twice</div>
             <h2><div>🔉</div><input type="range" id="soundControl" min="0" max="1" step="0.01" /></h2>
             <h2><div>⌛</div><div id="gameTimer">00:00</div></h2>
             <h2><div>⭐</div><div id="gameScore">0 / 10</div></h2>

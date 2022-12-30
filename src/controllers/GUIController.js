@@ -17,6 +17,7 @@ export class GUIController {
         this.gameGUI = document.getElementById("game-gui");
         this.loader = document.querySelector('.loader-container');
         this.selectedPlanet = document.getElementById('selected-planet');
+        this.startGUI = document.getElementById("start-gui");
 
         // buttons/divs with events
         this.btnGameSettings = document.getElementById("btnGameSettings");
@@ -27,6 +28,7 @@ export class GUIController {
         this.btnStartSandboxGame = document.getElementById("btnStartSandboxGame");
         this.gameTimer = document.getElementById("gameTimer");
         this.gameScore = document.getElementById("gameScore");
+        this.countdown = document.getElementById("countdown");
 
         // get canvas
         this.canvas = document.getElementById('game-canvas');
@@ -50,6 +52,7 @@ export class GUIController {
         this.divHideGameSettings.addEventListener("click", this.hideGameSettings);
         this.btnStartScoredGame.addEventListener("click", this.startScoredGame);
         this.btnStartSandboxGame.addEventListener("click", this.startScoredGame);
+        this.startGUI.addEventListener("click", this.startGameCountdown);
 
         document.addEventListener('keydown', this.handleKeyDown);
         document.querySelectorAll('.planet').forEach(planet => {
@@ -76,6 +79,7 @@ export class GUIController {
         this.startScoredGame = this.startScoredGame.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.hideGameSettings = this.hideGameSettings.bind(this);
+        this.startGameCountdown = this.startGameCountdown.bind(this);
     }
 
     async handleKeyDown(event) {
@@ -123,7 +127,21 @@ export class GUIController {
         
         await this.gameController.init();
         this.loader.style.display = "none";
-        this.startGameTimer();
+        this.startGUI.style.display = "block";
+    }
+
+    startGameCountdown() {
+        this.countdown.style.fontSize = "6rem";
+        this.countdown.innerHTML = "3";
+        setTimeout(() => this.countdown.innerHTML = "2", 1000);
+        setTimeout(() => this.countdown.innerHTML = "1", 2000);
+        setTimeout(() => {
+            this.countdown.style.fontSize = "3rem";
+            this.startGUI.style.display = "none";
+            this.canvas.click();
+            this.startGameTimer();
+        }, 3000);
+
     }
 
     parseTimer() {

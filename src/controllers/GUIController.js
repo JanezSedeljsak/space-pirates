@@ -68,8 +68,9 @@ export class GUIController {
             });
         });
 
-        // add scoreboard controller
-        this.scoreboardController = new ScoreBoardController();
+        // init scoreboard controller
+        ScoreBoardController.init();
+
         // add sound controller
         this.soundController = new SoundController(this.gameController);
 
@@ -124,7 +125,7 @@ export class GUIController {
     }
     
     showScoreboard() {
-        this.scoreboardController.drawScoreboard();
+        ScoreBoardController.drawScoreboard();
         this.scoreboard.style.display = "block";
     }
     

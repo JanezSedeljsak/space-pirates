@@ -10,6 +10,7 @@ export class GUIController {
         this.timerInterval = undefined;
         this.score = 0;
         this.isSandbox = false;
+        this.isStarted = false;
         this.isPaused = false;
 
         // screens
@@ -55,7 +56,7 @@ export class GUIController {
         this.divHideGameSettings.addEventListener("click", this.hideGameSettings);
         this.btnStartScoredGame.addEventListener("click", this.startScoredGame);
         this.btnStartSandboxGame.addEventListener("click", this.startSandboxGame);
-        this.startGUI.addEventListener("click", this.startGameCountdown);
+        this.startGUI.addEventListener("click", this.startGame);
         this.pausedScreen.addEventListener("click", this.unpauseGame);
 
         document.addEventListener('keydown', this.handleKeyDown);
@@ -83,6 +84,7 @@ export class GUIController {
         this.startScoredGame = this.startScoredGame.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.hideGameSettings = this.hideGameSettings.bind(this);
+        this.startGame = this.startGame.bind(this);
         this.startGameCountdown = this.startGameCountdown.bind(this);
         this.startSandboxGame = this.startSandboxGame.bind(this);
         this.unpauseGame = this.unpauseGame.bind(this);
@@ -152,12 +154,19 @@ export class GUIController {
         this.startGUI.style.display = "block";
     }
 
-    startGameCountdown() {
+    startGame() {
         if (this.isSandbox) {
             this.startGUI.style.display = "none";
             this.canvas.click();
             return;
         }
+        this.startGameCountdown();
+        this.isStarted = true;
+    }
+
+    startGameCountdown() {
+        if (this.isStarted)
+            return;
         this.countdown.style.fontSize = "6rem";
         this.countdown.innerHTML = "3";
         setTimeout(() => this.countdown.innerHTML = "2", 1000);
@@ -201,8 +210,10 @@ export class GUIController {
 
     endGame() {
         clearInterval(this.timerInterval);
+        this.isStarted = false;
         this.countdown.innerHTML = "Collect all 10 commets!";
         this.gameGUI.classList.remove("sandbox");
+        
     }
 
     _updateGameScore() {
@@ -212,5 +223,8 @@ export class GUIController {
     addGameScore() {
         this.score++;
         this._updateGameScore();
+        if (this.score === 10) {
+            endGame();
+        }
     }
 }

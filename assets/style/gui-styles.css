@@ -330,3 +330,25 @@ kbd {
 #paused-screen h1 {
     font-size: 6rem;
 }
+
+#add-score {
+    display: none;
+}
+#add-score > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 4rem;
+    background-color: #0000008a;
+}
+#add-score .input-area {
+    width: min(100%, 20rem);
+}
+#add-score .input-area > * {
+    width: 100%;
+    text-align: center;
+}
+#add-score #username-submit {
+    margin-bottom: 10px;
+}

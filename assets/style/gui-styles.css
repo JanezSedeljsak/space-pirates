@@ -315,3 +315,18 @@ kbd {
     align-items: center;
     justify-content: center;
 }
+
+#paused-screen {
+    display: none;
+}
+#paused-screen > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background-color: #0000008a;
+}
+#paused-screen h1 {
+    font-size: 6rem;
+}

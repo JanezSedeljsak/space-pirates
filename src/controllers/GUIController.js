@@ -10,6 +10,7 @@ export class GUIController {
         this.timerInterval = undefined;
         this.score = 0;
         this.isSandbox = false;
+        this.isPaused = false;
 
         // screens
         this.startMenu = document.getElementById("start-menu-container");
@@ -19,6 +20,7 @@ export class GUIController {
         this.loader = document.querySelector('.loader-container');
         this.selectedPlanet = document.getElementById('selected-planet');
         this.startGUI = document.getElementById("start-gui");
+        this.pausedScreen = document.getElementById("paused-screen");
 
         // buttons/divs with events
         this.btnGameSettings = document.getElementById("btnGameSettings");
@@ -54,6 +56,7 @@ export class GUIController {
         this.btnStartScoredGame.addEventListener("click", this.startScoredGame);
         this.btnStartSandboxGame.addEventListener("click", this.startSandboxGame);
         this.startGUI.addEventListener("click", this.startGameCountdown);
+        this.pausedScreen.addEventListener("click", this.unpauseGame);
 
         document.addEventListener('keydown', this.handleKeyDown);
         document.querySelectorAll('.planet').forEach(planet => {
@@ -82,6 +85,7 @@ export class GUIController {
         this.hideGameSettings = this.hideGameSettings.bind(this);
         this.startGameCountdown = this.startGameCountdown.bind(this);
         this.startSandboxGame = this.startSandboxGame.bind(this);
+        this.unpauseGame = this.unpauseGame.bind(this);
     }
 
     async handleKeyDown(event) {
@@ -100,6 +104,9 @@ export class GUIController {
                 this.gameGUI.style.display = "none";
                 this.startGUI.style.display = "none";
                 this.endGame();
+                break;
+            case 'KeyP':
+                this.pauseGame();
                 break;
             default:
                 return;
@@ -163,12 +170,26 @@ export class GUIController {
         }, 3000);
     }
 
+    pauseGame() {
+        this.isPaused = true;
+        this.pausedScreen.style.display = "block";
+        document.exitPointerLock();
+    }
+
+    unpauseGame() {
+        this.pausedScreen.style.display = "none";
+        this.canvas.requestPointerLock();
+        this.isPaused = false;
+    }
+
     parseTimer() {
         const padNumber = num => num.toString().padStart(2, '0');
         return `${padNumber(Math.floor(this.timer / 60))}:${padNumber(this.timer % 60)}`
     }
 
     _updateGameTimer() {
+        if (this.isPaused)
+            return;
         this.gameTimer.innerHTML = this.parseTimer();
         this.timer++;
     }

@@ -106,6 +106,9 @@ export class GameController extends Application {
         });
 
         this.physics = new Physics(this.scene, this.plane, this.sphere, this.guiController);
+        this.plane.sphere = this.sphere;
+        this.sphere.plane = this.plane;
+        
         const asteroidPositions = [
             [5, 105, -28],
             [0, 105, -28],
@@ -113,7 +116,7 @@ export class GameController extends Application {
             [13, 105, -28],
         ];
 
-        this.asteroid.initializeHeightMap();
+        await this.asteroid.initializeHeightMap();
         this.scene.removeNode(this.asteroid);
 
         for (const ap of asteroidPositions) {
@@ -126,9 +129,6 @@ export class GameController extends Application {
         this.scene.removeNode(this.skybox);
 
         this.scene.addNode(this.plane);
-        this.plane.sphere = this.sphere;
-        this.sphere.plane = this.plane;
-
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
         this.renderer.prepare(this.scene);

@@ -36,7 +36,7 @@ export class Sphere extends Model {
         this.material = {};
         this.material.diffuse = 1;
         this.material.specular = 1;
-        this.material.shininess = 50;
+        this.material.shininess = 5;
 
         if (IS_DEBUG) {
             this._debugGUI();
@@ -165,6 +165,10 @@ export class Sphere extends Model {
         return image;
     }
 
+    getDisplacementScale() {
+        return -0.08;
+    }
+
     render(gl, matrix, camera, programs) {
         const light = this.light;
 
@@ -189,6 +193,8 @@ export class Sphere extends Model {
 
         const cameraPos = mat4.getTranslation(vec3.create(), camera.getGlobalTransform());
         gl.uniform3fv(uniforms.uCameraPosition, cameraPos);
+
+        gl.uniform1f(uniforms.uDisplacementScale, this.getDisplacementScale());
 
         const lightParam = vec3.scale(vec3.create(), light.color, light.intensity / 255);
         gl.uniform3fv(uniforms.uLight.color, lightParam);

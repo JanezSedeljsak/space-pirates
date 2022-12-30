@@ -7,6 +7,11 @@ export class Asteroid extends Sphere {
         super(mesh, texture, spec, null);
         this._props = props;
         this.radius = radius;
+
+        this.light.intensity = 1;
+        this.material.diffuse = 10;
+        this.material.specular = 1;
+        this.material.shininess = 1;
     }
 
     setTranslation(tVector) {
@@ -20,6 +25,10 @@ export class Asteroid extends Sphere {
 
     isAsteroid() {
         return true;
+    }
+    
+    getDisplacementScale() {
+        return -0.5;
     }
 
     clone() {

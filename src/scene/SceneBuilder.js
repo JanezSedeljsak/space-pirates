@@ -26,7 +26,7 @@ export class SceneBuilder {
             case 'sphere': {
                 const options = {
                     radius: settings?.radius ?? spec?.radius,
-                    segments: spec.type === 'sphere' ? 256 : 32
+                    segments: spec.type === 'sphere' ? 256 : 64
                 };
                 
                 const [sphereMesh, radius] = Sphere.createGlobe(options);

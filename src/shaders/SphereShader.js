@@ -8,6 +8,7 @@ uniform sampler2D uHeightMap;
 uniform sampler2D uNormalMap; 
 
 uniform vec3 uCameraPosition;
+uniform float uDisplacementScale;
 
 struct Light {
     vec3 position;
@@ -32,7 +33,7 @@ out vec3 vDiffuseLight;
 out vec3 vSpecularLight;
 
 void main() {
-    float displacementScale = -0.08f;
+    float displacementScale = uDisplacementScale; // -0.08f;
     float displacement = texture(uHeightMap, aTexCoord).r * displacementScale;
     vec4 displacedPosition = aPosition + normalize(texture(uNormalMap, aTexCoord)) * (texture(uHeightMap, aTexCoord).x * displacementScale);
     vTexCoord = aTexCoord;

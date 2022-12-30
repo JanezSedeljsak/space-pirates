@@ -71,6 +71,8 @@ export class Physics {
             return;
         } else if (b.isAsteroid()) {
             this.sphere.removeChild(b);
+            // TODO: add sound here
+            // playSound("collect");
             return;
         }
 

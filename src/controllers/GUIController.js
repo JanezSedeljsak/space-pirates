@@ -55,11 +55,11 @@ export class GUIController {
 
         // add scoreboard controller
         this.scoreboardController = new ScoreBoardController();
+        // add sound controller
+        this.soundController = new SoundController(this.gameController);
 
         // bind game events
         document.addEventListener('pointerlockchange', e => this.gameController.pointerLockChange(e));
-
-        this.soundController = new SoundController(this.gameController);
     }
 
     _bind() {

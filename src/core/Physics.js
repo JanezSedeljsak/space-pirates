@@ -3,10 +3,11 @@ import { Asteroid } from '../models/Asteroid.js';
 
 export class Physics {
 
-    constructor(scene, plane, sphere) {
+    constructor(scene, plane, sphere, guiController) {
         this.plane = plane;
         this.scene = scene;
         this.sphere = sphere;
+        this.guiController = guiController;
     }
 
     update(dt) {
@@ -71,6 +72,8 @@ export class Physics {
             return;
         } else if (b.isAsteroid()) {
             this.sphere.removeChild(b);
+            this.guiController.soundController.playSound("collect");
+            this.guiController.addGameScore();
             return;
         }
 

@@ -17,6 +17,11 @@
 
     <!-- Perlin noise is currently not in use -->
     <!--<script src="./lib/perlin.js"></script>-->
+
+    <audio loop autoplay id="ambientSound">
+        <source src="/assets/sound/ambient.ogg" type="audio/ogg" />
+    </audio>
+    <audio id="gameSound"></audio>
 </head>
 
 <body>
@@ -84,9 +89,10 @@
     <!-- Game GUI -->
     <div id="game-gui">
         <div id="main">
-            <h2>🔉 <input type="range" /></h2>
-            <h2>⌛ 00:00</h2>
-            <h2>⭐ x/10</h2>
+            <div>To exit press <kbd>ESC</kbd> twice</div>
+            <h2><div>🔉</div><input type="range" id="soundControl" min="0" max="1" step="0.01" /></h2>
+            <h2><div>⌛</div><div id="gameTimer">00:00</div></h2>
+            <h2><div>⭐</div><div id="gameScore">0 / 10</div></h2>
         </div>
         <div id="speed">
             <div class="circle">

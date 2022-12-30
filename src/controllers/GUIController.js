@@ -9,6 +9,7 @@ export class GUIController {
         this.timer = 0;
         this.timerInterval = undefined;
         this.score = 0;
+        this.isSandbox = false;
 
         // screens
         this.startMenu = document.getElementById("start-menu-container");
@@ -51,7 +52,7 @@ export class GUIController {
         this.divHideScoreboard.addEventListener("click", this.hideScoreboard);
         this.divHideGameSettings.addEventListener("click", this.hideGameSettings);
         this.btnStartScoredGame.addEventListener("click", this.startScoredGame);
-        this.btnStartSandboxGame.addEventListener("click", this.startScoredGame);
+        this.btnStartSandboxGame.addEventListener("click", this.startSandboxGame);
         this.startGUI.addEventListener("click", this.startGameCountdown);
 
         document.addEventListener('keydown', this.handleKeyDown);
@@ -80,6 +81,7 @@ export class GUIController {
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.hideGameSettings = this.hideGameSettings.bind(this);
         this.startGameCountdown = this.startGameCountdown.bind(this);
+        this.startSandboxGame = this.startSandboxGame.bind(this);
     }
 
     async handleKeyDown(event) {
@@ -96,7 +98,8 @@ export class GUIController {
             case 'Escape':
                 this.startMenu.style.display = "block";
                 this.gameGUI.style.display = "none";
-                //this.loader.style.display = "block";
+                this.startGUI.style.display = "none";
+                this.endGame();
                 break;
             default:
                 return;
@@ -121,9 +124,21 @@ export class GUIController {
     }
     
     async startScoredGame() {
+        this.isSandbox = false;
         this.startMenu.style.display = "none";
         this.gameGUI.style.display = "block";
 
+        await this.gameController.init();
+        this.loader.style.display = "none";
+        this.startGUI.style.display = "block";
+    }
+
+    async startSandboxGame() {
+        this.isSandbox = true;
+        this.gameGUI.classList.add("sandbox");
+        this.countdown.innerHTML = "Fly around and explore!"
+        this.startMenu.style.display = "none";
+        this.gameGUI.style.display = "block";
         
         await this.gameController.init();
         this.loader.style.display = "none";
@@ -131,6 +146,11 @@ export class GUIController {
     }
 
     startGameCountdown() {
+        if (this.isSandbox) {
+            this.startGUI.style.display = "none";
+            this.canvas.click();
+            return;
+        }
         this.countdown.style.fontSize = "6rem";
         this.countdown.innerHTML = "3";
         setTimeout(() => this.countdown.innerHTML = "2", 1000);
@@ -141,7 +161,6 @@ export class GUIController {
             this.canvas.click();
             this.startGameTimer();
         }, 3000);
-
     }
 
     parseTimer() {
@@ -159,8 +178,10 @@ export class GUIController {
         this.timerInterval = setInterval(this._updateGameTimer.bind(this), 1000);
     }
 
-    endGameTimer() {
+    endGame() {
         clearInterval(this.timerInterval);
+        this.countdown.innerHTML = "Collect all 10 commets!";
+        this.gameGUI.classList.remove("sandbox");
     }
 
     _updateGameScore() {

@@ -5,6 +5,11 @@ import { SoundController } from "./SoundController.js";
 export class GUIController {
 
     init() {
+        //  variables
+        this.timer = 0;
+        this.timerInterval = undefined;
+        this.score = 0;
+
         // screens
         this.startMenu = document.getElementById("start-menu-container");
         this.scoreboard = document.getElementById("scoreboard");
@@ -20,6 +25,8 @@ export class GUIController {
         this.divHideGameSettings = document.getElementById("divHideGameSettings");
         this.btnStartScoredGame = document.getElementById("btnStartScoredGame");
         this.btnStartSandboxGame = document.getElementById("btnStartSandboxGame");
+        this.gameTimer = document.getElementById("gameTimer");
+        this.gameScore = document.getElementById("gameScore");
 
         // get canvas
         this.canvas = document.getElementById('game-canvas');
@@ -28,9 +35,9 @@ export class GUIController {
         // bind events to self
         this._bind = this._bind.bind(this);
         this._bind();
-
+        
         // create game controller instance 
-        this.gameController = new GameController(this.canvas);
+        this.gameController = new GameController(this, this.canvas);
 
         // read current selected planet from game controller state
         const { planetName } = this.gameController.state;
@@ -116,5 +123,34 @@ export class GUIController {
         
         await this.gameController.init();
         this.loader.style.display = "none";
+        this.startGameTimer();
+    }
+
+    parseTimer() {
+        const padNumber = num => num.toString().padStart(2, '0');
+        return `${padNumber(Math.floor(this.timer / 60))}:${padNumber(this.timer % 60)}`
+    }
+
+    _updateGameTimer() {
+        this.gameTimer.innerHTML = this.parseTimer();
+        this.timer++;
+    }
+
+    startGameTimer() {
+        this._updateGameTimer();
+        this.timerInterval = setInterval(this._updateGameTimer.bind(this), 1000);
+    }
+
+    endGameTimer() {
+        clearInterval(this.timerInterval);
+    }
+
+    _updateGameScore() {
+        this.gameScore.innerHTML = `${this.score} / 10`;
+    }
+
+    addGameScore() {
+        this.score++;
+        this._updateGameScore();
     }
 }

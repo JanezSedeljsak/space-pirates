@@ -199,7 +199,7 @@ button:hover, .btn:hover {
     flex: 1;
 }
 #game-gui {
-    display: block;
+    display: none;
 }
 #game-gui #main {
     z-index: 8;

@@ -10,8 +10,9 @@ import { STATE_KEY, IS_DEBUG } from '../config.js';
 import { SkyBox } from '../models/SkyBox.js';
 
 export class GameController extends Application {
-    constructor(...args) {
+    constructor(guiController, ...args) {
         super(...args);
+        this.guiController = guiController;
         this.toggleFirstPerson = this.toggleFirstPerson.bind(this);
         this._state = this.init_state;
     }
@@ -104,7 +105,7 @@ export class GameController extends Application {
             }
         });
 
-        this.physics = new Physics(this.scene, this.plane, this.sphere);
+        this.physics = new Physics(this.scene, this.plane, this.sphere, this.guiController);
         const asteroidPositions = [
             [5, 105, -28],
             [0, 105, -28],

@@ -1,5 +1,6 @@
 import { Sphere } from "./Sphere.js";
 import { mat4, quat, vec3 } from '../../lib/gl-matrix-module.js';
+import { SPHERE_TYPE_ENUM } from "../config.js";
 
 export class Asteroid extends Sphere {
 
@@ -8,6 +9,7 @@ export class Asteroid extends Sphere {
         super(mesh, texture, spec, null);
         this._props = props;
         this.radius = radius;
+        this.isGold = false;
 
         this.light.intensity = 1;
         this.material.diffuse = 10;
@@ -20,6 +22,10 @@ export class Asteroid extends Sphere {
         this.updateMatrix();
     }
 
+    setGoldType() {
+        this.isGold = true;
+    }
+
     isSphere() {
         return false;
     }
@@ -27,9 +33,21 @@ export class Asteroid extends Sphere {
     isAsteroid() {
         return true;
     }
+
+    isGoldAsteroid() {
+        return this.isGold;
+    }
     
     getDisplacementScale() {
         return -0.5;
+    }
+
+    getObjectType() {
+        if (this.isGoldAsteroid()) {
+            return SPHERE_TYPE_ENUM.GOLD_ASTEROID;
+        }
+        
+        return SPHERE_TYPE_ENUM.ROCK_ASTEROID;
     }
 
     clone() {

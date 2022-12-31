@@ -3,7 +3,7 @@ import { Vector3 } from "../core/Utils.js";
 import { mat4, quat, vec3 } from '../../lib/gl-matrix-module.js';
 import { Node } from "../core/Node.js";
 import { GUI } from '../../../lib/dat.gui.module.js';
-import { IS_DEBUG } from "../config.js";
+import { IS_DEBUG, SPHERE_TYPE_ENUM } from "../config.js";
 
 export class Sphere extends Model {
 
@@ -196,6 +196,10 @@ export class Sphere extends Model {
         mat4.fromRotationTranslationScale(m, q, v, s);
     }
 
+    getObjectType() {
+        return SPHERE_TYPE_ENUM.SPHERE;
+    }
+
     render(gl, matrix, camera, programs) {
         const light = this.light;
 
@@ -223,6 +227,9 @@ export class Sphere extends Model {
 
         const displacementScale = this.getDisplacementScale();
         gl.uniform1f(uniforms.uDisplacementScale, displacementScale);
+
+        const objectType = this.getObjectType();
+        gl.uniform1i(uniforms.uObjectType, objectType);
 
         const lightParam = vec3.scale(vec3.create(), light.color, light.intensity / 255);
         gl.uniform3fv(uniforms.uLight.color, lightParam);

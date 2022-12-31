@@ -210,11 +210,11 @@ export class GUIController {
         return `${padNumber(Math.floor(this.timer / 60))}:${padNumber(this.timer % 60)}`
     }
 
-    _updateGameTimer() {
+    _updateGameTimer(amount=1) {
         if (this.isPaused)
             return;
         this.gameTimer.innerHTML = this.parseTimer();
-        this.timer++;
+        this.timer += amount;
     }
 
     startGameTimer() {
@@ -261,10 +261,20 @@ export class GUIController {
     addGameScore() {
         if (!this.isStarted)
             return;
+
         this.score++;
         this._updateGameScore();
         if (this.score === END_GAME_SCORE) {
             this.endGame();
         }
+    }
+
+    subtractGameScore() {
+        if (!this.isStarted)
+            return;
+            
+        this.score = Math.max(this.score - 2, 0);
+        this._updateGameTimer(10);
+        this._updateGameScore();
     }
 }

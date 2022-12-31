@@ -5,7 +5,7 @@ import { Camera } from '../core/Camera.js';
 import { SceneLoader } from '../scene/SceneLoader.js';
 import { SceneBuilder } from '../scene/SceneBuilder.js';
 import { GLTFLoader } from '../gltf/GLTFLoader.js';
-import { STATE_KEY, IS_DEBUG, ASTEROIDS_AMOUNT } from '../config.js';
+import { STATE_KEY, IS_DEBUG, ASTEROIDS_AMOUNT, GOLD_AMOUNT } from '../config.js';
 import { SkyBox } from '../models/SkyBox.js';
 import { Sphere } from '../models/Sphere.js';
 
@@ -122,11 +122,15 @@ export class GameController extends Application {
         this.scene.removeNode(this.asteroid);
 
         if (!this.isSandbox) {
-            for (const ap of asteroidPositions) {
+            asteroidPositions.forEach((ap, idx) => {
                 const asteroid = this.asteroid.clone();
                 asteroid.setTranslation(ap);
+                if (idx < GOLD_AMOUNT) {
+                    asteroid.setGoldType();
+                }
+
                 this.sphere.addChild(asteroid);
-            }
+            });
         }
 
         this.camera.addChild(this.skybox);

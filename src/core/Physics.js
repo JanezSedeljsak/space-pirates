@@ -72,8 +72,15 @@ export class Physics {
             return;
         } else if (b.isAsteroid()) {
             this.sphere.removeChild(b);
-            this.guiController.soundController.playSound("collect");
-            this.guiController.addGameScore();
+            if (b.isGoldAsteroid()) {
+                this.guiController.soundController.playSound("collect");
+                this.guiController.addGameScore();
+            } else {
+                // TODO: play some other negative sound on rock collect
+                this.guiController.soundController.playSound("collect");
+                this.guiController.subtractGameScore(); 
+            }
+
             return;
         }
 

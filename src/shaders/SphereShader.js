@@ -9,6 +9,7 @@ uniform sampler2D uNormalMap;
 
 uniform vec3 uCameraPosition;
 uniform float uDisplacementScale;
+uniform int uObjectType;
 
 struct Light {
     vec3 position;
@@ -31,6 +32,7 @@ uniform mat4 uProjection;
 out vec2 vTexCoord;
 out vec3 vDiffuseLight;
 out vec3 vSpecularLight;
+out vec2 vObjectType;
 
 void main() {
     float displacementScale = uDisplacementScale; // -0.08f;
@@ -55,6 +57,7 @@ void main() {
 
     vDiffuseLight = lambert * attenuation * uLight.color;
     vSpecularLight = phong * attenuation * uLight.color;
+    vObjectType = vec2(uObjectType, 1);
 }
 `;
 
@@ -67,6 +70,7 @@ uniform mediump sampler2D uTexture;
 in vec2 vTexCoord;
 in vec3 vDiffuseLight;
 in vec3 vSpecularLight;
+in vec2 vObjectType;
 
 out vec4 oColor;
 
@@ -75,6 +79,12 @@ void main() {
     vec3 albedo = pow(texture(uTexture, vTexCoord).rgb, vec3(gamma));
     vec3 finalColor = albedo * vDiffuseLight + vSpecularLight;
     oColor = pow(vec4(finalColor, 1), vec4(1.0 / gamma));
+
+    // if of type rock asteroid change color to black and white
+    if (vObjectType.x == 2.0) {
+        float luminance = (oColor.r + oColor.g + oColor.b)/3.0;
+        oColor = vec4(luminance, luminance, luminance, 1.0);
+    }
 }
 `;
 

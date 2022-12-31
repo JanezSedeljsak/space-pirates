@@ -138,7 +138,7 @@ export class GUIController {
         this.startMenu.style.display = "none";
         this.gameGUI.style.display = "block";
 
-        await this.gameController.init();
+        await this.gameController.init({ isSandbox: false });
         this.loader.style.display = "none";
         this.startGUI.style.display = "block";
     }
@@ -150,7 +150,7 @@ export class GUIController {
         this.startMenu.style.display = "none";
         this.gameGUI.style.display = "block";
         
-        await this.gameController.init();
+        await this.gameController.init({ isSandbox: true });
         this.loader.style.display = "none";
         this.startGUI.style.display = "block";
     }

@@ -17,6 +17,11 @@ export class GameController extends Application {
         this._state = this.init_state;
     }
 
+    async init({ isSandbox }) {
+        this.isSandbox = isSandbox;
+        await super.init();
+    }
+
     async start() {
         const gl = this.gl;
 
@@ -132,10 +137,12 @@ export class GameController extends Application {
         await this.asteroid.initializeHeightMap();
         this.scene.removeNode(this.asteroid);
 
-        for (const ap of asteroidPositions) {
-            const asteroid = this.asteroid.clone();
-            asteroid.setTranslation(ap);
-            this.sphere.addChild(asteroid);
+        if (!this.isSandbox) {
+            for (const ap of asteroidPositions) {
+                const asteroid = this.asteroid.clone();
+                asteroid.setTranslation(ap);
+                this.sphere.addChild(asteroid);
+            }
         }
 
         this.camera.addChild(this.skybox);

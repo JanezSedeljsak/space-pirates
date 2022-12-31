@@ -24,6 +24,7 @@ export class Sphere extends Model {
         this.planetName = planetName;
 
         const verticalOffset = -(radius + Math.sqrt(radius) / 1.2);
+        this.verticalOffset = verticalOffset;
         this.translation = [0, verticalOffset, 5];
 
         this.light = new Node();
@@ -82,6 +83,21 @@ export class Sphere extends Model {
         material.add(this.material, 'diffuse', 0, 1);
         material.add(this.material, 'specular', 0, 1);
         material.add(this.material, 'shininess', 1, 200);
+    }
+
+    static createRandomPoint(radius) {
+        // generate points between (-1, 1)
+        let x = (Math.random() * 2) - 1;
+        let y = (Math.random() * 2) - 1;
+        let z = (Math.random() * 2) - 1;
+      
+        // normalize the point to make it a point on the surface of the sphere
+        const normalizationFactor = radius / Math.sqrt(x ** 2 + y ** 2 + z ** 2);
+        x *= normalizationFactor;
+        y *= normalizationFactor;
+        z *= normalizationFactor;
+      
+        return [x, y, z];
     }
 
     static createGlobe({ radius, segments }) {

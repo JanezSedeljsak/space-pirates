@@ -18,4 +18,7 @@ export const STATE_KEY = "state";
 export const SCOREBOARD_KEY = "scoreboard";
 export const PLANET_PLACEHODLDER = 'PLANET_PLACEHODLDER';
 
+export const END_GAME_SCORE = 10;
+export const ASTEROIDS_AMOUNT = 40;
+
 export const IS_DEBUG = false;

@@ -38,6 +38,11 @@ export class Asteroid extends Sphere {
         return asteroid;
     }
 
+    update(dt) {
+        this.rotation[2] += dt;
+        this.updateMatrix();
+    }
+
     async initializeHeightMap() {
         const [heightMap, normalMap] = await Promise.all([
             this.loadTexture(`../../assets/images/asteroids/Asteroid_Height.avif`),

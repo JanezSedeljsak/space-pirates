@@ -1,5 +1,5 @@
 
-import { SCOREBOARD_KEY } from "../config.js";
+import { IS_DEBUG, SCOREBOARD_KEY } from "../config.js";
 
 export class ScoreBoardController {
 
@@ -14,6 +14,7 @@ export class ScoreBoardController {
 
     // this should be removed in prod
     static __createDummyData() {
+        if (!IS_DEBUG) return;
         ScoreBoardController.addScore({ user: 'Janez', time: 201 });
         ScoreBoardController.addScore({ user: 'Janez', time: 131 });
         ScoreBoardController.addScore({ user: 'Janez', time: 191 });

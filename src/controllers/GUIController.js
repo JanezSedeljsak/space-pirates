@@ -1,8 +1,7 @@
 import { GameController } from "./GameController.js";
 import { ScoreBoardController } from "./ScoreBoardController.js";
 import { SoundController } from "./SoundController.js";
-
-const endGameScore = 10;
+import { END_GAME_SCORE } from "../config.js";
 
 export class GUIController {
 
@@ -227,9 +226,9 @@ export class GUIController {
         document.exitPointerLock();
         clearInterval(this.timerInterval);
         this.isStarted = false;
-        this.countdown.innerHTML = `Collect all ${endGameScore} commets!`;
+        this.countdown.innerHTML = `Collect all ${END_GAME_SCORE} commets!`;
         this.gameGUI.classList.remove("sandbox");
-        if (this.score === endGameScore)
+        if (this.score === END_GAME_SCORE)
             this.addScoreScreen.style.display = "block";
     }
 
@@ -256,7 +255,7 @@ export class GUIController {
     }
 
     _updateGameScore() {
-        this.gameScore.innerHTML = `${this.score} / ${endGameScore}`;
+        this.gameScore.innerHTML = `${this.score} / ${END_GAME_SCORE}`;
     }
 
     addGameScore() {
@@ -264,7 +263,7 @@ export class GUIController {
             return;
         this.score++;
         this._updateGameScore();
-        if (this.score === endGameScore) {
+        if (this.score === END_GAME_SCORE) {
             this.endGame();
         }
     }

@@ -6,8 +6,9 @@ import { Camera } from '../core/Camera.js';
 import { SceneLoader } from '../scene/SceneLoader.js';
 import { SceneBuilder } from '../scene/SceneBuilder.js';
 import { GLTFLoader } from '../gltf/GLTFLoader.js';
-import { STATE_KEY, IS_DEBUG } from '../config.js';
+import { STATE_KEY, IS_DEBUG, ASTEROIDS_AMOUNT } from '../config.js';
 import { SkyBox } from '../models/SkyBox.js';
+import { Sphere } from '../models/Sphere.js';
 
 export class GameController extends Application {
     constructor(guiController, ...args) {
@@ -115,25 +116,8 @@ export class GameController extends Application {
         this.plane.sphere = this.sphere;
         this.sphere.plane = this.plane;
         
-        const asteroidPositions = [
-            // first row
-            [5, 105, -28],
-            [0, 105, -28],
-            [-7, 105, -28],
-            [13, 105, -28],
-
-            // second row
-            [5, 102, -38],
-            [0, 102, -38],
-            [-7, 102, -38],
-            [13, 102, -38],
-
-            // third row
-            [5, 97, -48],
-            [0, 97, -48],
-            [-7, 97, -48],
-            [13, 97, -48],
-        ];
+        const asteroidPositions = [...new Array(ASTEROIDS_AMOUNT)]
+            .map(_ => Sphere.createRandomPoint(this.sphere.verticalOffset));
 
         await this.asteroid.initializeHeightMap();
         this.scene.removeNode(this.asteroid);
@@ -167,6 +151,10 @@ export class GameController extends Application {
         this.plane.update(dt);
         this.camera.update(dt);
         this.physics.update(dt);
+
+        for (const asteroid of this.sphere.children) {
+            asteroid.update(dt);
+        }
     }
 
     render() {

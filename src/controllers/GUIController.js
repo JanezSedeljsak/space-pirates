@@ -2,6 +2,8 @@ import { GameController } from "./GameController.js";
 import { ScoreBoardController } from "./ScoreBoardController.js";
 import { SoundController } from "./SoundController.js";
 
+const endGameScore = 10;
+
 export class GUIController {
 
     init() {
@@ -22,6 +24,7 @@ export class GUIController {
         this.selectedPlanet = document.getElementById('selected-planet');
         this.startGUI = document.getElementById("start-gui");
         this.pausedScreen = document.getElementById("paused-screen");
+        this.addScoreScreen = document.getElementById("add-score");
 
         // buttons/divs with events
         this.btnGameSettings = document.getElementById("btnGameSettings");
@@ -30,6 +33,8 @@ export class GUIController {
         this.divHideGameSettings = document.getElementById("divHideGameSettings");
         this.btnStartScoredGame = document.getElementById("btnStartScoredGame");
         this.btnStartSandboxGame = document.getElementById("btnStartSandboxGame");
+        this.btnScoreSubmit = document.getElementById("btnScoreSubmit");
+        this.inputUsernameSubmit = document.getElementById("username-submit");
         this.gameTimer = document.getElementById("gameTimer");
         this.gameScore = document.getElementById("gameScore");
         this.countdown = document.getElementById("countdown");
@@ -58,6 +63,7 @@ export class GUIController {
         this.btnStartSandboxGame.addEventListener("click", this.startSandboxGame);
         this.startGUI.addEventListener("click", this.startGame);
         this.pausedScreen.addEventListener("click", this.unpauseGame);
+        this.btnScoreSubmit.addEventListener("click", this.addScoreToScoreboard);
 
         document.addEventListener('keydown', this.handleKeyDown);
         document.querySelectorAll('.planet').forEach(planet => {
@@ -89,9 +95,12 @@ export class GUIController {
         this.startGameCountdown = this.startGameCountdown.bind(this);
         this.startSandboxGame = this.startSandboxGame.bind(this);
         this.unpauseGame = this.unpauseGame.bind(this);
+        this.addScoreToScoreboard = this.addScoreToScoreboard.bind(this);
     }
 
     async handleKeyDown(event) {
+        if (!this.isStarted)
+            return;
         switch (event.code) {
             case 'KeyV':
                 this.gameController.toggleFirstPerson();
@@ -103,6 +112,7 @@ export class GUIController {
                 alert("open menu");
                 break;
             case 'Escape':
+                this.resetScoreTimerGUI();
                 this.startMenu.style.display = "block";
                 this.gameGUI.style.display = "none";
                 this.startGUI.style.display = "none";
@@ -159,6 +169,7 @@ export class GUIController {
         if (this.isSandbox) {
             this.startGUI.style.display = "none";
             this.canvas.click();
+            this.isStarted = true;
             return;
         }
         this.startGameCountdown();
@@ -175,8 +186,10 @@ export class GUIController {
         setTimeout(() => {
             this.countdown.style.fontSize = "3rem";
             this.startGUI.style.display = "none";
-            this.canvas.click();
-            this.startGameTimer();
+            if (this.isStarted) {
+                this.canvas.click();
+                this.startGameTimer();
+            }
         }, 3000);
     }
 
@@ -210,22 +223,46 @@ export class GUIController {
     }
 
     endGame() {
+        document.exitPointerLock();
         clearInterval(this.timerInterval);
         this.isStarted = false;
-        this.countdown.innerHTML = "Collect all 10 commets!";
+        this.countdown.innerHTML = `Collect all ${endGameScore} commets!`;
         this.gameGUI.classList.remove("sandbox");
-        
+        if (this.score === endGameScore)
+            this.addScoreScreen.style.display = "block";
+    }
+
+    addScoreToScoreboard() {
+        if (this.inputUsernameSubmit.value.length !== 0) {
+            ScoreBoardController.addScore({
+                user: this.inputUsernameSubmit.value,
+                time: this.timer,
+            })
+        }
+        this.startMenu.style.display = "block";
+        this.gameGUI.style.display = "none";
+        this.startGUI.style.display = "none";
+        this.addScoreScreen.style.display = "none";
+        this.resetScoreTimerGUI();
+    }
+
+    resetScoreTimerGUI() {
+        this.timer = 0;
+        this.score = 0;
+        this._updateGameScore();
+        this._updateGameTimer();
     }
 
     _updateGameScore() {
-        this.gameScore.innerHTML = `${this.score} / 10`;
+        this.gameScore.innerHTML = `${this.score} / ${endGameScore}`;
     }
 
     addGameScore() {
+        if (!this.isStarted)
+            return;
         this.score++;
         this._updateGameScore();
-        if (this.score === 10) {
-            console.log('done');
+        if (this.score === endGameScore) {
             this.endGame();
         }
     }

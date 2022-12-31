@@ -1,5 +1,7 @@
 export class SoundController {
     constructor(gameController) {
+        this.gameSoundLocked = false;
+
         this.soundControl = document.getElementById("soundControl");
         this.ambientSound = document.getElementById("ambientSound");
         this.gameSound = document.getElementById("gameSound");
@@ -15,6 +17,9 @@ export class SoundController {
         document.addEventListener('click', () => {
             this.ambientSound.play();
         }, { once: true });
+
+        this.gameSound.addEventListener("play", () => this.gameSoundLocked = true);
+        this.gameSound.addEventListener("ended", () => this.gameSoundLocked = false);
     }
 
     setVolume(volume) {
@@ -29,6 +34,8 @@ export class SoundController {
     }
 
     playSound(sound, extension="ogg") {
+        if (this.gameSoundLocked || !this.gameController.guiController.isStarted)
+            return;
         this.gameSound.src = `/assets/sound/${sound}.${extension}`;
         this.gameSound.play();
     }

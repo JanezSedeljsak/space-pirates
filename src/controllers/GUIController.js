@@ -50,9 +50,10 @@ export class GUIController {
         // create game controller instance 
         this.gameController = new GameController(this, this.canvas);
 
-        // read current selected planet from game controller state
-        const { planetName } = this.gameController.state;
+        // read current selected planet and username from game controller state
+        const { planetName, username } = this.gameController.state;
         this.selectedPlanet.innerHTML = planetName;
+        this.inputUsernameSubmit.value = username;
 
         // register events
         this.btnGameSettings.addEventListener("click", this.showGameSettings);
@@ -237,7 +238,8 @@ export class GUIController {
             ScoreBoardController.addScore({
                 user: this.inputUsernameSubmit.value,
                 time: this.timer,
-            })
+            });
+            this.gameController.setState({ username: this.inputUsernameSubmit.value });
         }
         this.startMenu.style.display = "block";
         this.gameGUI.style.display = "none";

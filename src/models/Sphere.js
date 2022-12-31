@@ -1,6 +1,6 @@
 import { Model } from "../core/Model.js";
 import { Vector3 } from "../core/Utils.js";
-import { vec3, mat4 } from "../../lib/gl-matrix-module.js";
+import { mat4, quat, vec3 } from '../../lib/gl-matrix-module.js';
 import { Node } from "../core/Node.js";
 import { GUI } from '../../../lib/dat.gui.module.js';
 import { IS_DEBUG } from "../config.js";
@@ -185,6 +185,17 @@ export class Sphere extends Model {
         return -0.08;
     }
 
+    updateMatrix() {
+        const m = this.matrix;
+        const degrees = this.rotation.slice(0, 3).map(x => x * 180 / Math.PI);
+        const q = quat.fromEuler(quat.create(), ...degrees);
+        //let q = quat.create();
+        //quat.setAxisAngle(q, this.rotation, 90 * Math.PI / 180);
+        const v = vec3.clone(this.translation);
+        const s = vec3.clone(this.scale);
+        mat4.fromRotationTranslationScale(m, q, v, s);
+    }
+
     render(gl, matrix, camera, programs) {
         const light = this.light;
 
@@ -210,7 +221,8 @@ export class Sphere extends Model {
         const cameraPos = mat4.getTranslation(vec3.create(), camera.getGlobalTransform());
         gl.uniform3fv(uniforms.uCameraPosition, cameraPos);
 
-        gl.uniform1f(uniforms.uDisplacementScale, this.getDisplacementScale());
+        const displacementScale = this.getDisplacementScale();
+        gl.uniform1f(uniforms.uDisplacementScale, displacementScale);
 
         const lightParam = vec3.scale(vec3.create(), light.color, light.intensity / 255);
         gl.uniform3fv(uniforms.uLight.color, lightParam);

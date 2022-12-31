@@ -1,4 +1,5 @@
 import { Sphere } from "./Sphere.js";
+import { mat4, quat, vec3 } from '../../lib/gl-matrix-module.js';
 
 export class Asteroid extends Sphere {
 
@@ -41,6 +42,15 @@ export class Asteroid extends Sphere {
     update(dt) {
         this.rotation[2] += dt;
         this.updateMatrix();
+    }
+
+    updateMatrix() {
+        const m = this.matrix;
+        const degrees = this.rotation.slice(0, 3).map(x => x * 180 / Math.PI);
+        const q = quat.fromEuler(quat.create(), ...degrees);
+        const v = vec3.clone(this.translation);
+        const s = vec3.clone(this.scale);
+        mat4.fromRotationTranslationScale(m, q, v, s);
     }
 
     async initializeHeightMap() {

@@ -1,5 +1,4 @@
 import { Application } from '../engine/Application.js';
-
 import { Renderer } from '../core/Renderer.js';
 import { Physics } from '../core/Physics.js';
 import { Camera } from '../core/Camera.js';
@@ -152,8 +151,10 @@ export class GameController extends Application {
         this.camera.update(dt);
         this.physics.update(dt);
 
-        for (const asteroid of this.sphere.children) {
-            asteroid.update(dt);
+        for (const node of this.sphere.children) {
+            if (node.isAsteroid()) {
+                node.update(dt);
+            }
         }
     }
 

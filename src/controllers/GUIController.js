@@ -225,7 +225,8 @@ export class GUIController {
         this.score++;
         this._updateGameScore();
         if (this.score === 10) {
-            endGame();
+            console.log('done');
+            this.endGame();
         }
     }
 }

@@ -110,10 +110,23 @@ export class GameController extends Application {
         this.sphere.plane = this.plane;
         
         const asteroidPositions = [
+            // first row
             [5, 105, -28],
             [0, 105, -28],
             [-7, 105, -28],
             [13, 105, -28],
+
+            // second row
+            [5, 102, -38],
+            [0, 102, -38],
+            [-7, 102, -38],
+            [13, 102, -38],
+
+            // third row
+            [5, 97, -48],
+            [0, 97, -48],
+            [-7, 97, -48],
+            [13, 97, -48],
         ];
 
         await this.asteroid.initializeHeightMap();

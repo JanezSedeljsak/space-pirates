@@ -39,14 +39,14 @@ export class Asteroid extends Sphere {
     }
     
     getDisplacementScale() {
-        return -0.5;
+        return -0.25;
     }
 
     getObjectType() {
         if (this.isGoldAsteroid()) {
             return SPHERE_TYPE_ENUM.GOLD_ASTEROID;
         }
-        
+
         return SPHERE_TYPE_ENUM.ROCK_ASTEROID;
     }
 

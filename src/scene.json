@@ -22,7 +22,9 @@
       },
       "radius": 100, 
       "translation": [0, -30, 5]
-    },
+    }
+  ],
+  "extras": [
     {
       "type": "asteroid",
       "texture": 2,
@@ -48,7 +50,7 @@
   "textures": [
     "PLANET_PLACEHODLDER",
     "../assets/images/space.avif",
-    "../assets/images/asteroids/Asteroid_Albedo.avif"
+    "../assets/images/asteroids/gold.jpg"
   ],
   "meshes": [
     "../assets/models/cube.json"

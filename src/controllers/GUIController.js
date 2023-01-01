@@ -82,6 +82,8 @@ export class GUIController {
 
         // bind game events
         document.addEventListener('pointerlockchange', e => this.gameController.pointerLockChange(e));
+        this.setGameLabel();
+        this.resetScoreTimerGUI();
     }
 
     _bind() {
@@ -172,13 +174,19 @@ export class GUIController {
             this.isStarted = true;
             return;
         }
+        
         this.startGameCountdown();
         this.isStarted = true;
+    }
+
+    setGameLabel() {
+        this.countdown.innerHTML = `Collect ${END_GAME_SCORE} gold space rocks!`;
     }
 
     startGameCountdown() {
         if (this.isStarted)
             return;
+        
         this.countdown.style.fontSize = "6rem";
         this.countdown.innerHTML = "3";
         setTimeout(() => this.countdown.innerHTML = "2", 1000);
@@ -226,7 +234,7 @@ export class GUIController {
         document.exitPointerLock();
         clearInterval(this.timerInterval);
         this.isStarted = false;
-        this.countdown.innerHTML = `Collect all ${END_GAME_SCORE} commets!`;
+        this.setGameLabel();
         this.gameGUI.classList.remove("sandbox");
         if (this.score === END_GAME_SCORE)
             this.addScoreScreen.style.display = "block";

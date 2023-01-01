@@ -4,7 +4,7 @@ import { Camera } from '../core/Camera.js';
 import { Scene } from './Scene.js';
 import { Sphere } from '../models/Sphere.js';
 import { Asteroid } from '../models/Asteroid.js';
-import { MODEL_ENUM } from '../config.js';
+import { MODEL_ENUM, SEGMENTS_COUNT_ENUM } from '../config.js';
 
 export class SceneBuilder {
 
@@ -24,12 +24,11 @@ export class SceneBuilder {
             }
             case 'asteroid':
             case 'sphere': {
-                const options = {
+                const [sphereMesh, radius] = Sphere.createGlobe({
                     radius: settings?.radius ?? spec?.radius,
-                    segments: spec.type === 'sphere' ? 256 : 64
-                };
-                
-                const [sphereMesh, radius] = Sphere.createGlobe(options);
+                    segments: SEGMENTS_COUNT_ENUM[spec.type]
+                });
+
                 const mesh = new Mesh(sphereMesh);
                 const texture = this.spec.textures[spec.texture];
                 if (spec.type === 'sphere') {
@@ -47,6 +46,7 @@ export class SceneBuilder {
     build(settings) {
         let scene = new Scene();
         this.spec.nodes.forEach(spec => scene.addNode(this.createNode(spec, settings)));
+        this.spec.extras.forEach(spec => scene.addExtra(spec.type, this.createNode(spec, settings)));
         return scene;
     }
 

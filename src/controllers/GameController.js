@@ -6,8 +6,7 @@ import { SceneLoader } from '../scene/SceneLoader.js';
 import { SceneBuilder } from '../scene/SceneBuilder.js';
 import { GLTFLoader } from '../gltf/GLTFLoader.js';
 import { STATE_KEY, IS_DEBUG, ASTEROIDS_AMOUNT, GOLD_AMOUNT } from '../config.js';
-import { SkyBox } from '../models/SkyBox.js';
-import { Sphere } from '../models/Sphere.js';
+import { PointGenerator } from '../core/Utils.js';
 
 export class GameController extends Application {
     constructor(guiController, ...args) {
@@ -96,18 +95,12 @@ export class GameController extends Application {
         // Find game objects
         this.camera = null;
         this.sphere = null;
-        this.skybox = null;
-        this.asteroid = null;
 
         this.scene.traverse(node => {
             if (node instanceof Camera) {
                 this.camera = node;
             } else if (node.isSphere()) {
                 this.sphere = node;
-            } else if (node instanceof SkyBox) {
-                this.skybox = node;
-            } else if (node.isAsteroid()) {
-                this.asteroid = node;
             }
         });
 
@@ -115,27 +108,28 @@ export class GameController extends Application {
         this.plane.sphere = this.sphere;
         this.sphere.plane = this.plane;
         
-        const asteroidPositions = [...new Array(ASTEROIDS_AMOUNT)]
-            .map(_ => Sphere.createRandomPoint(this.sphere.verticalOffset));
-
-        await this.asteroid.initializeHeightMap();
-        this.scene.removeNode(this.asteroid);
+        const { skybox, asteroid } = this.scene.extras;
+        await asteroid.initializeHeightMap();
 
         if (!this.isSandbox) {
+            const asteroidPositions = PointGenerator.multipleUniq(
+                ASTEROIDS_AMOUNT, 
+                this.sphere.verticalOffset,
+                asteroid.radius * 2
+            );
+
             asteroidPositions.forEach((ap, idx) => {
-                const asteroid = this.asteroid.clone();
-                asteroid.setTranslation(ap);
+                const aCpy = asteroid.clone();
+                aCpy.setTranslation(ap);
                 if (idx < GOLD_AMOUNT) {
-                    asteroid.setGoldType();
+                    aCpy.setGoldType();
                 }
 
-                this.sphere.addChild(asteroid);
+                this.sphere.addChild(aCpy);
             });
         }
 
-        this.camera.addChild(this.skybox);
-        this.scene.removeNode(this.skybox);
-
+        this.camera.addChild(skybox);
         this.scene.addNode(this.plane);
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();

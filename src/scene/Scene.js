@@ -2,10 +2,15 @@ export class Scene {
 
     constructor() {
         this.nodes = [];
+        this.extras = {}; // extra nodes map - <NodeType, Node>
     }
 
     addNode(node) {
         this.nodes.push(node);
+    }
+
+    addExtra(key, node) {
+        this.extras[key] = node;
     }
 
     removeNode(node) {

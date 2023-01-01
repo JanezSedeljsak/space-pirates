@@ -28,9 +28,11 @@ export const SEGMENTS_COUNT_ENUM = {
 export const STATE_KEY = "state";
 export const SCOREBOARD_KEY = "scoreboard";
 export const PLANET_PLACEHODLDER = 'PLANET_PLACEHODLDER';
+export const PLANE_ROTATION_VECTOR = [1.6, 3.15, 0];
 
 export const END_GAME_SCORE = 10;
 export const ASTEROIDS_AMOUNT = 100;
 export const GOLD_AMOUNT = 25;
+export const CENTER_OFFSET = 20;
 
 export const IS_DEBUG = false;

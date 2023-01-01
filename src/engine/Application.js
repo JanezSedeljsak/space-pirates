@@ -49,7 +49,7 @@ export class Application {
         }
     }
 
-    start() {
+    async start() {
         // initialization code (including event handler binding)
     }
 

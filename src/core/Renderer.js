@@ -1,10 +1,8 @@
 import { mat4 } from '../../lib/gl-matrix-module.js';
 import { WebGL } from '../engine/WebGL.js';
-import { Sphere } from '../models/Sphere.js';
 import { GLTFNode } from '../gltf/GLTFNode.js';
 import { GLTFRenderer } from '../gltf/GLTFRenderer.js';
 import { shaders } from '../shaders/index.js';
-import { Node } from './Node.js';
 import { IS_DEBUG } from '../config.js';
 
 export class Renderer extends GLTFRenderer {

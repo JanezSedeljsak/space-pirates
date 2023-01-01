@@ -1,4 +1,5 @@
 import { GLTFNode } from "../gltf/GLTFNode.js";
+import { PLANE_ROTATION_VECTOR } from "../config.js";
 
 export class Plane extends GLTFNode {
 
@@ -8,8 +9,10 @@ export class Plane extends GLTFNode {
         this.keydownHandler = this.keydownHandler.bind(this);
         this.keyupHandler = this.keyupHandler.bind(this);
 
+        this.rotation = PLANE_ROTATION_VECTOR;
+        this.updateMatrix();
+
         this.sphere = null;
-        this.directionVector = [0, 0, 0];
         this.keys = {};
     }
 

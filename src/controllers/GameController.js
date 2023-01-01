@@ -6,7 +6,7 @@ import { SceneLoader } from '../scene/SceneLoader.js';
 import { SceneBuilder } from '../scene/SceneBuilder.js';
 import { GLTFLoader } from '../gltf/GLTFLoader.js';
 import { STATE_KEY, IS_DEBUG, ASTEROIDS_AMOUNT, GOLD_AMOUNT } from '../config.js';
-import { PointGenerator } from '../core/Utils.js';
+import { PointGenerator } from '../core/PointGenerator.js';
 
 export class GameController extends Application {
     constructor(guiController, ...args) {
@@ -34,7 +34,7 @@ export class GameController extends Application {
 
         // load all gltf models
         await Promise.all([
-            this.planeLoader.load('/assets/models/plane4.gltf'),
+            this.planeLoader.load('/assets/models/spacecraft.gltf'),
         ]);
 
         await this.load('/src/scene.json');
@@ -53,7 +53,7 @@ export class GameController extends Application {
             username: '',
         };
     }
-    
+
     get state() {
         return this._state;
     }
@@ -107,16 +107,17 @@ export class GameController extends Application {
         this.physics = new Physics(this.scene, this.plane, this.sphere, this.guiController);
         this.plane.sphere = this.sphere;
         this.sphere.plane = this.plane;
-        
+
         const { skybox, asteroid } = this.scene.extras;
         await asteroid.initializeHeightMap();
 
         if (!this.isSandbox) {
-            const asteroidPositions = PointGenerator.multipleUniq(
-                ASTEROIDS_AMOUNT, 
-                this.sphere.verticalOffset,
-                asteroid.radius * 2
-            );
+            const asteroidPositions = PointGenerator.multipleUniq({
+                amount: ASTEROIDS_AMOUNT,
+                offset:  this.sphere.verticalOffset,
+                dist: asteroid.radius * 2,
+                center: [0, -this.sphere.verticalOffset, 0]
+            });
 
             asteroidPositions.forEach((ap, idx) => {
                 const aCpy = asteroid.clone();

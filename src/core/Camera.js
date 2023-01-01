@@ -41,7 +41,7 @@ export class Camera extends Node {
         this.cameraView = (this.cameraView + 1) % 3;
         switch (this.cameraView) {
             case CAMERA_VIEW_ENUM.FIRST_PERSON:
-                this.translation[2] = -2;
+                this.translation[2] = -3;
                 break;
 
             case CAMERA_VIEW_ENUM.THIRD_PERSON:
@@ -49,8 +49,8 @@ export class Camera extends Node {
                 break;
 
             case CAMERA_VIEW_ENUM.TOP_DOWN:
-                this.translation[2] = 0;
-                this.translation[1] = 7;
+                this.translation[2] = -2;
+                this.translation[1] = 8;
                 this.rotation[0] = -1.5;
                 break;
 

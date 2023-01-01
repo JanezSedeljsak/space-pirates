@@ -23,53 +23,6 @@ export class Utils {
     }
 }
 
-export class PointGenerator {
-
-    static createRandom(radius) {
-        // generate points between (-1, 1)
-        let x = (Math.random() * 2) - 1;
-        let y = (Math.random() * 2) - 1;
-        let z = (Math.random() * 2) - 1;
-      
-        // normalize the point to make it a point on the surface of the sphere
-        const normalizationFactor = radius / Math.sqrt(x ** 2 + y ** 2 + z ** 2);
-        x *= normalizationFactor;
-        y *= normalizationFactor;
-        z *= normalizationFactor;
-      
-        return [x, y, z];
-    }
-
-    static validateUniq(pos, positions, dist) {
-        for (const p of positions) {
-            if (Utils.distance(p, pos) < dist) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-    
-    static createUniq(positions, offset, dist) {
-        while (true) {
-            const pos = PointGenerator.createRandom(offset);
-            if (PointGenerator.validateUniq(pos, positions, dist)) {
-                return pos;
-            }
-        }
-    }
-
-    static multipleUniq(amount, offset, dist) {
-        const positions = [];
-        for (let i = 0; i < amount; i++) {
-            const uniq = PointGenerator.createUniq(positions, offset, dist);
-            positions.push(uniq);
-        }
-
-        return positions;
-    }
-}
-
 export class Vector3 {
     static ZERO = new Vector3(0, 0, 0);
     static ONE = new Vector3(1, 1, 1);

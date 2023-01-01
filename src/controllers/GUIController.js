@@ -103,15 +103,10 @@ export class GUIController {
     async handleKeyDown(event) {
         if (!this.isStarted)
             return;
+            
         switch (event.code) {
             case 'KeyV':
                 this.gameController.toggleFirstPerson();
-                break;
-            case 'KeyR':
-                await this.gameController.start();
-                break;
-            case 'KeyM':
-                alert("open menu");
                 break;
             case 'Escape':
                 this.resetScoreTimerGUI();

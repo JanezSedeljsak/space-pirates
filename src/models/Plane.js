@@ -14,6 +14,11 @@ export class Plane extends GLTFNode {
 
         this.sphere = null;
         this.keys = {};
+
+        this.aabb = {
+            min: [-5, -500, 0],
+            max: [5, 0, 0],
+        }
     }
 
     enable() {

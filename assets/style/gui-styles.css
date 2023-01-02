@@ -26,7 +26,7 @@ button:hover, .btn:hover {
 }
 
 #start-menu-container {
-    background-image: url(../images/landing.avif);
+    background-image: url(../images/landing.jpg);
     background-size: cover;
 }
 #start-menu-container > div {
@@ -78,7 +78,7 @@ button:hover, .btn:hover {
 
 #credits * {
     font-size: 1.2rem;
-    color: #2f3036;
+    color: #aaa;
 }
 
 #scoreboard {

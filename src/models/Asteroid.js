@@ -10,11 +10,16 @@ export class Asteroid extends Sphere {
         this._props = props;
         this.radius = radius;
         this.type = SPHERE_TYPE_ENUM.ROCK_ASTEROID;
+        this.setRandomRotation();
 
         this.light.intensity = 1;
         this.material.diffuse = 10;
         this.material.specular = 1;
         this.material.shininess = 1;
+    }
+
+    setRandomRotation() {
+        this.rotationSpeed = Math.random() * 2;
     }
 
     setTranslation(tVector) {
@@ -59,11 +64,12 @@ export class Asteroid extends Sphere {
         const asteroid = new Asteroid(...this._props);
         asteroid.heightMap = this.heightMap;
         asteroid.normalMap = this.normalMap;
+        asteroid.setRandomRotation();
         return asteroid;
     }
 
     update(dt) {
-        this.rotation[2] += dt;
+        this.rotation[2] += dt * this.rotationSpeed;
         this.updateMatrix();
     }
 

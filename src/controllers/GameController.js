@@ -5,7 +5,7 @@ import { Camera } from '../core/Camera.js';
 import { SceneLoader } from '../scene/SceneLoader.js';
 import { SceneBuilder } from '../scene/SceneBuilder.js';
 import { GLTFLoader } from '../gltf/GLTFLoader.js';
-import { STATE_KEY, IS_DEBUG, ASTEROIDS_AMOUNT, GOLD_AMOUNT, EMERALD_AMOUNT } from '../config.js';
+import { STATE_KEY, ASTEROIDS_AMOUNT, GOLD_AMOUNT, EMERALD_AMOUNT } from '../config.js';
 import { PointGenerator } from '../core/PointGenerator.js';
 
 export class GameController extends Application {
@@ -16,9 +16,9 @@ export class GameController extends Application {
         this._state = this.init_state;
     }
 
-    async init({ isSandbox }) {
+    async controller_init({ isSandbox }) {
         this.isSandbox = isSandbox;
-        await super.init();
+        await this.start();
     }
 
     async start() {
@@ -107,6 +107,7 @@ export class GameController extends Application {
         this.physics = new Physics(this.scene, this.plane, this.sphere, this.guiController);
         this.plane.sphere = this.sphere;
         this.sphere.plane = this.plane;
+        this.sphere.children = [];
 
         const { skybox, asteroid } = this.scene.extras;
         await asteroid.initializeHeightMap();
@@ -114,14 +115,15 @@ export class GameController extends Application {
         if (!this.isSandbox) {
             const asteroidPositions = PointGenerator.multipleUniq({
                 amount: ASTEROIDS_AMOUNT,
-                offset:  this.sphere.verticalOffset,
-                dist: asteroid.radius * 2,
+                offset: this.sphere.verticalOffset,
+                dist: asteroid.radius * 5,
                 center: [0, -this.sphere.verticalOffset, 0]
             });
 
             asteroidPositions.forEach((ap, idx) => {
                 const aCpy = asteroid.clone();
                 aCpy.setTranslation(ap);
+
                 if (idx < EMERALD_AMOUNT) {
                     aCpy.setEmerald();
                 } else if (idx < GOLD_AMOUNT + EMERALD_AMOUNT) {
@@ -137,10 +139,6 @@ export class GameController extends Application {
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
         this.renderer.prepare(this.scene);
-
-        if (IS_DEBUG) {
-            console.log(this.scene);
-        }
     }
 
     update() {
@@ -149,13 +147,11 @@ export class GameController extends Application {
         this.startTime = this.time;
 
         this.plane.update(dt);
-        this.camera.update(dt);
         this.physics.update(dt);
+        this.camera.updateMatrix();
 
         for (const node of this.sphere.children) {
-            if (node.isAsteroid()) {
-                node.update(dt);
-            }
+            node.update(dt);
         }
     }
 

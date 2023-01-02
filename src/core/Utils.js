@@ -21,6 +21,10 @@ export class Utils {
         const zDiff = obj2[2] - obj1[2];
         return Math.sqrt(xDiff ** 2 + yDiff ** 2 + zDiff ** 2);
     }
+
+    static scale(value, currentMin, currentMax, newMin, newMax) {
+        return ((value - currentMin) / (currentMax - currentMin)) * (newMax - newMin) + newMin;
+    }
 }
 
 export class Vector3 {

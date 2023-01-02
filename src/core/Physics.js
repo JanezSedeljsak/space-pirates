@@ -1,6 +1,5 @@
 import { vec3 } from '../../lib/gl-matrix-module.js';
 import { SPHERE_TYPE_ENUM } from '../config.js';
-import { Asteroid } from '../models/Asteroid.js';
 
 export class Physics {
 
@@ -11,15 +10,7 @@ export class Physics {
         this.guiController = guiController;
     }
 
-    update(dt) {
-        this.scene.traverse(node => {
-            // Move every node with defined velocity.
-            if (node.velocity) {
-                vec3.scaleAndAdd(node.translation, node.translation, node.velocity, dt);
-                node.updateMatrix();
-            }
-        });
-
+    update() {
         // check plane collisions
         this.scene.traverse(node => {
             if (!node.isIgnoreCollision() && node.isAsteroid() && this.plane !== node) {
@@ -87,45 +78,12 @@ export class Physics {
                 case SPHERE_TYPE_ENUM.ROCK_ASTEROID:
                     // TODO: play some sound for rock collect
                     this.guiController.soundController.playSound("collect");
+                    this.plane.forward *= 0.7;
                     this.guiController.negativeCollect();
                     break;
             }
 
             return;
         }
-
-        // Move node A minimally to avoid collision.
-        //const diffa = vec3.sub(vec3.create(), bBox.max, aBox.min);
-        //const diffb = vec3.sub(vec3.create(), aBox.max, bBox.min);
-        //
-        //let minDiff = Infinity;
-        //let minDirection = [0, 0, 0];
-        //if (diffa[0] >= 0 && diffa[0] < minDiff) {
-        //    minDiff = diffa[0];
-        //    minDirection = [minDiff, 0, 0];
-        //}
-        //if (diffa[1] >= 0 && diffa[1] < minDiff) {
-        //    minDiff = diffa[1];
-        //    minDirection = [0, minDiff, 0];
-        //}
-        //if (diffa[2] >= 0 && diffa[2] < minDiff) {
-        //    minDiff = diffa[2];
-        //    minDirection = [0, 0, minDiff];
-        //}
-        //if (diffb[0] >= 0 && diffb[0] < minDiff) {
-        //    minDiff = diffb[0];
-        //    minDirection = [-minDiff, 0, 0];
-        //}
-        //if (diffb[1] >= 0 && diffb[1] < minDiff) {
-        //    minDiff = diffb[1];
-        //    minDirection = [0, -minDiff, 0];
-        //}
-        //if (diffb[2] >= 0 && diffb[2] < minDiff) {
-        //    minDiff = diffb[2];
-        //    minDirection = [0, 0, -minDiff];
-        //}
-        //
-        //vec3.add(a.translation, a.translation, minDirection);
-        //a.updateMatrix();
     }
 }

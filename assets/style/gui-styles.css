@@ -228,9 +228,9 @@ button:hover, .btn:hover {
 #game-gui .circle {
     height: 11rem;
     width: 11rem;
-    background-color: #192033;
+    background-color: #192033aa;
     border-radius: 100%;
-    border: 1rem solid #192033;
+    border: 1rem solid #1920334f;
 }
 .circle .numbers {
     z-index: 1;
@@ -282,6 +282,7 @@ button:hover, .btn:hover {
     display: flex;
     width: 100%;
     transform: rotate(-45deg);
+    transition: all .1s ease-in-out;
 }
 .circle .gauge > div {
     width: 5rem;

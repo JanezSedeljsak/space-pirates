@@ -2,6 +2,7 @@ import { GameController } from "./GameController.js";
 import { ScoreBoardController } from "./ScoreBoardController.js";
 import { SoundController } from "./SoundController.js";
 import { END_GAME_SCORE } from "../config.js";
+import { Utils } from "../core/Utils.js";
 
 export class GUIController {
 
@@ -9,10 +10,19 @@ export class GUIController {
         //  variables
         this.timer = 0;
         this.timerInterval = undefined;
+        this.speedInterval = undefined;
         this.score = 0;
         this.isSandbox = false;
         this.isStarted = false;
         this.isPaused = false;
+
+        // get canvas
+        this.canvas = document.getElementById('game-canvas');
+        this.canvas.addEventListener('click', () => this.canvas.requestPointerLock());
+        
+        // create game controller instance 
+        this.gameController = new GameController(this, this.canvas);
+        this.gameController.init();
 
         // screens
         this.startMenu = document.getElementById("start-menu-container");
@@ -37,17 +47,11 @@ export class GUIController {
         this.gameTimer = document.getElementById("gameTimer");
         this.gameScore = document.getElementById("gameScore");
         this.countdown = document.getElementById("countdown");
-
-        // get canvas
-        this.canvas = document.getElementById('game-canvas');
-        this.canvas.addEventListener('click', () => this.canvas.requestPointerLock());
+        this.speedGauge = document.getElementById("speed-gauge");
 
         // bind events to self
         this._bind = this._bind.bind(this);
         this._bind();
-
-        // create game controller instance 
-        this.gameController = new GameController(this, this.canvas);
 
         // read current selected planet and username from game controller state
         const { planetName, username } = this.gameController.state;
@@ -116,6 +120,7 @@ export class GUIController {
                 this.endGame();
                 break;
             case 'KeyP':
+                this.gameController.plane.stop();
                 this.pauseGame();
                 break;
             default:
@@ -145,24 +150,27 @@ export class GUIController {
         this.startMenu.style.display = "none";
         this.gameGUI.style.display = "block";
 
-        await this.gameController.init({ isSandbox: false });
+        await this.gameController.controller_init({ isSandbox: false });
         this.loader.style.display = "none";
         this.startGUI.style.display = "block";
     }
 
     async startSandboxGame() {
+        this.resetSpeedMeter();
         this.isSandbox = true;
         this.gameGUI.classList.add("sandbox");
         this.countdown.innerHTML = "Fly around and explore!"
         this.startMenu.style.display = "none";
         this.gameGUI.style.display = "block";
 
-        await this.gameController.init({ isSandbox: true });
+        await this.gameController.controller_init({ isSandbox: true });
         this.loader.style.display = "none";
         this.startGUI.style.display = "block";
+        this.startSpeedMeter();
     }
 
     startGame() {
+        this.resetSpeedMeter();
         if (this.isSandbox) {
             this.startGUI.style.display = "none";
             this.canvas.click();
@@ -192,13 +200,19 @@ export class GUIController {
             if (this.isStarted) {
                 this.canvas.click();
                 this.startGameTimer();
+                this.startSpeedMeter();
             }
         }, 3000);
+    }
+
+    resetSpeedMeter() {
+        this.speedGauge.style.transform = `rotate(-45deg)`;
     }
 
     pauseGame() {
         this.isPaused = true;
         this.pausedScreen.style.display = "block";
+        this.resetSpeedMeter();
         document.exitPointerLock();
     }
 
@@ -216,23 +230,42 @@ export class GUIController {
     _updateGameTimer(amount = 1) {
         if (this.isPaused)
             return;
+
         this.gameTimer.innerHTML = this.parseTimer();
         this.timer += amount;
     }
 
     startGameTimer() {
+        clearInterval(this.speedInterval);
         this._updateGameTimer();
         this.timerInterval = setInterval(this._updateGameTimer.bind(this), 1000);
+    }
+
+    _updateSpeedMeter() {
+        if (this.isPaused)
+            return;
+
+        const planeSpeed = this.gameController.plane.forward;
+        const planeMaxSpeed = this.gameController.plane.max_velocity;
+        const speed = Utils.scale(planeSpeed, 0, planeMaxSpeed, -45, 270);
+        this.speedGauge.style.transform = `rotate(${speed}deg)`;
+    }
+
+    startSpeedMeter() {
+        this._updateSpeedMeter();
+        this.speedInterval = setInterval(this._updateSpeedMeter.bind(this), 100);
     }
 
     endGame() {
         document.exitPointerLock();
         clearInterval(this.timerInterval);
+        clearInterval(this.speedInterval);
         this.isStarted = false;
         this.setGameLabel();
         this.gameGUI.classList.remove("sandbox");
-        if (this.score >= END_GAME_SCORE)
+        if (this.score >= END_GAME_SCORE) {
             this.addScoreScreen.style.display = "block";
+        }
     }
 
     addScoreToScoreboard() {
@@ -277,7 +310,7 @@ export class GUIController {
             return;
 
         // set the timer to red color for a second
-        this._updateGameTimer(10);
+        this._updateGameTimer(5);
         this.gameTimer.style.color = 'red';
         setTimeout(() => this.gameTimer.style.color = "white", 1000);
         this._updateGameScore();

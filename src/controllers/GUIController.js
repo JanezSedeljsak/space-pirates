@@ -45,7 +45,7 @@ export class GUIController {
         // bind events to self
         this._bind = this._bind.bind(this);
         this._bind();
-        
+
         // create game controller instance 
         this.gameController = new GameController(this, this.canvas);
 
@@ -103,7 +103,7 @@ export class GUIController {
     async handleKeyDown(event) {
         if (!this.isStarted)
             return;
-            
+
         switch (event.code) {
             case 'KeyV':
                 this.gameController.toggleFirstPerson();
@@ -130,16 +130,16 @@ export class GUIController {
     hideGameSettings() {
         this.gameSettings.style.display = "none";
     }
-    
+
     showScoreboard() {
         ScoreBoardController.drawScoreboard();
         this.scoreboard.style.display = "block";
     }
-    
+
     showGameSettings() {
         this.gameSettings.style.display = "block";
     }
-    
+
     async startScoredGame() {
         this.isSandbox = false;
         this.startMenu.style.display = "none";
@@ -156,7 +156,7 @@ export class GUIController {
         this.countdown.innerHTML = "Fly around and explore!"
         this.startMenu.style.display = "none";
         this.gameGUI.style.display = "block";
-        
+
         await this.gameController.init({ isSandbox: true });
         this.loader.style.display = "none";
         this.startGUI.style.display = "block";
@@ -169,7 +169,7 @@ export class GUIController {
             this.isStarted = true;
             return;
         }
-        
+
         this.startGameCountdown();
         this.isStarted = true;
     }
@@ -181,7 +181,7 @@ export class GUIController {
     startGameCountdown() {
         if (this.isStarted)
             return;
-        
+
         this.countdown.style.fontSize = "6rem";
         this.countdown.innerHTML = "3";
         setTimeout(() => this.countdown.innerHTML = "2", 1000);
@@ -213,7 +213,7 @@ export class GUIController {
         return `${padNumber(Math.floor(this.timer / 60))}:${padNumber(this.timer % 60)}`
     }
 
-    _updateGameTimer(amount=1) {
+    _updateGameTimer(amount = 1) {
         if (this.isPaused)
             return;
         this.gameTimer.innerHTML = this.parseTimer();
@@ -231,7 +231,7 @@ export class GUIController {
         this.isStarted = false;
         this.setGameLabel();
         this.gameGUI.classList.remove("sandbox");
-        if (this.score === END_GAME_SCORE)
+        if (this.score >= END_GAME_SCORE)
             this.addScoreScreen.style.display = "block";
     }
 
@@ -261,23 +261,25 @@ export class GUIController {
         this.gameScore.innerHTML = `${this.score} / ${END_GAME_SCORE}`;
     }
 
-    addGameScore() {
+    addGameScore(score = 1) {
         if (!this.isStarted)
             return;
 
-        this.score++;
+        this.score += score;
         this._updateGameScore();
-        if (this.score === END_GAME_SCORE) {
+        if (this.score >= END_GAME_SCORE) {
             this.endGame();
         }
     }
 
-    subtractGameScore() {
+    negativeCollect() {
         if (!this.isStarted)
             return;
-            
-        this.score = Math.max(this.score - 2, 0);
+
+        // set the timer to red color for a second
         this._updateGameTimer(10);
+        this.gameTimer.style.color = 'red';
+        setTimeout(() => this.gameTimer.style.color = "white", 1000);
         this._updateGameScore();
     }
 }

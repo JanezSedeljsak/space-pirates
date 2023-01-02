@@ -1,4 +1,5 @@
 import { vec3 } from '../../lib/gl-matrix-module.js';
+import { SPHERE_TYPE_ENUM } from '../config.js';
 import { Asteroid } from '../models/Asteroid.js';
 
 export class Physics {
@@ -70,15 +71,24 @@ export class Physics {
         const isColliding = this.aabbIntersection(aBox, bBox);
         if (!isColliding) {
             return;
+
         } else if (b.isAsteroid()) {
             this.sphere.removeChild(b);
-            if (b.isGoldAsteroid()) {
-                this.guiController.soundController.playSound("collect");
-                this.guiController.addGameScore();
-            } else {
-                // TODO: play some other negative sound on rock collect
-                this.guiController.soundController.playSound("collect");
-                this.guiController.subtractGameScore(); 
+            switch (b.type) {
+                case SPHERE_TYPE_ENUM.EMERALD_ASTEROID:
+                    // TODO: play some sound for emerald collect
+                    this.guiController.soundController.playSound("collect");
+                    this.guiController.addGameScore(3);
+                    break;
+                case SPHERE_TYPE_ENUM.GOLD_ASTEROID:
+                    this.guiController.soundController.playSound("collect");
+                    this.guiController.addGameScore();
+                    break;
+                case SPHERE_TYPE_ENUM.ROCK_ASTEROID:
+                    // TODO: play some sound for rock collect
+                    this.guiController.soundController.playSound("collect");
+                    this.guiController.negativeCollect();
+                    break;
             }
 
             return;

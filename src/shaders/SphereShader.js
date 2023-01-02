@@ -85,6 +85,13 @@ void main() {
         float luminance = (oColor.r + oColor.g + oColor.b)/3.0;
         oColor = vec4(luminance, luminance, luminance, 1.0);
     }
+
+    // if emerald asteroid set color to green
+    else if (vObjectType.x == 3.0) {
+        float luminance = (oColor.r + oColor.g + oColor.b)/4.0;
+        float green = oColor.g;
+        oColor = vec4(luminance, luminance + green, luminance, 1.0);
+    }
 }
 `;
 

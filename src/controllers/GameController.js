@@ -5,7 +5,7 @@ import { Camera } from '../core/Camera.js';
 import { SceneLoader } from '../scene/SceneLoader.js';
 import { SceneBuilder } from '../scene/SceneBuilder.js';
 import { GLTFLoader } from '../gltf/GLTFLoader.js';
-import { STATE_KEY, IS_DEBUG, ASTEROIDS_AMOUNT, GOLD_AMOUNT } from '../config.js';
+import { STATE_KEY, IS_DEBUG, ASTEROIDS_AMOUNT, GOLD_AMOUNT, EMERALD_AMOUNT } from '../config.js';
 import { PointGenerator } from '../core/PointGenerator.js';
 
 export class GameController extends Application {
@@ -122,7 +122,9 @@ export class GameController extends Application {
             asteroidPositions.forEach((ap, idx) => {
                 const aCpy = asteroid.clone();
                 aCpy.setTranslation(ap);
-                if (idx < GOLD_AMOUNT) {
+                if (idx < EMERALD_AMOUNT) {
+                    aCpy.setEmerald();
+                } else if (idx < GOLD_AMOUNT + EMERALD_AMOUNT) {
                     aCpy.setGoldType();
                 }
 

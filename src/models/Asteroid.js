@@ -9,7 +9,7 @@ export class Asteroid extends Sphere {
         super(mesh, texture, spec, null);
         this._props = props;
         this.radius = radius;
-        this.isGold = false;
+        this.type = SPHERE_TYPE_ENUM.ROCK_ASTEROID;
 
         this.light.intensity = 1;
         this.material.diffuse = 10;
@@ -23,7 +23,12 @@ export class Asteroid extends Sphere {
     }
 
     setGoldType() {
-        this.isGold = true;
+        this.type = SPHERE_TYPE_ENUM.GOLD_ASTEROID;
+    }
+
+    setEmerald() {
+        this.type = SPHERE_TYPE_ENUM.EMERALD_ASTEROID;
+        this.material.shininess = 100;
     }
 
     isSphere() {
@@ -35,7 +40,11 @@ export class Asteroid extends Sphere {
     }
 
     isGoldAsteroid() {
-        return this.isGold;
+        return this.type === SPHERE_TYPE_ENUM.GOLD_ASTEROID;
+    }
+
+    isEmerald() {
+        return this.type === SPHERE_TYPE_ENUM.EMERALD_ASTEROID;
     }
     
     getDisplacementScale() {
@@ -43,11 +52,7 @@ export class Asteroid extends Sphere {
     }
 
     getObjectType() {
-        if (this.isGoldAsteroid()) {
-            return SPHERE_TYPE_ENUM.GOLD_ASTEROID;
-        }
-
-        return SPHERE_TYPE_ENUM.ROCK_ASTEROID;
+        return this.type;
     }
 
     clone() {

@@ -26,6 +26,7 @@ export class Sphere extends Model {
         const verticalOffset = -(radius + Math.sqrt(radius) / 1.2);
         this.verticalOffset = verticalOffset;
         this.translation = [0, verticalOffset, 5];
+        this.rotation = [0, 0, 0, 1];
 
         this.light = new Node();
         this.light.translation = [0, 0, 0];
@@ -172,10 +173,7 @@ export class Sphere extends Model {
 
     updateMatrix() {
         const m = this.matrix;
-        const degrees = this.rotation.slice(0, 3).map(x => x * 180 / Math.PI);
-        const q = quat.fromEuler(quat.create(), ...degrees);
-        //let q = quat.create();
-        //quat.setAxisAngle(q, this.rotation, 90 * Math.PI / 180);
+        const q = this.rotation;
         const v = vec3.clone(this.translation);
         const s = vec3.clone(this.scale);
         mat4.fromRotationTranslationScale(m, q, v, s);

@@ -1,5 +1,6 @@
 import { GLTFNode } from "../gltf/GLTFNode.js";
 import { PLANE_ROTATION_VECTOR } from "../config.js";
+import { QuaternionRotation } from "../core/QuaternionRotation.js";
 
 export class Plane extends GLTFNode {
 
@@ -36,22 +37,24 @@ export class Plane extends GLTFNode {
     }
 
     update(dt) {
-        const speed = 0.2;
+        const speed = dt * 0.25;
+        let forward = 0, side = 0;
+
         if (this.keys['KeyW']) {
-            this.sphere.rotation[0] += dt * speed;
+            forward = -speed;
         }
 
         if (this.keys['KeyA']) {
-            //this.translation = [1, 1, 1];
             this.rotation[2] = 0.2;
-            this.sphere.rotation[2] -= dt * speed;
+            side = -speed;
         } else if (this.keys['KeyD']) {
             this.rotation[2] = -0.2;
-            this.sphere.rotation[2] += dt * speed;
+            side = speed;
         } else {
             this.rotation[2] = .0;
         }
 
+        this.sphere.rotation = QuaternionRotation.xz(this.sphere.rotation, forward, side);
         this.sphere.updateMatrix();
         this.updateMatrix();
     }

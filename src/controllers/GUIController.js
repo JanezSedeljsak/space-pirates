@@ -268,6 +268,7 @@ export class GUIController {
         this.setGameLabel();
         this.gameGUI.classList.remove("sandbox");
         if (this.score >= END_GAME_SCORE) {
+            this.soundController.playEndSound();
             this.addScoreScreen.style.display = "block";
         }
         this.soundController.stopPlaneSound();

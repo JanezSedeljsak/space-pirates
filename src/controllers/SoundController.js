@@ -6,6 +6,7 @@ export class SoundController {
         this.ambientSound = document.getElementById("ambientSound");
         this.planeSound = document.getElementById("planeSound");
         this.gameSound = document.getElementById("gameSound");
+        this.endSound = document.getElementById("endSound");
         this.gameController = gameController;
 
         const { soundVolume } = this.gameController.state;
@@ -31,6 +32,7 @@ export class SoundController {
     changeSoundVolume() {
         this.ambientSound.volume = this.soundControl.value;
         this.gameSound.volume = this.soundControl.value;
+        this.endSound.volume = this.soundControl.value;
         this.gameController.setState({ soundVolume: this.soundControl.value })
     }
 
@@ -54,5 +56,9 @@ export class SoundController {
             return;
         this.gameSound.src = `/assets/sound/${sound}.${extension}`;
         this.gameSound.play();
+    }
+
+    playEndSound() {
+        this.endSound.play();
     }
 }

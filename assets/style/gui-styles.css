@@ -26,7 +26,7 @@ button:hover, .btn:hover {
 }
 
 #start-menu-container {
-    background-image: url(../images/landing.jpg);
+    background-image: url(../images/landing.avif);
     background-size: cover;
 }
 #start-menu-container > div {

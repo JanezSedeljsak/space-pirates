@@ -171,6 +171,7 @@ export class GUIController {
 
     startGame() {
         this.resetSpeedMeter();
+        this.soundController.startPlaneSound();
         if (this.isSandbox) {
             this.startGUI.style.display = "none";
             this.canvas.click();
@@ -249,6 +250,9 @@ export class GUIController {
         const planeMaxSpeed = this.gameController.plane.max_velocity;
         const speed = Utils.scale(planeSpeed, 0, planeMaxSpeed, -45, 270);
         this.speedGauge.style.transform = `rotate(${speed}deg)`;
+        const { soundVolume } = this.gameController.state;
+        const planeVolume = Utils.scale(planeSpeed, 0, planeMaxSpeed, 0, soundVolume)
+        this.soundController.changePlaneVolume(planeVolume);
     }
 
     startSpeedMeter() {
@@ -266,6 +270,7 @@ export class GUIController {
         if (this.score >= END_GAME_SCORE) {
             this.addScoreScreen.style.display = "block";
         }
+        this.soundController.stopPlaneSound();
     }
 
     addScoreToScoreboard() {

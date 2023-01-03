@@ -50,7 +50,7 @@
   "textures": [
     "PLANET_PLACEHODLDER",
     "../assets/images/space.avif",
-    "../assets/images/asteroids/gold.jpg"
+    "../assets/images/asteroids/gold.avif"
   ],
   "meshes": [
     "../assets/models/cube.json"

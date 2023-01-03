@@ -67,8 +67,7 @@ export class Physics {
             this.sphere.removeChild(b);
             switch (b.type) {
                 case SPHERE_TYPE_ENUM.EMERALD_ASTEROID:
-                    // TODO: play some sound for emerald collect
-                    this.guiController.soundController.playSound("collect");
+                    this.guiController.soundController.playSound("collect_crystal");
                     this.guiController.addGameScore(3);
                     break;
                 case SPHERE_TYPE_ENUM.GOLD_ASTEROID:
@@ -76,8 +75,7 @@ export class Physics {
                     this.guiController.addGameScore();
                     break;
                 case SPHERE_TYPE_ENUM.ROCK_ASTEROID:
-                    // TODO: play some sound for rock collect
-                    this.guiController.soundController.playSound("collect");
+                    this.guiController.soundController.playSound("crash");
                     this.plane.forward *= 0.7;
                     this.guiController.negativeCollect();
                     break;

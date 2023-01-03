@@ -4,6 +4,7 @@ export class SoundController {
 
         this.soundControl = document.getElementById("soundControl");
         this.ambientSound = document.getElementById("ambientSound");
+        this.planeSound = document.getElementById("planeSound");
         this.gameSound = document.getElementById("gameSound");
         this.gameController = gameController;
 
@@ -31,6 +32,21 @@ export class SoundController {
         this.ambientSound.volume = this.soundControl.value;
         this.gameSound.volume = this.soundControl.value;
         this.gameController.setState({ soundVolume: this.soundControl.value })
+    }
+
+    startPlaneSound() {
+        this.planeSound.volume = 0;
+        this.planeSound.play();
+    }
+
+    changePlaneVolume(volume) {
+        this.planeSound.volume = volume;
+    }
+
+    stopPlaneSound() {
+        this.planeSound.pause();
+        this.planeSound.volume = 0;
+        this.planeSound.currentTime = 0;
     }
 
     playSound(sound, extension="ogg") {

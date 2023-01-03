@@ -15,17 +15,17 @@ export class ScoreBoardController {
     // this should be removed in prod
     static __createDummyData() {
         if (!IS_DEBUG) return;
-        ScoreBoardController.addScore({ user: 'Janez', time: 201 });
-        ScoreBoardController.addScore({ user: 'Janez', time: 131 });
-        ScoreBoardController.addScore({ user: 'Janez', time: 191 });
-        ScoreBoardController.addScore({ user: 'Marko', time: 191 });
-        ScoreBoardController.addScore({ user: 'Marko', time: 120 });
-        ScoreBoardController.addScore({ user: 'John Doe', time: 300 });
-        ScoreBoardController.addScore({ user: 'John Doe', time: 230 });
-        ScoreBoardController.addScore({ user: 'John Doe', time: 140 });
-        ScoreBoardController.addScore({ user: 'Random', time: 110 });
-        ScoreBoardController.addScore({ user: 'Random', time: 209 });
-        ScoreBoardController.addScore({ user: 'Random', time: 152 });
+        ScoreBoardController.addScore({ user: 'Janez', time: 201, date: formatDate(new Date()) });
+        ScoreBoardController.addScore({ user: 'Janez', time: 131, date: formatDate(new Date()) });
+        ScoreBoardController.addScore({ user: 'Janez', time: 191, date: formatDate(new Date()) });
+        ScoreBoardController.addScore({ user: 'Marko', time: 191, date: formatDate(new Date()) });
+        ScoreBoardController.addScore({ user: 'Marko', time: 120, date: formatDate(new Date()) });
+        ScoreBoardController.addScore({ user: 'John Doe', time: 300, date: formatDate(new Date()) });
+        ScoreBoardController.addScore({ user: 'John Doe', time: 230, date: formatDate(new Date()) });
+        ScoreBoardController.addScore({ user: 'John Doe', time: 140, date: formatDate(new Date()) });
+        ScoreBoardController.addScore({ user: 'Random', time: 110, date: formatDate(new Date()) });
+        ScoreBoardController.addScore({ user: 'Random', time: 209, date: formatDate(new Date()) });
+        ScoreBoardController.addScore({ user: 'Random', time: 152, date: formatDate(new Date()) });
     }
 
     static getScoreboard() {
@@ -42,6 +42,7 @@ export class ScoreBoardController {
                 <div>#</div>
                 <div>User</div>
                 <div>Time</div>
+                <div>Achieved on</div>
             </div>
         `);
 
@@ -52,6 +53,7 @@ export class ScoreBoardController {
                     <div class="cell">${idx + 1}</div>
                     <div class="cell">${score.user}</div>
                     <div class="cell">${ScoreBoardController.formatTime(score.time)}</div>
+                    <div class="cell">${score.date}</div>
                 </div>
             `);
         });
@@ -59,11 +61,16 @@ export class ScoreBoardController {
 
     static addScore({ user, time }) {
         const items = ScoreBoardController.getScoreboard();
-        items.push({ user, time });
+        const date = ScoreBoardController.formatDate(new Date());
+        items.push({ user, time, date });
         localStorage.setItem(SCOREBOARD_KEY, JSON.stringify(items));
     }
 
-    static formatTime(s){
+    static formatTime(s) {
         return (s-(s%=60))/60+(9<s?':':':0')+s;
+    }
+
+    static formatDate(d) {
+        return `${d.getDate()}. ${d.getMonth() + 1}. ${d.getFullYear()}`
     }
 }

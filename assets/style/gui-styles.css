@@ -116,7 +116,7 @@ button:hover, .btn:hover {
 #scoreboard .row {
     padding: 10px;
     display: grid;
-    grid-template-columns: 40px 1fr 1fr;
+    grid-template-columns: 40px 1fr 1fr 1fr;
 }
 
 #game-settings {

@@ -28,7 +28,7 @@
     {
       "type": "earth",
       "texture": 3,
-      "radius": 80
+      "radius": 120
     },
     {
       "type": "skybox",

@@ -8,7 +8,7 @@ export class Earth extends Sphere {
         super(mesh, texture, spec, radius, null);
         this.rotationSpeed = 0.05;
         this.type = SPHERE_TYPE_ENUM.EARTH;
-        this.setTranslation([100, 450, -1950]);
+        this.setTranslation([100, 350, -1650]);
     }
 
     isEarth() {

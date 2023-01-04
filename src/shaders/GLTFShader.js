@@ -34,8 +34,8 @@ void main() {
     // oColor = uBaseColorFactor * baseColor;
     oColor = baseColor * uBaseColorFactor + vec4((vNormal * 0.05), 1);
     if ((oColor.r + oColor.g + oColor.b) > 0.3) {
-        oColor = vec4(vec3(oColor.xyz * 0.6), 1);
-        oColor = vec4(oColor.r + 0.2, oColor.g + 0.1, oColor.b, 1);
+        oColor = vec4(vec3(oColor.xyz * 0.3), 1);
+        oColor = vec4(oColor.r + 0.35, oColor.g + 0.15, oColor.b, 1);
     }
 }
 `;

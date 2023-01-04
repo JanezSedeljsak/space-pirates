@@ -5,6 +5,7 @@ import { Scene } from './Scene.js';
 import { Sphere } from '../models/Sphere.js';
 import { Asteroid } from '../models/Asteroid.js';
 import { MODEL_ENUM, SEGMENTS_COUNT_ENUM } from '../config.js';
+import { Earth } from '../models/Earth.js';
 
 export class SceneBuilder {
 
@@ -23,6 +24,7 @@ export class SceneBuilder {
                 return new MODEL_ENUM[spec.type](mesh, texture, spec);
             }
             case 'asteroid':
+            case 'earth':
             case 'sphere': {
                 const [sphereMesh, radius] = Sphere.createGlobe({
                     radius: settings?.radius ?? spec?.radius,
@@ -34,6 +36,11 @@ export class SceneBuilder {
                 if (spec.type === 'sphere') {
                     const sphere = new Sphere(mesh, texture, spec, radius, settings.planetName);
                     return sphere;
+                }
+
+                if (spec.type === 'earth') {
+                    const earth = new Earth(mesh, texture, spec, radius);
+                    return earth;
                 }
 
                 const asteroid = new Asteroid(mesh, texture, spec, radius);

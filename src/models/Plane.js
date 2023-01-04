@@ -66,16 +66,16 @@ export class Plane extends GLTFNode {
             }
 
             const sideFactor = this.side < 0 ? 10 : -10;
-            this.side += sideFactor * this.acc * dt;
+            this.side += sideFactor * this.side_acc * dt;
             this.rotation[2] = -Utils.scale(this.side, vmin, vmax, rmin, rmax);
             return;
         }
 
         if (this.keys?.KeyA) {
-            this.side -= this.acc * dt * this.rotation_speed;
+            this.side -= this.side_acc * dt * this.rotation_speed;
             this.side = Math.max(vmin, this.side);
         } else if (this.keys?.KeyD) {
-            this.side += this.acc * dt * this.rotation_speed;
+            this.side += this.side_acc * dt * this.rotation_speed;
             this.side = Math.min(vmax, this.side);
         }
 
@@ -115,10 +115,11 @@ Plane.defaults = {
     rotation_speed: 20,
     start_velocity: 0.001,
     max_velocity: 0.005,
-    side_velocity_min_max: [-0.7, 0.7],
-    side_rotation_min_max: [-0.3, 0.3],
+    side_velocity_min_max: [-0.8, 0.8],
+    side_rotation_min_max: [-0.4, 0.4],
     friction: 0.15,
     acc: 0.08,
+    side_acc: 0.13,
     forward: 0,
     side: 0,
     aabb: {

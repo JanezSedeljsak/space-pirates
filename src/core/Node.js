@@ -30,6 +30,10 @@ export class Node {
         return false;
     }
 
+    isEarth() {
+        return false;
+    }
+
     isIgnoreCollision() {
         return false;
     }

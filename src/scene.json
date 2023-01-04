@@ -3,25 +3,16 @@
     {
       "type": "camera",
       "translation": [0, 2, 6],
-      "aabb": {
-        "min": [-0.2, -0.2, -0.2],
-        "max": [0.2, 0.2, 0.2]
-      },
       "aspect": 1,
       "fov": 1.5,
       "near": 0.01,
-      "far": 2000,
+      "far": 3000,
       "rotation": [0, 0, 0]
     },
     {
       "type": "sphere",
       "texture": 0,
-      "aabb": {
-        "min": [-1, -1, -1],
-        "max": [1, 1, 1]
-      },
-      "radius": 100, 
-      "translation": [0, -30, 5]
+      "radius": 100
     }
   ],
   "extras": [
@@ -35,6 +26,11 @@
       "radius": 1.5
     },
     {
+      "type": "earth",
+      "texture": 3,
+      "radius": 80
+    },
+    {
       "type": "skybox",
       "mesh": 0,
       "texture": 1,
@@ -44,13 +40,14 @@
       },
       "translation": [0, -30, 5],
       "rotation": [0, 1, 0],
-      "scale": [1000, 1000, 1000]
+      "scale": [2000, 2000, 2000]
     }
   ],
   "textures": [
     "PLANET_PLACEHODLDER",
     "../assets/images/space.avif",
-    "../assets/images/asteroids/gold.avif"
+    "../assets/images/asteroids/gold.avif",
+    "../assets/images/earth/earth.jpg"
   ],
   "meshes": [
     "../assets/models/cube.json"

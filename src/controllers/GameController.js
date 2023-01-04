@@ -109,7 +109,7 @@ export class GameController extends Application {
         this.sphere.plane = this.plane;
         this.sphere.children = [];
 
-        const { skybox, asteroid } = this.scene.extras;
+        const { skybox, asteroid, earth } = this.scene.extras;
         await asteroid.initializeHeightMap();
 
         if (!this.isSandbox) {
@@ -134,11 +134,14 @@ export class GameController extends Application {
             });
         }
 
-        this.camera.addChild(skybox);
         this.scene.addNode(this.plane);
+        this.sphere.addChild(earth);
+
+        this.camera.addChild(skybox);
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
         this.renderer.prepare(this.scene);
+        console.log(this.scene);
     }
 
     update() {

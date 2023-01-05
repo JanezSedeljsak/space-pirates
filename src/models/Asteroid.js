@@ -12,7 +12,7 @@ export class Asteroid extends Sphere {
         this.type = SPHERE_TYPE_ENUM.ROCK_ASTEROID;
         this.setRandomRotation();
 
-        this.light.intensity = 1.5;
+        this.light.intensity = 1;
         this.material.diffuse = 10;
         this.material.specular = 2;
         this.material.shininess = .5;

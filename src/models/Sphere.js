@@ -31,12 +31,12 @@ export class Sphere extends Model {
         this.light = new Node();
         this.light.translation = [0, 0, 0];
         this.light.color = [230, 245, 255];
-        this.light.intensity = 4;
+        this.light.intensity = 5;
         this.light.attenuation = [0.001, 0, 0.3];
 
         this.light.updateMatrix();
         this.material = {};
-        this.material.diffuse = 2;
+        this.material.diffuse = 1;
         this.material.specular = 1;
         this.material.shininess = 5;
 
@@ -205,7 +205,8 @@ export class Sphere extends Model {
         gl.bindTexture(gl.TEXTURE_2D, this.gl.normalMap);
         gl.uniform1i(uniforms.uNormalMap, 2);
 
-        const cameraPos = mat4.getTranslation(vec3.create(), camera.getGlobalTransform());
+        // set fixed camera position to "plane pos"
+        const cameraPos = mat4.getTranslation(vec3.create(), [0, 0, 0]);
         gl.uniform3fv(uniforms.uCameraPosition, cameraPos);
 
         const displacementScale = this.getDisplacementScale();

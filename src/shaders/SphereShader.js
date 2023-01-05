@@ -1,6 +1,6 @@
 const vertex = /* glsl */`#version 300 es
 
-#define LIGHT_REDUCE_FACTOR 2.5
+#define LIGHT_REDUCE_FACTOR 4.0
 
 layout (location = 0) in vec4 aPosition;
 layout (location = 1) in vec2 aTexCoord;

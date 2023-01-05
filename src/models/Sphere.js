@@ -30,13 +30,13 @@ export class Sphere extends Model {
 
         this.light = new Node();
         this.light.translation = [0, 0, 0];
-        this.light.color = [255, 255, 255];
-        this.light.intensity = 10;
+        this.light.color = [230, 245, 255];
+        this.light.intensity = 4;
         this.light.attenuation = [0.001, 0, 0.3];
 
         this.light.updateMatrix();
         this.material = {};
-        this.material.diffuse = 1;
+        this.material.diffuse = 2;
         this.material.specular = 1;
         this.material.shininess = 5;
 

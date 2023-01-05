@@ -3,6 +3,7 @@ import { ScoreBoardController } from "./ScoreBoardController.js";
 import { SoundController } from "./SoundController.js";
 import { END_GAME_SCORE } from "../config.js";
 import { Utils } from "../core/Utils.js";
+import { Plane } from "../models/Plane.js";
 
 export class GUIController {
 
@@ -247,7 +248,7 @@ export class GUIController {
             return;
 
         const planeSpeed = this.gameController.plane.forward;
-        const planeMaxSpeed = this.gameController.plane.max_velocity;
+        const planeMaxSpeed = Plane.MAX_SPEED;
         const speed = Utils.scale(planeSpeed, 0, planeMaxSpeed, -45, 270);
         this.speedGauge.style.transform = `rotate(${speed}deg)`;
         const { soundVolume } = this.gameController.state;

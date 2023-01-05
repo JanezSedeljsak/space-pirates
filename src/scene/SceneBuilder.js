@@ -16,7 +16,7 @@ export class SceneBuilder {
     createNode(spec, settings) {
         switch (spec.type) {
             case 'camera': return new Camera(spec);
-            case 'plane':
+            // case 'plane': -> PLANE is loaded in GLTF loader
             case 'skybox':
             case 'model': {
                 const mesh = new Mesh(this.spec.meshes[spec.mesh]);
@@ -52,6 +52,7 @@ export class SceneBuilder {
 
     build(settings) {
         let scene = new Scene();
+        // console.log(settings);
         this.spec.nodes.forEach(spec => scene.addNode(this.createNode(spec, settings)));
         this.spec.extras.forEach(spec => scene.addExtra(spec.type, this.createNode(spec, settings)));
         return scene;

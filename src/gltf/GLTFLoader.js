@@ -258,7 +258,7 @@ export class GLTFLoader {
         return mesh;
     }
 
-    async loadNode(nameOrIndex) {
+    async loadNode(nameOrIndex, state) {
         const gltfSpec = this.findByNameOrIndex(this.gltf.nodes, nameOrIndex);
         if (!gltfSpec) {
             return null;
@@ -280,7 +280,7 @@ export class GLTFLoader {
         }
 
         const node = options?.name === 'Plane' 
-            ? new Plane(options)
+            ? new Plane(options, state)
             : new GLTFNode(options);
             
         this.cache.set(gltfSpec, node);

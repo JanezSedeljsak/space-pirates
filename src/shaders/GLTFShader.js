@@ -33,10 +33,12 @@ void main() {
     vec4 baseColor = texture(uBaseColorTexture, vTexCoord);
     // oColor = uBaseColorFactor * baseColor;
     oColor = baseColor * uBaseColorFactor + vec4((vNormal * 0.05), 1);
-    if ((oColor.r + oColor.g + oColor.b) > 0.3) {
-        oColor = vec4(vec3(oColor.xyz * 0.3), 1);
-        oColor = vec4(oColor.r + 0.35, oColor.g + 0.15, oColor.b, 1);
-    }
+
+    // used for coloring the plane orange (if the pixels are white - only for the speed plane)
+    // if ((oColor.r + oColor.g + oColor.b) > 0.5) {
+    //     oColor = vec4(vec3(oColor.xyz * 0.3), 1);
+    //     oColor = vec4(oColor.r + 0.35, oColor.g + 0.15, oColor.b, 1);
+    // }
 }
 `;
 

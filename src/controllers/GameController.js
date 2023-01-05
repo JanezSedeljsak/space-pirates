@@ -5,8 +5,9 @@ import { Camera } from '../core/Camera.js';
 import { SceneLoader } from '../scene/SceneLoader.js';
 import { SceneBuilder } from '../scene/SceneBuilder.js';
 import { GLTFLoader } from '../gltf/GLTFLoader.js';
-import { STATE_KEY, ASTEROIDS_AMOUNT, GOLD_AMOUNT, EMERALD_AMOUNT } from '../config.js';
+import { STATE_KEY, ASTEROIDS_AMOUNT, GOLD_AMOUNT, EMERALD_AMOUNT, PLANE_OPTION_ENUM } from '../config.js';
 import { PointGenerator } from '../core/PointGenerator.js';
+import { Plane } from '../models/Plane.js';
 
 export class GameController extends Application {
     constructor(guiController, ...args) {
@@ -29,12 +30,13 @@ export class GameController extends Application {
         this.startTime = this.time;
         this.aspect = 1;
         this.isGameFocused = false;
-
+        
         this.planeLoader = new GLTFLoader();
-
+        const { planeModel } = this.state;
+        
         // load all gltf models
         await Promise.all([
-            this.planeLoader.load('/assets/models/spacecraft.gltf'),
+            this.planeLoader.load(`/assets/models/${PLANE_OPTION_ENUM[planeModel]}.gltf`),
         ]);
 
         await this.load('/src/scene.json');
@@ -51,6 +53,7 @@ export class GameController extends Application {
             planetName: 'Moon',
             soundVolume: 0.5,
             username: '',
+            planeModel: 'control'
         };
     }
 
@@ -87,7 +90,7 @@ export class GameController extends Application {
 
     async load(uri) {
         const scene = await new SceneLoader().loadScene(uri, this.state);
-        this.plane = await this.planeLoader.loadNode('Plane');
+        this.plane = await this.planeLoader.loadNode('Plane', this.state);
 
         const builder = new SceneBuilder(scene);
         this.scene = builder.build(this.state);
@@ -107,11 +110,11 @@ export class GameController extends Application {
         this.physics = new Physics(this.scene, this.plane, this.sphere, this.guiController);
         this.plane.sphere = this.sphere;
         this.sphere.plane = this.plane;
-        this.sphere.children = [];
 
         const { skybox, asteroid, earth } = this.scene.extras;
         await asteroid.initializeHeightMap();
 
+        this.sphere.children = []; // remove all children
         if (!this.isSandbox) {
             const asteroidPositions = PointGenerator.multipleUniq({
                 amount: ASTEROIDS_AMOUNT,
@@ -134,9 +137,13 @@ export class GameController extends Application {
             });
         }
 
+        // sometimes plane is added to the scene twice if we call init 2 times
+        if (!this.scene.hasNode(x => x instanceof Plane)) {
+            this.scene.checkDelete(x => x instanceof Plane);
+        }
+
         this.scene.addNode(this.plane);
         this.sphere.addChild(earth);
-
         this.camera.addChild(skybox);
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();

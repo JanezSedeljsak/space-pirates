@@ -13,6 +13,15 @@ export class Scene {
         this.extras[key] = node;
     }
 
+    hasNode(check) {
+        return this.nodes.some(check);
+    }
+
+    checkDelete(check) {
+        // keep nodes that don't match check
+        return this.nodes.filter(x => !check(x));
+    }
+
     removeNode(node) {
         const index = this.nodes.indexOf(node);
         if (index >= 0) {

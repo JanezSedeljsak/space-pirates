@@ -1,5 +1,7 @@
 const vertex = /* glsl */`#version 300 es
 
+#define LIGHT_REDUCE_FACTOR 2.5
+
 layout (location = 0) in vec4 aPosition;
 layout (location = 1) in vec2 aTexCoord;
 layout (location = 2) in vec3 aNormal;
@@ -44,7 +46,7 @@ void main() {
     // lighting
     vec3 surfacePosition = (uViewModel * displacedPosition).xyz;
 
-    float d = distance(surfacePosition, uLight.position);
+    float d = distance(surfacePosition, uLight.position) / LIGHT_REDUCE_FACTOR;
     float attenuation = 1.0 / dot(uLight.attenuation, vec3(1, d, d * d));
 
     vec3 N = normalize(mat3(uViewModel) * normalize(aNormal).xyz);
@@ -75,7 +77,9 @@ in vec2 vObjectType;
 out vec4 oColor;
 
 void main() {
-    const float gamma = 2.2;
+    // gamma is lower for asteroids
+    float gamma = vObjectType.x == 0.0 ? 4.0 : 1.2;
+
     vec3 albedo = pow(texture(uTexture, vTexCoord).rgb, vec3(gamma));
     vec3 finalColor = albedo * vDiffuseLight + vSpecularLight;
     oColor = pow(vec4(finalColor, 1), vec4(1.0 / gamma));

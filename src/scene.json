@@ -47,7 +47,7 @@
     "PLANET_PLACEHODLDER",
     "../assets/images/space.avif",
     "../assets/images/asteroids/gold.avif",
-    "../assets/images/earth/earth.jpg"
+    "../assets/images/earth/earth.avif"
   ],
   "meshes": [
     "../assets/models/cube.json"

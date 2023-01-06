@@ -35,6 +35,7 @@ export class GUIController {
         this.startGUI = document.getElementById("start-gui");
         this.pausedScreen = document.getElementById("paused-screen");
         this.addScoreScreen = document.getElementById("add-score");
+        this.storylineScreen = document.getElementById("storyline");
 
         // buttons/divs with events
         this.btnGameSettings = document.getElementById("btnGameSettings");
@@ -44,6 +45,7 @@ export class GUIController {
         this.btnStartScoredGame = document.getElementById("btnStartScoredGame");
         this.btnStartSandboxGame = document.getElementById("btnStartSandboxGame");
         this.btnScoreSubmit = document.getElementById("btnScoreSubmit");
+        this.btnStoryline = document.getElementById("btnStoryline");
         this.inputUsernameSubmit = document.getElementById("username-submit");
         this.gameTimer = document.getElementById("gameTimer");
         this.gameScore = document.getElementById("gameScore");
@@ -69,6 +71,8 @@ export class GUIController {
         this.startGUI.addEventListener("click", this.startGame);
         this.pausedScreen.addEventListener("click", this.unpauseGame);
         this.btnScoreSubmit.addEventListener("click", this.addScoreToScoreboard);
+        this.btnStoryline.addEventListener("click", this.showStoryline);
+        this.storylineScreen.addEventListener("click", this.hideStoryline);
 
         document.addEventListener('keydown', this.handleKeyDown);
         document.querySelectorAll('.planet').forEach(planet => {
@@ -103,6 +107,8 @@ export class GUIController {
         this.startSandboxGame = this.startSandboxGame.bind(this);
         this.unpauseGame = this.unpauseGame.bind(this);
         this.addScoreToScoreboard = this.addScoreToScoreboard.bind(this);
+        this.showStoryline = this.showStoryline.bind(this);
+        this.hideStoryline = this.hideStoryline.bind(this);
     }
 
     async handleKeyDown(event) {
@@ -144,6 +150,14 @@ export class GUIController {
 
     showGameSettings() {
         this.gameSettings.style.display = "block";
+    }
+
+    showStoryline() {
+        this.storylineScreen.style.display = "block";
+    }
+
+    hideStoryline() {
+        this.storylineScreen.style.display = "none";
     }
 
     async startScoredGame() {

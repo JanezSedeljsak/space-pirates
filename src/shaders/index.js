@@ -3,6 +3,7 @@ import { GLTFShader } from "./GLTFShader.js";
 import { SkyBoxShader } from "./SkyBoxShader.js";
 import { SphereShader } from "./SphereShader.js";
 import { EarthShader } from "./EarthShader.js";
+import { ParticleShader } from "./ParticleShader.js";
 
 // use this comment to get highlights for glsl -> /* glsl */
 // vscode - Comment tagged templates
@@ -12,5 +13,6 @@ export const shaders = {
     GLTFShader,
     SkyBoxShader,
     SphereShader,
-    EarthShader
+    EarthShader,
+    ParticleShader
 };

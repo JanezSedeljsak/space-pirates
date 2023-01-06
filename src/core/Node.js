@@ -18,6 +18,10 @@ export class Node {
         this.parent = null;
     }
 
+    isParticle() {
+        return false;
+    }
+
     isRootGLTF() {
         return false;
     }

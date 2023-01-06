@@ -8,6 +8,8 @@ import { GLTFLoader } from '../gltf/GLTFLoader.js';
 import { STATE_KEY, ASTEROIDS_AMOUNT, GOLD_AMOUNT, EMERALD_AMOUNT, PLANE_OPTION_ENUM } from '../config.js';
 import { PointGenerator } from '../core/PointGenerator.js';
 import { Plane } from '../models/Plane.js';
+import { ParticleSystemNode } from '../particles/ParticleSystemNode.js';
+import { ParticleSystem } from '../particles/ParticleSystem.js';
 
 export class GameController extends Application {
     constructor(guiController, ...args) {
@@ -26,7 +28,7 @@ export class GameController extends Application {
     async start() {
         const gl = this.gl;
         if (this.loading) {
-            return;
+        //    return;
         }
 
         this.loading = true;
@@ -110,6 +112,9 @@ export class GameController extends Application {
             }
         });
 
+        const ps = new ParticleSystem(100);
+        this.particles = new ParticleSystemNode(ps);
+
         this.physics = new Physics(this.scene, this.plane, this.sphere, this.guiController);
         this.plane.sphere = this.sphere;
         this.sphere.plane = this.plane;
@@ -145,12 +150,14 @@ export class GameController extends Application {
             this.scene.checkDelete(x => x instanceof Plane);
         }
 
+        this.scene.addNode(this.particles);
         this.scene.addNode(this.plane);
         this.sphere.addChild(earth);
         this.camera.addChild(skybox);
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
         this.renderer.prepare(this.scene);
+        console.log(this.scene);
     }
 
     update() {

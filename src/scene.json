@@ -2,7 +2,7 @@
   "nodes": [
     {
       "type": "camera",
-      "translation": [0, 2, 6],
+      "translation": [0, -2, 6],
       "aspect": 1,
       "fov": 1.5,
       "near": 0.01,

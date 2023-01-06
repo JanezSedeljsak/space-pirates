@@ -1,9 +1,11 @@
-import { mat4 } from '../../lib/gl-matrix-module.js';
+import { mat4, vec3 } from '../../lib/gl-matrix-module.js';
 import { WebGL } from '../engine/WebGL.js';
 import { GLTFNode } from '../gltf/GLTFNode.js';
 import { GLTFRenderer } from '../gltf/GLTFRenderer.js';
 import { shaders } from '../shaders/index.js';
 import { IS_DEBUG } from '../config.js';
+import { Sphere } from '../models/Sphere.js';
+import { ParticleSystemNode } from '../particles/ParticleSystemNode.js';
 
 export class Renderer extends GLTFRenderer {
 
@@ -11,7 +13,7 @@ export class Renderer extends GLTFRenderer {
         super(gl);
         gl.clearColor(1, 1, 1, 1);
         gl.enable(gl.DEPTH_TEST);
-        gl.enable(gl.CULL_FACE);
+        //gl.enable(gl.CULL_FACE);
 
         this.programs = WebGL.buildPrograms(gl, shaders);
     }
@@ -20,7 +22,7 @@ export class Renderer extends GLTFRenderer {
         if (IS_DEBUG) {
             console.log('Called prepare NODE');
         }
-
+        
         node.gl = {};
         if (node.mesh) {
             Object.assign(node.gl, this.createModel(node.mesh));
@@ -51,12 +53,93 @@ export class Renderer extends GLTFRenderer {
         this.prepareDEFAULT(node, cache);
     }
 
+    addInstancedAttribute(vao, vbo, attribute, dataSize, instancedDataLength, offset) {
+        const gl = this.gl;
+        gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+        gl.bindVertexArray(vao);
+        gl.vertexAttribPointer(attribute, dataSize, gl.FLOAT, false, instancedDataLength * 4, offset * 4);
+        gl.vertexAttribDivisor(attribute, 1);
+        gl.bindBuffer(gl.ARRAY_BUFFER, 0);
+        gl.bindVertexArray(0);
+    }
+
+    async prepareParticle(node) {
+        const gl = this.gl;
+        const quadVerticies = [
+            0, 1,
+            1, 0,
+            0, 0,
+            0, 1,
+            1, 1,
+            1, 0,
+            0, 1,
+            1, 1,
+        ];
+
+        //quad
+        const vao = gl.createVertexArray();
+        gl.bindVertexArray(vao);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(quadVerticies), gl.STATIC_DRAW);
+        gl.enableVertexAttribArray(0);
+        gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+        
+        const numInstences = node.particleSystem.length;
+        const matrix = new Float32Array(numInstences * 16);
+
+        const matrices = [];
+        for (let i = 0; i < numInstences; ++i) {
+            const byteOffsetToMatrix = i * 16 * 4;
+            const numFloatForView = 16;
+
+            matrices.push(new Float32Array(
+                matrix.buffer,
+                byteOffsetToMatrix,
+                numFloatForView
+            ));
+        }
+
+        matrices.forEach((mat, ndx) => {
+            mat4.fromTranslation(mat, [Math.random(), Math.random(), Math.random()]);
+        })
+
+        const matrixBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, matrixBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, matrix.byteLength, gl.DYNAMIC_DRAW);
+
+        const bytesPerMatrix = 4 * 16;
+        console.log(this.programs);
+        const matrixLoc = 1; // location in shader attribs
+
+        for (let i = 0; i < 4; ++i) {
+            const loc = matrixLoc + i;
+            gl.enableVertexAttribArray(loc);
+
+            const offset = i * 16;
+            gl.vertexAttribPointer(loc, 4, gl.FLOAT, false, bytesPerMatrix, offset);
+            gl.vertexAttribDivisor(loc, 1);
+        }
+        
+        node.matricies = matrices;
+        node.matrixData = matrix;
+        node.matrixBuffer = matrixBuffer;
+        console.log(node, vao)
+        node.gl = {
+            vao
+        };
+    }
+
     async prepare(scene) {
         const cache = {};
 
         scene.traverse(async node => {
             if (node.isRootGLTF()) {
                 this.prepareNode(node);
+            }
+
+            else if (node.isParticle()) {
+                this.prepareParticle(node);
             }
 
             else if (node.isAsteroid()) {
@@ -122,7 +205,7 @@ export class Renderer extends GLTFRenderer {
         gl.clear(gl.COLOR_BUFFER_BIT);
 
         this.renderDEFAULT(scene, camera);
-        this.renderGLTF(scene, camera);
+        //this.renderGLTF(scene, camera);
     }
 
     renderGLTF(scene, camera) {
@@ -151,7 +234,7 @@ export class Renderer extends GLTFRenderer {
                     matrixStack.push(mat4.clone(matrix));
                     mat4.mul(matrix, matrix, node.matrix);
 
-                    if (node?.gl?.vao) {
+                    if (node?.gl?.vao && (node instanceof ParticleSystemNode)) {
                         node.render(this.gl, matrix, camera, this.programs);
                     }
                 }

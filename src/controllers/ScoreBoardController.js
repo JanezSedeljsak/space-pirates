@@ -8,7 +8,7 @@ export class ScoreBoardController {
     static init() {
         if (localStorage.getItem(SCOREBOARD_KEY) === null) {
             localStorage.setItem(SCOREBOARD_KEY, JSON.stringify([]));
-            ScoreBoardController.__createDummyData();
+            if (IS_DEBUG) ScoreBoardController.__createDummyData();
         }
     }
 

@@ -27,6 +27,12 @@ uniform vec4 uBaseColorFactor;
 in vec2 vTexCoord;
 in vec3 vNormal;
 
+/**
+    This shader should use lambert lighting model, but there were problems
+    using the gltf model, so we opted using the normals to add some 
+    color diversity on the model
+ */
+
 out vec4 oColor;
 
 void main() {

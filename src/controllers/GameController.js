@@ -15,6 +15,7 @@ export class GameController extends Application {
         this.guiController = guiController;
         this.toggleFirstPerson = this.toggleFirstPerson.bind(this);
         this._state = this.init_state;
+        this.loading = false;
     }
 
     async controller_init({ isSandbox }) {
@@ -24,7 +25,11 @@ export class GameController extends Application {
 
     async start() {
         const gl = this.gl;
+        if (this.loading) {
+            return;
+        }
 
+        this.loading = true;
         this.renderer = new Renderer(gl);
         this.time = performance.now();
         this.startTime = this.time;
@@ -34,12 +39,10 @@ export class GameController extends Application {
         this.planeLoader = new GLTFLoader();
         const { planeModel } = this.state;
         
-        // load all gltf models
-        await Promise.all([
-            this.planeLoader.load(`/assets/models/${PLANE_OPTION_ENUM[planeModel]}.gltf`),
-        ]);
-
+        await this.planeLoader.load(`/assets/models/${PLANE_OPTION_ENUM[planeModel]}.gltf`),
         await this.load('/src/scene.json');
+
+        this.loading = false;
     }
 
     get init_state() {
@@ -148,7 +151,6 @@ export class GameController extends Application {
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
         this.renderer.prepare(this.scene);
-        console.log(this.scene);
     }
 
     update() {

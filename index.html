@@ -43,12 +43,15 @@
         <div>
             <h1 id="game-title">SPACE PIRATES</h1>
             <span class="planet-label">Selected planet:&nbsp;<span id="selected-planet"></span></span>
+            <span class="planet-label">Aircraft mode:&nbsp;<span id="selected-aircraft"></span></span>
 
             <div class="buttons">
+                <button id="btnStoryline">Storyline</button>
                 <button id="btnStartScoredGame">Start game</button>
                 <button id="btnStartSandboxGame">Sandbox</button>
                 <button id="btnScoreboard">Scoreboard</button>
                 <button id="btnGameSettings">Planet options</button>
+                <button id="btnAircraft">Aircraft options</button>
             </div>
 
             <div id="credits">
@@ -82,22 +85,51 @@
         </div>
     </div>
 
+    <!-- Storyline modal -->
+    <div id="storyline" class="fullscreen overlay">
+        <div>
+            <h1>Storyline</h1>
+            <div>
+                It's the year 2050 and the universe as we know it is no longer.<br />
+                Strange celestial bodies have appeared near Earth and it's your job as the leading researcher of foreign planets
+                to collect as many samples of precious space rocks floating on the planet's surface.<br />
+                Do not take this job lightly, as many others will try to take the rocks before you, so you must collect them as quick as you can!
+            </div>
+        </div>
+    </div>
+
     <!-- Game settings modal -->
     <div id="game-settings" class="fullscreen overlay">
         <div id="divHideGameSettings">
             <h1>Choose your planet</h1>
-            <div class="planet-selection">
+            <div class="multiple-selection">
                 <div>
-                    <div id="Moon" class="planet"></div>
+                    <div id="Moon" class="option planet"></div>
                     <span>Moon</span>
                 </div>
                 <div>
-                    <div id="Alien" class="planet"></div>
+                    <div id="Alien" class="option planet"></div>
                     <span>Alien</span>
                 </div>
                 <div>
-                    <div id="Tropical" class="planet"></div>
+                    <div id="Tropical" class="option planet"></div>
                     <span>Tropical</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="aircraft-settings" class="fullscreen overlay">
+        <div>
+            <h1>Choose your preferred aircraft mode</h1>
+            <div class="multiple-selection">
+                <div>
+                    <div id="control" class="option"></div>
+                    <span>Control</span>
+                </div>
+                <div>
+                    <div id="speed" class="option"></div>
+                    <span>Speed</span>
                 </div>
             </div>
         </div>
@@ -139,14 +171,14 @@
                     <div></div>
                 </div>
                 <div class="numbers">
-                    <div>30</div>
-                    <div>40</div>
-                    <div>50</div>
-                    <div>60</div>
-                    <div>70</div>
+                    <div>300</div>
+                    <div>400</div>
+                    <div>500</div>
+                    <div>600</div>
+                    <div>700</div>
                     <div>0</div>
-                    <div>10</div>
-                    <div>20</div>
+                    <div>100</div>
+                    <div>200</div>
                 </div>
             </div>
         </div>

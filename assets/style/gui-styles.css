@@ -60,7 +60,7 @@ button:hover, .btn:hover {
     user-select: none;
 }
 
-#selected-planet {
+#selected-planet, #selected-aircraft {
     font-weight: bold;
     color: #ff8040;
 }
@@ -123,38 +123,44 @@ button:hover, .btn:hover {
     background-color: #0000008a;
     display: none;
 }
-#game-settings .planet-selection {
+.multiple-selection {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 3rem;
 }
-#game-settings .planet-selection div {
+.multiple-selection div {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
 }
-#game-settings .planet-selection div div {
+.multiple-selection div div {
     transition: .2s all ease-in-out;
 }
-#game-settings .planet-selection div div:hover {
+.multiple-selection div div:hover {
     cursor: pointer;
     transform: scale(1.1, 1.1);
 }
-#game-settings .planet-selection div span {
+.multiple-selection div span {
     font-size: 1.5rem;
     font-weight: bold;
 }
-#game-settings .planet {
+.multiple-selection .option {
     position: relative;
-    background-size: auto 100%;
+    background-size: 100% !important;
+    height: 15rem;
+    width: 15rem;
+}
+.multiple-selection .option.planet {
+    position: relative;
+    background-size: auto auto !important;
     height: 15rem;
     width: 15rem;
     border-radius: 50%;
     animation: rotate-map 30s infinite linear;
 }
-#game-settings .planet:before {
+.multiple-selection .option.planet:before {
     content: "";
     position: absolute;
     top: 0;
@@ -245,35 +251,35 @@ button:hover, .btn:hover {
 }
 .circle .numbers > div:nth-child(1) {
     top: 2px;
-    right: calc(50% - 0.5ch);
+    right: calc(50% - 1.5ch);
 }
 .circle .numbers > div:nth-child(2) {
-    top: 15%;
-    right: 15%;
+    top: 17%;
+    right: 13%;
 }
 .circle .numbers > div:nth-child(3) {
     top: calc(50% - 1ch);
     right: 2px;
 }
 .circle .numbers > div:nth-child(4) {
-    bottom: 15%;
-    right: 15%;
+    bottom: 13%;
+    right: 17%;
 }
 .circle .numbers > div:nth-child(5) {
     bottom: 2px;
-    right: calc(50% - 0.5ch);
+    right: calc(50% - 1.5ch);
 }
 .circle .numbers > div:nth-child(6) {
-    bottom: 15%;
-    left: 15%;
+    bottom: 13%;
+    left: 17%;
 }
 .circle .numbers > div:nth-child(7) {
     left: 2px;
     top: calc(50% - 1ch);
 }
 .circle .numbers > div:nth-child(8) {
-    top: 15%;
-    left: 15%;
+    top: 17%;
+    left: 13%;
 }
 .circle .gauge {
     z-index: 5;
@@ -352,4 +358,31 @@ kbd {
 }
 #add-score #username-submit {
     margin-bottom: 10px;
+}
+
+#storyline {
+    display: none;
+}
+#storyline > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3rem;
+    background-color: #0000008a;
+}
+#storyline > div > div {
+    max-width: 50rem;
+}
+
+#aircraft-settings {
+    display: none;
+}
+#aircraft-settings > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3rem;
+    background-color: #0000008a;
 }

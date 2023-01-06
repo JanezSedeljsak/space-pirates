@@ -32,10 +32,12 @@ export class GUIController {
         this.gameGUI = document.getElementById("game-gui");
         this.loader = document.querySelector('.loader-container');
         this.selectedPlanet = document.getElementById('selected-planet');
+        this.selectedAircraft = document.getElementById('selected-aircraft');
         this.startGUI = document.getElementById("start-gui");
         this.pausedScreen = document.getElementById("paused-screen");
         this.addScoreScreen = document.getElementById("add-score");
         this.storylineScreen = document.getElementById("storyline");
+        this.aircraftSettings = document.getElementById("aircraft-settings");
 
         // buttons/divs with events
         this.btnGameSettings = document.getElementById("btnGameSettings");
@@ -46,6 +48,7 @@ export class GUIController {
         this.btnStartSandboxGame = document.getElementById("btnStartSandboxGame");
         this.btnScoreSubmit = document.getElementById("btnScoreSubmit");
         this.btnStoryline = document.getElementById("btnStoryline");
+        this.btnAircraft = document.getElementById("btnAircraft");
         this.inputUsernameSubmit = document.getElementById("username-submit");
         this.gameTimer = document.getElementById("gameTimer");
         this.gameScore = document.getElementById("gameScore");
@@ -57,8 +60,9 @@ export class GUIController {
         this._bind();
 
         // read current selected planet and username from game controller state
-        const { planetName, username } = this.gameController.state;
+        const { planetName, username, planeModel } = this.gameController.state;
         this.selectedPlanet.innerHTML = planetName;
+        this.selectedAircraft.innerHTML = planeModel;
         this.inputUsernameSubmit.value = username;
 
         // register events
@@ -73,13 +77,22 @@ export class GUIController {
         this.btnScoreSubmit.addEventListener("click", this.addScoreToScoreboard);
         this.btnStoryline.addEventListener("click", this.showStoryline);
         this.storylineScreen.addEventListener("click", this.hideStoryline);
+        this.btnAircraft.addEventListener("click", this.showAircraftSettings);
+        this.aircraftSettings.addEventListener("click", this.hideAircraftSettings);
 
         document.addEventListener('keydown', this.handleKeyDown);
-        document.querySelectorAll('.planet').forEach(planet => {
+        document.getElementById("game-settings").querySelectorAll('.option').forEach(planet => {
             planet.style.background = `url('../../assets/images/planets_min/${planet.id}.avif') repeat-x`;
             planet.addEventListener('click', () => {
                 this.selectedPlanet.innerHTML = planet.id;
                 this.gameController.setState({ planetName: planet.id })
+            });
+        });
+        document.getElementById("aircraft-settings").querySelectorAll('.option').forEach(aircraft => {
+            aircraft.style.background = `url('../../assets/images/aircraft_min/${aircraft.id}.avif') repeat-x`;
+            aircraft.addEventListener('click', () => {
+                this.selectedAircraft.innerHTML = aircraft.id;
+                this.gameController.setState({ planeModel: aircraft.id })
             });
         });
 
@@ -109,6 +122,8 @@ export class GUIController {
         this.addScoreToScoreboard = this.addScoreToScoreboard.bind(this);
         this.showStoryline = this.showStoryline.bind(this);
         this.hideStoryline = this.hideStoryline.bind(this);
+        this.showAircraftSettings = this.showAircraftSettings.bind(this);
+        this.hideAircraftSettings = this.hideAircraftSettings.bind(this);
     }
 
     async handleKeyDown(event) {
@@ -158,6 +173,14 @@ export class GUIController {
 
     hideStoryline() {
         this.storylineScreen.style.display = "none";
+    }
+
+    showAircraftSettings() {
+        this.aircraftSettings.style.display = "block";
+    }
+
+    hideAircraftSettings() {
+        this.aircraftSettings.style.display = "none";
     }
 
     async startScoredGame() {

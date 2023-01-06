@@ -60,7 +60,7 @@ button:hover, .btn:hover {
     user-select: none;
 }
 
-#selected-planet {
+#selected-planet, #selected-aircraft {
     font-weight: bold;
     color: #ff8040;
 }
@@ -123,38 +123,44 @@ button:hover, .btn:hover {
     background-color: #0000008a;
     display: none;
 }
-#game-settings .planet-selection {
+.multiple-selection {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 3rem;
 }
-#game-settings .planet-selection div {
+.multiple-selection div {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
 }
-#game-settings .planet-selection div div {
+.multiple-selection div div {
     transition: .2s all ease-in-out;
 }
-#game-settings .planet-selection div div:hover {
+.multiple-selection div div:hover {
     cursor: pointer;
     transform: scale(1.1, 1.1);
 }
-#game-settings .planet-selection div span {
+.multiple-selection div span {
     font-size: 1.5rem;
     font-weight: bold;
 }
-#game-settings .planet {
+.multiple-selection .option {
     position: relative;
-    background-size: auto 100%;
+    background-size: 100% !important;
+    height: 15rem;
+    width: 15rem;
+}
+.multiple-selection .option.planet {
+    position: relative;
+    background-size: auto auto !important;
     height: 15rem;
     width: 15rem;
     border-radius: 50%;
     animation: rotate-map 30s infinite linear;
 }
-#game-settings .planet:before {
+.multiple-selection .option.planet:before {
     content: "";
     position: absolute;
     top: 0;
@@ -367,4 +373,16 @@ kbd {
 }
 #storyline > div > div {
     max-width: 50rem;
+}
+
+#aircraft-settings {
+    display: none;
+}
+#aircraft-settings > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3rem;
+    background-color: #0000008a;
 }

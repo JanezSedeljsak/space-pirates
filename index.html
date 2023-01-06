@@ -43,6 +43,7 @@
         <div>
             <h1 id="game-title">SPACE PIRATES</h1>
             <span class="planet-label">Selected planet:&nbsp;<span id="selected-planet"></span></span>
+            <span class="planet-label">Aircraft mode:&nbsp;<span id="selected-aircraft"></span></span>
 
             <div class="buttons">
                 <button id="btnStoryline">Storyline</button>
@@ -50,6 +51,7 @@
                 <button id="btnStartSandboxGame">Sandbox</button>
                 <button id="btnScoreboard">Scoreboard</button>
                 <button id="btnGameSettings">Planet options</button>
+                <button id="btnAircraft">Aircraft options</button>
             </div>
 
             <div id="credits">
@@ -83,6 +85,7 @@
         </div>
     </div>
 
+    <!-- Storyline modal -->
     <div id="storyline" class="fullscreen overlay">
         <div>
             <h1>Storyline</h1>
@@ -99,18 +102,34 @@
     <div id="game-settings" class="fullscreen overlay">
         <div id="divHideGameSettings">
             <h1>Choose your planet</h1>
-            <div class="planet-selection">
+            <div class="multiple-selection">
                 <div>
-                    <div id="Moon" class="planet"></div>
+                    <div id="Moon" class="option planet"></div>
                     <span>Moon</span>
                 </div>
                 <div>
-                    <div id="Alien" class="planet"></div>
+                    <div id="Alien" class="option planet"></div>
                     <span>Alien</span>
                 </div>
                 <div>
-                    <div id="Tropical" class="planet"></div>
+                    <div id="Tropical" class="option planet"></div>
                     <span>Tropical</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="aircraft-settings" class="fullscreen overlay">
+        <div>
+            <h1>Choose your preferred aircraft mode</h1>
+            <div class="multiple-selection">
+                <div>
+                    <div id="control" class="option"></div>
+                    <span>Control</span>
+                </div>
+                <div>
+                    <div id="speed" class="option"></div>
+                    <span>Speed</span>
                 </div>
             </div>
         </div>

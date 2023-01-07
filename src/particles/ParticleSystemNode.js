@@ -33,6 +33,7 @@ export class ParticleSystemNode extends Node {
     const { program, uniforms } = programs.ParticleShader;
     gl.useProgram(program);
 
+    gl.cullFace(gl.FRONT);
     gl.uniformMatrix4fv(uniforms.projection, false, camera.projection);
     gl.uniformMatrix4fv(uniforms.view, false, matrix);
     gl.uniformMatrix4fv(uniforms.parent, false, this.matrix);
@@ -47,5 +48,6 @@ export class ParticleSystemNode extends Node {
       8,
       this.particleSystem.length,
     );
+    gl.cullFace(gl.BACK);
   }
 }

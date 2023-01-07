@@ -13,7 +13,7 @@ export class Renderer extends GLTFRenderer {
         super(gl);
         gl.clearColor(1, 1, 1, 1);
         gl.enable(gl.DEPTH_TEST);
-        //gl.enable(gl.CULL_FACE);
+        gl.enable(gl.CULL_FACE);
 
         this.programs = WebGL.buildPrograms(gl, shaders);
     }
@@ -205,7 +205,7 @@ export class Renderer extends GLTFRenderer {
         gl.clear(gl.COLOR_BUFFER_BIT);
 
         this.renderDEFAULT(scene, camera);
-        //this.renderGLTF(scene, camera);
+        this.renderGLTF(scene, camera);
     }
 
     renderGLTF(scene, camera) {
@@ -234,7 +234,7 @@ export class Renderer extends GLTFRenderer {
                     matrixStack.push(mat4.clone(matrix));
                     mat4.mul(matrix, matrix, node.matrix);
 
-                    if (node?.gl?.vao && (node instanceof ParticleSystemNode)) {
+                    if (node?.gl?.vao) {
                         node.render(this.gl, matrix, camera, this.programs);
                     }
                 }

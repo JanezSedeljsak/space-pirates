@@ -45,6 +45,7 @@ export class GameController extends Application {
         await this.load('/src/scene.json');
 
         this.loading = false;
+        this.resize();
     }
 
     get init_state() {
